@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "Game.h"
 #include <iostream>
+#include "Game.h"
+#include "BattleScreen.h"
+using namespace std;
 
 Game::Game()
 {
@@ -15,6 +17,7 @@ Game::~Game()
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
+	
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
@@ -41,7 +44,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	{
 		isRunning = false;
 	}
-
+	currentScreen = new BattleScreen(renderer);
 }
 
 void Game::handleEvents()
@@ -56,6 +59,7 @@ void Game::handleEvents()
 	default:
 		break;
 	}
+	currentScreen->handleEvents(event);
 }
 
 void Game::update()
@@ -67,15 +71,17 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	// render stuff
+	currentScreen->render();
 	SDL_RenderPresent(renderer);
 }
 
 void Game::clean()
 {
+	cout << SDL_GetError() << endl;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
-	delete this;
+	delete currentScreen;
 	std::cout << "Game clean" << std::endl;
 }
 

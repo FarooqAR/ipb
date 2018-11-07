@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "GameScreen.h"
 
 class Game
 {
@@ -17,4 +18,6 @@ private:
 	bool isRunning;
 	SDL_Window * window;
 	SDL_Renderer * renderer;
+	GameScreen* currentScreen;
+		 
 };
