@@ -1,19 +1,27 @@
 #pragma once
+#include <stdio.h>
 #include "LTexture.h"
 #include "Character.h"
+#include "Point.h"
 
 class Word
 {
 public:
+	Word(string str, LTexture * gSpriteSheetTexture, int x, int y, float scale = 1);
 	~Word();
-	Word(string str, LTexture * gSpriteSheetTexture, int x, int y);
 	void render(SDL_Renderer * gRenderer);
 	void setText(string str);
 	void setPosition(int x, int y);
+	void setXCentered();
+	void setYCentered();
 	int getTextLength();
+	int getX();
+	int getY();
 private:
-	int x, y;
+	Point position;
+	int charSpacing;
+	float scale = 1;
 	string renderWord;
-	LTexture * TxtTexture;
+	LTexture * txtTexture;
 	Character * characters;
 };

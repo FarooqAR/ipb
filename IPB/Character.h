@@ -1,24 +1,30 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <iostream>
-#include"LTexture.h"
-#include"Point.h"
+#include "LTexture.h"
+#include "Point.h"
 
 class Character
 {
 public:
 	Character();
+	Character(char c, LTexture* alphabetsSpriteSheet);
 	~Character();
-	Character(char c, LTexture * gSpriteSheetTexture);
-	void render(SDL_Renderer * gRenderer);
+	void render(SDL_Renderer* gRenderer);
 	void setPosition(int x, int y);
 	void setChar(char c);
-	void setTexture(LTexture * gSpriteSheetTexture, char c);
+	void setScale(float scale);
+	void setTexture(LTexture* alphabetsSpriteSheet);
+	int getWidth();
+	int getHeight();
+	int getX();
+	int getY();
+
 private:
-	int x, y;
+	Point position;
+	int w, h;
+	float scale = 1;
 	SDL_Rect charRect;
-	char shownChar;
-	LTexture * CharTexture;
+	char showChar;
+	LTexture* alphabetsSpriteSheet;
+
 };

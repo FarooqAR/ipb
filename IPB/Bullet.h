@@ -9,6 +9,6 @@ private:
 	LTexture * bulletTexture;
 	int damage;
 public:
-	// constructors and destructor
-	// all getters and setters
+	Bullet();
+	~Bullet();
 };

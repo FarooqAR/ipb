@@ -7,5 +7,7 @@ class Attractor :Unit
 private:
 	double mass;
 public:
+	Attractor();
+	~Attractor();
 	void gravForce(Player*);
 };

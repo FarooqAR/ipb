@@ -1,55 +1,81 @@
-#include"Character.h"
-#include<iostream>
+#include "pch.h"
+#include "Character.h"
+
 Character::Character()
 {
-
+	w = 60 * scale;
+	h = 77 * scale;
+	this->charRect.w = w;
+	this->charRect.h = h;
 }
 
-Character::Character(char c, LTexture * gSpriteSheetTexture)
-{
-	this -> shownChar = c;
-	this -> CharTexture = gSpriteSheetTexture;
-	this -> charRect.w = 88;
-	this -> charRect.h = 99;
-	this -> setPosition(10, 10);
-	this -> setChar(c);
-}
 Character::~Character()
 {
-	/*char n = character_value + 97;
-	std::cout<<"\nCharacter "<<n<<" Destroyed";*/
+
+}
+
+
+
+Character::Character(char c, LTexture* alphabetsSpriteSheet)
+{
+	this->showChar = c;
+	this->alphabetsSpriteSheet = alphabetsSpriteSheet;
+	w = 60 * scale;
+	h = 77 * scale;
+	this->charRect.w = w;
+	this->charRect.h = h;
+	this->setPosition(0, 0);
+}
+void Character::setTexture(LTexture* alphabetsSpriteSheet)
+{
+	this->alphabetsSpriteSheet = alphabetsSpriteSheet;
 }
 void Character::setPosition(int x, int y)
 {
-	this -> x = x;
-	this -> y = y;
-}
+	this->position.x = x;
+	this->position.y = y;
+}
+
+void Character::render(SDL_Renderer * gRenderer)
+{
+	alphabetsSpriteSheet -> renderTexture(this->position.x, this->position.y, gRenderer, &charRect, SDL_FLIP_NONE, 0.0, 0, scale);
+}
 void Character::setChar(char c)
 {
 	int ascii = c;
-	if (c == ' ')
+	if (ascii >= 32 && ascii <= 122)
 	{
-		this -> charRect.x = 4 * 88;
-		this -> charRect.y = 5 * 99;
+		ascii -= 32;
+	    this->charRect.x = ascii * 60;
+	    this->charRect.y = 0;
 	}
-	if (ascii <= 90 && ascii >= 65)
+	else
 	{
-		ascii -= 65;
-		this -> charRect.x = (ascii % 5) * 88;
-		this -> charRect.y = (ascii / 5) * 99;
+		this->charRect.x = 0;
+		this->charRect.y = 0;
 	}
 }
-void Character::render(SDL_Renderer * gRenderer)
-{
-	CharTexture -> renderTexture(this -> x, this -> y, gRenderer, &charRect);
-}
-void Character::setTexture(LTexture * gSpriteSheetTexture, char c)
-{
-	this -> shownChar = c;
-	this -> CharTexture = gSpriteSheetTexture;
-	this -> charRect.w = 88;
-	this -> charRect.h = 99;
-	this -> setPosition(10, 10);
-	this -> setChar(c);
-}
 
+void Character::setScale(float scale)
+{
+	this->scale = scale;
+}
+
+int Character::getWidth()
+{
+	return w;
+}
+
+int Character::getHeight()
+{
+	return h;
+}
+
+int Character::getX() 
+{
+	return this->position.x;
+}
+int Character::getY()
+{
+	return this->position.y;
+}

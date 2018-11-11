@@ -13,6 +13,6 @@ private:
 	int mass; // 0 for enemy
 	Weapon * weapons; 
 public:
-	// constructors and destructor
-	// all getters and setters
+	Player();
+	~Player();
 };

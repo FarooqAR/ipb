@@ -1,3 +1,4 @@
+#include "pch.h"
 #include"LTexture.h"
 #include <iostream>
 using namespace std;
@@ -20,14 +21,13 @@ bool LTexture::loadFromFile(const char* path, SDL_Renderer* gRenderer, bool flag
 	SDL_Texture* newTexture = NULL;
 
 	loadedSurface = IMG_Load(path);
-
 	if (loadedSurface == NULL)
 	{
 		cout << "Unable to load image from " << path << ". SDL_image error" << IMG_GetError() << endl;
 	}
 	else
 	{
-		SDL_SetColorKey(loadedSurface, flagColorKey, SDL_MapRGB(loadedSurface->format, 0, 255, 255));
+		SDL_SetColorKey(loadedSurface, flagColorKey, SDL_MapRGB(loadedSurface->format, redColorKey, greenColorKey, blueColorKey));
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 
 		if (newTexture != NULL)
@@ -50,7 +50,7 @@ bool LTexture::loadFromFile(const char* path, SDL_Renderer* gRenderer, bool flag
 void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip, SDL_RendererFlip flip, double angle, SDL_Point* center, float scale)
 {
 	SDL_Rect rectCoordinates = { x, y, width, height };
-
+	
 	if (clip != NULL)
 	{
 		rectCoordinates.w = clip->w;
@@ -59,7 +59,6 @@ void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* cl
 	rectCoordinates.w *= scale;
 	rectCoordinates.h *= scale;
 	SDL_RenderCopyEx(gRenderer, texture, clip, &rectCoordinates, angle, center, flip);
-	//SDL_RenderPresent(gRenderer);
 }
 
 void LTexture::free()

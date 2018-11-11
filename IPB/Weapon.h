@@ -10,6 +10,6 @@ private:
 	LTexture * weaponTexture;
 	Bullet * bullets;
 public:
-	// constructors and destructor
-	// all getters and setters
+	Weapon();
+	~Weapon();
 };

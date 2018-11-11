@@ -8,6 +8,7 @@ class Unit
 public:
 	Unit(const char* textureSheet, SDL_Renderer* ren, int x, int y);
 	Unit();
+	~Unit();
 	void setPos(int x, int y);
 	void setAngle(double);
 	void update();

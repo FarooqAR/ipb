@@ -1,41 +1,45 @@
 #include "pch.h"
 #include "Button.h"
 
-Button::Button(LTexture * Texture, string str, int x, int y)
+Button::Button()
 {
-	this->word = new Word(str, Texture, x, y);
-	this->btnTexture = Texture;
-	for (int i = 0; i < 3; i++)
-	{
-		BtnRect[i].x = 88 * (i + 1);
-		BtnRect[i].y = 99 * 5;
-		BtnRect[i].w = 88;
-		BtnRect[i].h = 99;
-	}
+	this->label = nullptr;
+}
+Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y)
+{
+	spritRect = { 0, 0, 300, 52 };
+	this->btnTexture = bgTexture; 
+	float labelScale = 0.7;
+	int labelX = 300 - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale;
+	this->label = new Word(
+		label, 
+		alphabetsSpriteSheet, 
+		x + labelX/2,
+		y, 
+		labelScale
+	);
 	setPosition(x, y);
 }
-void Button::setText(const char* str)
-{
-	word->setText(str);
-	setPosition(x, y);
-}
-void Button::setPosition(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-	this->word->setPosition(x - (word->getTextLength() / 2) * 88
-		, y - 99 / 2);
-}
+
 void Button::render(SDL_Renderer * gRenderer)
 {
-	btnTexture->renderTexture(this->x - ((word->getTextLength() / 2) + 1) * 88,
-		this->y - 99 / 2, gRenderer, &BtnRect[0]);
-	for (int i = 0; i < word->getTextLength(); i++)
-	{
-		btnTexture->renderTexture(this->x - (word->getTextLength() / 2) * 88
-			+ ((i) * 88), this->y - 99 / 2, gRenderer, &BtnRect[1]);
-	}
-	word->render(gRenderer);
-	btnTexture->renderTexture(this->x + (word->getTextLength()) / 2 * 88,
-		this->y - 99 / 2, gRenderer, &BtnRect[2]);
+	this->btnTexture->renderTexture(
+		this->position.x,
+		this->position.y,
+		gRenderer,
+		&spritRect
+	);
+	this->label->render(gRenderer);
+}
+
+void Button::setPosition(int x, int y)
+{
+	this->position.x = x;
+	this->position.y = y;
+}
+
+
+
+Button::~Button()
+{
 }

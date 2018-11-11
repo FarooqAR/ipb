@@ -13,6 +13,6 @@ private:
 	int ammo;
 	int weapon;
 public:
-	// constructors and destructor
-	// all getters and setters
+	EasterEgg();
+	~EasterEgg();
 };
