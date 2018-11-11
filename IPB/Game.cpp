@@ -1,6 +1,12 @@
 #include "pch.h"
-#include "Game.h"
 #include <iostream>
+#include "Game.h"
+#include "BattleScreen.h"
+#include "MainMenuScreen.h"
+#include "LTexture.h"
+using namespace std;
+
+Game* Game::instance = nullptr;
 
 Game::Game()
 {
@@ -11,10 +17,16 @@ Game::~Game()
 {
 	clean();
 }
-
+Game * Game::getInstance()
+{
+	if (instance == nullptr)
+		instance = new Game();
+	return instance;
+}
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
+	
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
@@ -41,7 +53,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	{
 		isRunning = false;
 	}
-
+	currentScreen = new MainMenuScreen(renderer);
+	backgroundTexture = new LTexture;
+	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
 }
 
 void Game::handleEvents()
@@ -56,6 +70,7 @@ void Game::handleEvents()
 	default:
 		break;
 	}
+	currentScreen->handleEvents(event);
 }
 
 void Game::update()
@@ -66,16 +81,19 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer);
+	backgroundTexture->renderTexture(0, 0, renderer);
 	// render stuff
+	currentScreen->render();
 	SDL_RenderPresent(renderer);
 }
 
 void Game::clean()
 {
+	cout << SDL_GetError() << endl;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
-	delete this;
+	delete currentScreen;
 	std::cout << "Game clean" << std::endl;
 }
 
