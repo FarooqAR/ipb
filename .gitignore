@@ -15,8 +15,10 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
+IBP/x64/
+IBP/x86/
+IBP/[Dd]ebug/x64/
+IBP/[Rr]elease/x86/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -259,3 +261,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+**/*.exe
