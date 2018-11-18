@@ -96,7 +96,7 @@ bool Queue::checkCollision(Player* unit)
 	{
 		if (temp->unit->checkCollision(unit))
 		{
-			unit->setHealth(unit->getHealth());
+			unit->setHealth(unit->getHealth() - 1);
 			isColliding = true;
 		}
 		temp = temp->next;

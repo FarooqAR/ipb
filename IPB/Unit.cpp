@@ -48,25 +48,18 @@ void Unit::move(int direction)
 	if (direction == LEFT)
 	{
 		this->angle -= 1.0;
-		speedX = 0;
-		speedY = 0;
-		cout << "angle: " << angle << endl;
 	}
 
 	if (direction == RIGHT)
 	{
 		this->angle += 1.0;
-		speedX = 0;
-		speedY = 0;
 		cout << "angle: " << angle << endl;
 	}
 
 	if (direction == UP)
 	{
-		//speedY = -3;
 		position.x += cos((angle - 90) * M_PI / 180)  * 4.5;
 		position.y += sin((angle - 90) * M_PI / 180) * 4.5;
-		cout << position.x << ", " << position.y << endl;
 	}
 
 }

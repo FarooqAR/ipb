@@ -62,14 +62,17 @@ void BattleScreen::render()
 	planets.render();
 	bool isColliding = planets.checkCollision(hero);
 	// toggle ship color when it collides
-	if (isColliding && frames % 20 == 0)
+	if (isColliding)
 	{
-		if (hero->getCurrentClipIndex() == 1)
-			hero->setCurrentClipIndex(2);
-		else
-			hero->setCurrentClipIndex(1);
+		if (frames % 20 == 0)
+		{
+			if (hero->getCurrentClipIndex() == 1)
+				hero->setCurrentClipIndex(2);
+			else
+				hero->setCurrentClipIndex(1);
+		}
 	}
-	else if (!isColliding)
+	else
 	{
 		hero->setCurrentClipIndex(0);
 	}
