@@ -2,13 +2,13 @@
 #include "GameScreen.h"
 #include "Button.h"
 
-class MainMenuScreen : public GameScreen
+class LoadGameScreen : public GameScreen
 {
 private:
 	Button* selectSavedGameBtns; 
 public:
-	MainMenuScreen();
-	~MainMenuScreen();
+	LoadGameScreen();
+	~LoadGameScreen();
 	void startSavedGameFromFile(const char *);
 	void render();
 	void handleEvents(SDL_Event&);

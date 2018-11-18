@@ -3,10 +3,13 @@
 #include "Game.h"
 #include "BattleScreen.h"
 #include "MainMenuScreen.h"
+#include "GameOverScreen.h"
 #include "LTexture.h"
 using namespace std;
 
 Game* Game::instance = nullptr;
+GameScreen* Game::currentScreen = nullptr;
+SDL_Renderer* Game::renderer = nullptr;
 
 Game::Game()
 {
@@ -22,6 +25,22 @@ Game * Game::getInstance()
 	if (instance == nullptr)
 		instance = new Game();
 	return instance;
+}
+void Game::setCurrentScreen(int screen)
+{
+	delete currentScreen;
+	if (screen == constants::MAIN_MENU_SCREEN)
+	{
+		currentScreen = new MainMenuScreen(renderer);
+	}
+	else if (screen == constants::BATTLE_SCREEN)
+	{
+		currentScreen = new BattleScreen(renderer);
+	}
+	else if (screen == constants::GAME_OVER_SCREEN)
+	{
+		currentScreen = new GameOverScreen(renderer);
+	}
 }
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {

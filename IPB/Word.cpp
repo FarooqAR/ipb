@@ -12,14 +12,24 @@ Word::Word(string str, LTexture * gSpriteSheetTexture, int x, int y, float scale
 	this->setText(str);
 	this->setPosition(x, y);
 }
+Word::~Word()
+{
+}
 int Word::getTextLength()
 {
 	return this->renderWord.length();
 }
 void Word::setXCentered()
 {
-	position.x = constants::WINDOW_WIDTH - renderWord.length() * 60 * scale + (renderWord.length() - 1) * 30 * scale;
-	position.x = position.x / 2;
+	int x = constants::WINDOW_WIDTH - renderWord.length() * constants::CHARACTER_WIDTH * scale + (renderWord.length() - 1) * 30 * scale;
+	x = x / 2;
+	setPosition(x, position.y);
+}
+void Word::setYCentered()
+{
+	int y = constants::WINDOW_HEIGHT - constants::CHARACTER_HEIGHT * scale;
+	y = y / 2;
+	setPosition(position.x, y);
 }
 void Word::setPosition(int x, int y)
 {

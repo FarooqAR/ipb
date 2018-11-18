@@ -5,21 +5,19 @@
 #include "Word.h"
 #include "Button.h"
 
-class MainMenuScreen : public GameScreen
+class GameOverScreen : public GameScreen
 {
 private:
 	LTexture* alphabetsSpriteSheet;
 	LTexture* buttonSpriteSheet;
 
-	Button* startGameBtn;
-	Button* loadGameBtn;
-	Button* selectLevelBtn;
-	Button* quitGameBtn;
+	Button* mainMenuBtn;
+	Button* quitBtn;
 	SDL_Renderer* renderer;
-	Word* gameTitle;
+	Word* gameOverTitle;
 public:
-	MainMenuScreen(SDL_Renderer*);
-	~MainMenuScreen();
+	GameOverScreen(SDL_Renderer*);
+	~GameOverScreen();
 	void render();
 	void handleEvents(SDL_Event&);
 	Word* setWordPosition(int x, int y);

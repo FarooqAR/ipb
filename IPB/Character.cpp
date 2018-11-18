@@ -14,8 +14,6 @@ Character::~Character()
 
 }
 
-
-
 Character::Character(char c, LTexture* alphabetsSpriteSheet)
 {
 	this->showChar = c;
