@@ -3,7 +3,7 @@
 namespace constants
 {
 	const int WINDOW_WIDTH = 1024;
-	const int WINDOW_HEIGHT = 768;
+	const int WINDOW_HEIGHT = 700;
 	const int CHARACTER_WIDTH = 60;
 	const int CHARACTER_HEIGHT = 77;
 	enum 
