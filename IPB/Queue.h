@@ -18,4 +18,5 @@ public:
 	bool checkCollision(Player*);
 	void clean();
 	void render();
+	void move();
 };

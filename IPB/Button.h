@@ -13,7 +13,7 @@ public:
 	void onHover(int clickX, int clickY);
 	void onClickDown(int clickX, int clickY);
 	bool onClickUp(int clickX, int clickY);
-	Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y);
+	Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y, int w = 300, int h = 52);
 	void render(SDL_Renderer * gRenderer);
 	void setPosition(int x, int y);
 private:

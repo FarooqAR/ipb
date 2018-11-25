@@ -92,10 +92,6 @@ void Unit::move(int direction)
 void Unit::move()
 {
 
-	//speedX = .998*speedX;
-	//speedY = .998*speedY;
-
-
 	speedXdecimal = speedX - floor(speedX);
 	speedYdecimal = speedY - floor(speedY);
 
@@ -119,17 +115,17 @@ void Unit::move()
 
 	if (position.x < 0)
 	{
-		position.x = 1024;
+		position.x = constants::WINDOW_WIDTH;
 	}
-	if (position.x > 1024)
+	if (position.x > constants::WINDOW_WIDTH)
 	{
 		position.x = 0;
 	}
 	if (position.y < 0)
 	{
-		position.y = 700;
+		position.y = constants::WINDOW_HEIGHT;
 	}
-	if (position.y > 700)
+	if (position.y > constants::WINDOW_HEIGHT)
 	{
 		position.y = 0;
 	}

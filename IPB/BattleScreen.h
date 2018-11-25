@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Queue.h" 
 #include "Unit.h"
+#include "Word.h"
 
 class BattleScreen: public GameScreen 
 {
@@ -19,11 +20,15 @@ private:
 	LTexture* oxygenBarTexture;
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
+	LTexture* alphabetsSpriteSheet;
+	Word* WeaponTitle;
+	Word* AmmoCount;
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	Player* hero;
 	Level* currentLevel;
 	Queue planets;
+	Queue BulletQueue;
 
 public:
 	BattleScreen(SDL_Renderer* renderer);
@@ -31,4 +36,3 @@ public:
 	void render();
 	void handleEvents(SDL_Event&);
 };
-

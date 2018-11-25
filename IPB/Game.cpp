@@ -4,6 +4,7 @@
 #include "BattleScreen.h"
 #include "MainMenuScreen.h"
 #include "GameOverScreen.h"
+#include "SelectLevelScreen.h"
 #include "LTexture.h"
 using namespace std;
 
@@ -40,6 +41,10 @@ void Game::setCurrentScreen(int screen)
 	else if (screen == constants::GAME_OVER_SCREEN)
 	{
 		currentScreen = new GameOverScreen(renderer);
+	}
+	else if (screen == constants::SELECT_LEVEL_SCREEN)
+	{
+		currentScreen = new SelectLevelScreen(renderer);
 	}
 }
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)

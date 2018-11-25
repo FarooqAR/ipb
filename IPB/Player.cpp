@@ -6,6 +6,7 @@
 Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 {
 	this->objTexture = new LTexture;
+	this->weapons = new Weapon;
 	this->objTexture->loadFromFile("assets/herosprite1.png", gRenderer);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
@@ -19,7 +20,17 @@ Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 	{
 		shipSpriteClips[i] = { this->width * i, 0, this->width, this->height };
 	}
+	Ammo = weapons->GetAmmo();
+	ShootDelay = weapons->GetDelay();
+	
 }
+
+Player::~Player()
+{
+	delete weapons;
+	delete objTexture;
+}
+
 void Player::render()
 {
 	this->objTexture->renderTexture(
@@ -34,6 +45,12 @@ void Player::render()
 		false // if true, shows red rectangle around the unit for debugging purposes
 	);
 }
+
+Bullet* Player::Shoot(SDL_Renderer* gRenderer)
+{
+	return weapons->Fire(gRenderer, this->position.x, this->position.y, this->angle);
+}
+
 void Player::setShipCurrentClipIndex(int i)
 {
 	this->shipCurrentClipIndex = i;
@@ -66,6 +83,7 @@ void Player::setOxygen(int oxygen)
 		this->alive = false;
 	}
 }
+
 void Player::setFuel(int fuel)
 {
 	if (this->fuel > 0 && this->fuel <= 100)
@@ -76,6 +94,19 @@ void Player::setFuel(int fuel)
 		this->alive = false;
 	}
 }
+
+void Player::SetAmmo(int bullets)
+{
+	Ammo = bullets;
+}
+
+void Player::SetDelay(int time)
+{
+	ShootDelay = time;
+}
+
+//--Getters
+
 float Player::getHealth()
 {
 	return health;
@@ -103,4 +134,40 @@ bool Player::getIsThrusting()
 void Player::setIsThrusting(bool b)
 {
 	isThrusting = b;
+}
+int Player::GetX()
+{
+	return position.x;
+}
+
+int Player::GetY()
+{
+	return position.y;
+}
+
+string Player::GetWeaponName()
+{
+	string name(weapons->GetWeaponName());
+	return name;
+
+}
+
+int Player::GetWeaponDelay()
+{
+	return weapons->GetDelay();
+}
+
+int Player::GetDelay()
+{
+	return ShootDelay;
+}
+
+int Player::GetWeaponAmmo()
+{
+	return weapons->GetAmmo();
+}
+
+int Player::GetAmmo()
+{
+	return Ammo;
 }

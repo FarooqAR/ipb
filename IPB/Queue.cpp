@@ -104,6 +104,7 @@ bool Queue::checkCollision(Player* unit)
 	}
 	return isColliding;
 }
+
 void Queue::render()
 {
 	Node* temp = head;
@@ -122,5 +123,14 @@ void Queue::pull(Player* player)
 		((Attractor*)temp->unit)->gravForce(player);
 		temp = temp->next;
 	}
-	
+
+}
+void Queue::move()
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		temp->unit->move();
+		temp = temp->next;
+	}
 }

@@ -3,6 +3,7 @@
 #include "Weapon.h" 
 #include "Gravity.h"
 #include "LTexture.h"
+#include "Bullet.h"
 #include <SDL.h>
 
 class Player : public Unit
@@ -15,10 +16,20 @@ private:
 	Weapon * weapons; 
 	SDL_Rect shipSpriteClips[3];
 	int shipCurrentClipIndex;
+	int ShootDelay;
+	int Ammo;
 public:
 	//capital
 	Player(SDL_Renderer*, int, int);
 	~Player(); 
+	Bullet* Shoot(SDL_Renderer* gRenderer);
+	void SetAmmo(int);
+	void SetDelay(int);
+	int GetDelay();
+	int GetWeaponDelay();
+	int GetWeaponAmmo();
+	int GetAmmo();
+	string GetWeaponName();
 	void render(); 
 	void setHealth(float);
 	void setOxygen(int);
@@ -31,4 +42,6 @@ public:
 	int getCurrentClipIndex();
 	bool getIsThrusting();
 	void setIsThrusting(bool);
+	int GetX();
+	int GetY();
 };

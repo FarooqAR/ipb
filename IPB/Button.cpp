@@ -5,10 +5,10 @@ Button::Button()
 {
 	this->label = nullptr;
 }
-Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y)
+Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y, int w, int h )
 {
-	width = 300;
-	height = 52;
+	width = w;
+	height = h;
 	spriteClips[0] = { 0, 0, width, height };
 	spriteClips[1] = { 0, 56, width, height };
 	spriteClips[2] = { 0, 109, width, height };

@@ -1,19 +1,38 @@
+
 #pragma once
+#include <SDL.h>
 #include "GameScreen.h"
 #include "Level.h"
 #include "Button.h"
+#include "LTexture.h"
+#include "Word.h"
 
-class SelectLevelScreen :GameScreen
+
+
+class SelectLevelScreen : public GameScreen
 {
 public:
-	SelectLevelScreen();
+	SelectLevelScreen(SDL_Renderer*);
 	~SelectLevelScreen();
 	void selectLevel();
 	void handleEvents(SDL_Event&);
 	void render();
+	Word* setWordPosition(int x, int y);
+
 
 private:
+	LTexture* alphabetsSpriteSheet;
+	LTexture* buttonSpriteSheet;
 	Button* selectLevelBtns;
 	Level* levels;
 	Level* selectedLevel;
+	SDL_Renderer* renderer;
+	Word* ScreenTitle;
+
+	Button* lvl1;
+	Button* lvl2;
+	Button* lvl3;
+	Button* lvl4;
+	Button* BackBtn;
 };
+

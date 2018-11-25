@@ -2,11 +2,14 @@
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
+#include "Word.h"
 #include <iostream>
 #include "Attractor.h"
 #include "Unit.h"
 #include "Player.h"
 #include "Game.h"
+#include <cmath>
+#include <string>
 
 using namespace std;
 
@@ -18,6 +21,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	oxygenBarTexture = new LTexture;
 	fuelBarTexture = new LTexture;
 	explosionTexture = new LTexture;
+	alphabetsSpriteSheet = new LTexture;
 	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
 	healthBarTexture->loadFromFile("assets/health.png", renderer);
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
@@ -35,17 +39,29 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	{
 		explosionSpriteClips[i] = { 96 * i, 0, 96, 96 };
 	}
+	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
+
+	string title = "Weapon: " + hero->GetWeaponName();
+	WeaponTitle = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27);
+	title = "Ammo: " + to_string(hero->GetAmmo());
+	AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
 }
+
 BattleScreen::~BattleScreen()
 {
 	delete backgroundTexture;
 	delete healthBarTexture;
 	delete oxygenBarTexture;
 	delete fuelBarTexture;
+	delete alphabetsSpriteSheet;
 }
+
 void BattleScreen::render()
 {
 	backgroundTexture->renderTexture(0, 0, renderer);
+	WeaponTitle->render(renderer);
+	AmmoCount->render(renderer);
+
 	int i = 0;
 	while (i < hero->getHealth())
 	{
@@ -64,6 +80,7 @@ void BattleScreen::render()
 		fuelBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 20, renderer);
 		i += 1;
 	}
+
 	planets.render();
 	bool isColliding = planets.checkCollision(hero);
 	// toggle ship color when it collides
@@ -102,10 +119,13 @@ void BattleScreen::render()
 
 		}
 	}
+
 	planets.clean();
 	if (hero->getAlive())
 	{
 		hero->render();
+		BulletQueue.render();
+		BulletQueue.move();
 	}
 	else
 	{
@@ -122,11 +142,13 @@ void BattleScreen::render()
 	}
 
 	frames++;
-
 }
 void BattleScreen::handleEvents(SDL_Event& event)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	hero->SetDelay(hero->GetDelay() + 1);
+	BulletQueue.clean();
+
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
 		hero->move(RIGHT);
@@ -149,5 +171,17 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		hero->move();
 	}
 
-
+	if (currentKeyStates[SDL_SCANCODE_SPACE])
+	{
+		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0)
+		{
+			Bullet *bullet = hero->Shoot(renderer);
+			BulletQueue.enqueue(bullet);
+			hero->SetDelay(0);
+			hero->SetAmmo(hero->GetAmmo() - 1);
+			string title = "Ammo: " + to_string(hero->GetAmmo());
+			delete AmmoCount;
+			AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
+		}
+	}
 }

@@ -18,7 +18,7 @@ public:
 	int getHeight();
 	void setAngle(double);
 	double getAngle();
-	void move();
+	virtual void move();
 	void move(int direction); 
 	virtual void render();
 	float speedX;
