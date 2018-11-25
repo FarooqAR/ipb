@@ -22,14 +22,13 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
 	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
 
-	hero = new Player(renderer, 490, 500);
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/mercury.png", 100, 100, 0.4));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/venus.png", 500, 140, 0.45));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/mars.png", 900, 210, 0.35));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/earth.png", 240, 290, 0.5));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/jupiter.png", 590, 300, 0.57));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/uranus.png", 200, 590, 0.47));
-	planets.enqueue(new Attractor(renderer, 0.0, 0.0, "assets/neptune.png", 700, 530, 0.49));
+	hero = new Player(renderer, constants::WINDOW_WIDTH/2, constants::WINDOW_HEIGHT - 100);
+	planets.enqueue(new Attractor(renderer, "assets/mercury.png", 100, 550, 0.4));
+	planets.enqueue(new Attractor(renderer, "assets/venus.png", 500, 140, 0.45));
+	planets.enqueue(new Attractor(renderer, "assets/mars.png", 750, 310, 0.35));
+	planets.enqueue(new Attractor(renderer, "assets/earth.png", 195, 140, 0.5));
+	planets.enqueue(new Attractor(renderer, "assets/jupiter.png", 400, 400, 0.57));
+	planets.enqueue(new Attractor(renderer, "assets/neptune.png", 700, 530, 0.49));
 }
 BattleScreen::~BattleScreen()
 {
@@ -44,19 +43,19 @@ void BattleScreen::render()
 	int i = 0;
 	while (i < hero->getHealth())
 	{
-		healthBarTexture->renderTexture(900 + i, 700, renderer);
+		healthBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 50, renderer);
 		i += 1;
 	}
 	i = 0;
 	while (i < hero->getOxygen())
 	{
-		oxygenBarTexture->renderTexture(900 + i, 715, renderer);
+		oxygenBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 35, renderer);
 		i += 1;
 	}
 	i = 0;
 	while (i < hero->getFuel())
 	{
-		fuelBarTexture->renderTexture(900 + i, 730, renderer);
+		fuelBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 20, renderer);
 		i += 1;
 	}
 	planets.render();
@@ -67,31 +66,31 @@ void BattleScreen::render()
 		if (frames % 20 == 0)
 		{
 			if (hero->getCurrentClipIndex() == 1)
-				hero->setCurrentClipIndex(2);
+				hero->setShipCurrentClipIndex(2);
 			else
-				hero->setCurrentClipIndex(1);
+				hero->setShipCurrentClipIndex(1);
 		}
 	}
 	else
 	{
-		hero->setCurrentClipIndex(0);
+		hero->setShipCurrentClipIndex(0);
 	}
 	planets.clean();
 	if (hero->getAlive())
 	{
 		hero->render();
-		hero->move();
 	}
 	else
 	{
 		Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
+	
 	frames++;
+	
 }
 void BattleScreen::handleEvents(SDL_Event& event)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
 		hero->move(RIGHT);
@@ -107,8 +106,15 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		hero->move(UP);
 	}
 
+	/*
 	if (currentKeyStates[SDL_SCANCODE_DOWN])
 	{
 		hero->move(DOWN);
+	}
+	*/
+	else
+	{
+		planets.pull(hero);
+		hero->move();
 	}
 }

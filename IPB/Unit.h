@@ -21,6 +21,8 @@ public:
 	void move();
 	void move(int direction); 
 	virtual void render();
+	float speedX;
+	float speedY;
 
 protected:
 	Point position;
@@ -30,8 +32,10 @@ protected:
 	int height;
 	double angle;
 	float scale;
-	float speedX;
-	float speedY;
+	float speedXdecimal;
+	float speedYdecimal;
+	int count1 = 0;
+	float thrust = .0355;
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer* renderer;
 

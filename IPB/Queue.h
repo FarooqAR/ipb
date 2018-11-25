@@ -13,6 +13,7 @@ public:
 	Queue();
 	~Queue();
 	void enqueue(Unit*);
+	void pull(Player*);
 	void checkCollision(Unit*);
 	bool checkCollision(Player*);
 	void clean();

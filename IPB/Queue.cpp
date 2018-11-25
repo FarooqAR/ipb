@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Queue.h"
+#include "Attractor.h"
 
 Queue::Queue()
 {
@@ -113,3 +114,13 @@ void Queue::render()
 	}
 }
 
+void Queue::pull(Player* player)
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		((Attractor*)temp->unit)->gravForce(player);
+		temp = temp->next;
+	}
+	
+}

@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 using namespace std;
 
 
@@ -44,34 +45,102 @@ void Unit::setPosition(int x, int y)
 }
 void Unit::move(int direction)
 {
-	
+
+
 	if (direction == LEFT)
 	{
-		this->angle -= 1.0;
+		this->angle -= 3;
 	}
 
 	if (direction == RIGHT)
 	{
-		this->angle += 1.0;
+		this->angle += 3;
 		cout << "angle: " << angle << endl;
 	}
 
 	if (direction == UP)
 	{
-		position.x += cos((angle - 90) * M_PI / 180)  * 4.5;
-		position.y += sin((angle - 90) * M_PI / 180) * 4.5;
+		speedX += cos((angle - 90) * M_PI / 180)*thrust;
+		speedY += sin((angle - 90) * M_PI / 180)*thrust;
+
+		
+
+		speedXdecimal = speedX - floor(speedX);
+		speedYdecimal = speedY - floor(speedY);
+
+		//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
+
+
+		if (speedXdecimal != 0)
+		{
+			if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
+				position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+		}
+		if (speedYdecimal != 0)
+		{
+			if (count1%static_cast<int>(1 / speedYdecimal) == 0)
+				position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+		}
+		
+		count1++;
+		
+		position.x += speedX;
+		position.y += speedY;
 	}
 
 }
 
 void Unit::move()
 {
-	//speedX *= 0.5;
-	//speedY *= 0.5;
 
-	//position.x += cos((angle - 90) * M_PI / 180) * speedX;
-	//position.y += sin((angle - 90) * M_PI / 180) * speedY;
+	//speedX = .998*speedX;
+	//speedY = .998*speedY;
+
+
+	speedXdecimal = speedX - floor(speedX);
+	speedYdecimal = speedY - floor(speedY);
+
+	//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
+	
+
+	if (speedXdecimal != 0)
+	{
+		if (count1 %static_cast<int>(1 / speedXdecimal)== 0)
+			position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+	}
+	if (speedYdecimal != 0)
+	{
+		if (count1%static_cast<int>(1 / speedYdecimal)== 0)
+			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+	}
+	
+	
+	position.x += speedX;
+	position.y += speedY;
+
+	if (position.x < 0)
+	{
+		position.x = 1024;
+	}
+	if (position.x > 1024)
+	{
+		position.x = 0;
+	}
+	if (position.y < 0)
+	{
+		position.y = 700;
+	}
+	if (position.y > 700)
+	{
+		position.y = 0;
+	}
+	
+
+	count1++;
+
 }
+
+
 Point Unit::getPosition()
 {
 	return position;

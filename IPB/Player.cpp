@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Player.h"
+#include <cmath>
+
 
 Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 {
@@ -12,10 +14,10 @@ Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 	this->health = 100;
 	this->fuel = 100;
 	this->oxygen = 100;
-	this->currenClipIndex = 0;
+	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 3; i++)
 	{
-		spriteClips[i] = { this->width * i, 0, this->width, this->height };
+		shipSpriteClips[i] = { this->width * i, 0, this->width, this->height };
 	}
 }
 void Player::render()
@@ -24,7 +26,7 @@ void Player::render()
 		position.x,
 		position.y,
 		renderer,
-		&spriteClips[this->currenClipIndex],
+		&shipSpriteClips[this->shipCurrentClipIndex],
 		SDL_FLIP_NONE,
 		this->angle,
 		nullptr,
@@ -32,9 +34,9 @@ void Player::render()
 		false // if true, shows red rectangle around the unit for debugging purposes
 	);
 }
-void Player::setCurrentClipIndex(int i)
+void Player::setShipCurrentClipIndex(int i)
 {
-	this->currenClipIndex = i;
+	this->shipCurrentClipIndex = i;
 }
 void Player::setHealth(int health)
 {
@@ -83,6 +85,10 @@ int Player::getFuel()
 
 int Player::getCurrentClipIndex()
 {
-	return currenClipIndex;
+	return shipCurrentClipIndex;
 }
 
+void Player::GetPulled()
+{
+	
+}
