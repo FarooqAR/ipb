@@ -22,7 +22,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
 	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
 
-	hero = new Player(renderer, constants::WINDOW_WIDTH/2, constants::WINDOW_HEIGHT - 100);
+	hero = new Player(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	planets.enqueue(new Attractor(renderer, "assets/mercury.png", 100, 550, 0.4));
 	planets.enqueue(new Attractor(renderer, "assets/venus.png", 500, 140, 0.45));
 	planets.enqueue(new Attractor(renderer, "assets/mars.png", 750, 310, 0.35));
@@ -65,15 +65,36 @@ void BattleScreen::render()
 	{
 		if (frames % 20 == 0)
 		{
-			if (hero->getCurrentClipIndex() == 1)
-				hero->setShipCurrentClipIndex(2);
+			if (hero->getIsThrusting())
+			{
+				if (hero->getCurrentClipIndex() == 9)
+					hero->setShipCurrentClipIndex(10);
+				else
+					hero->setShipCurrentClipIndex(9);
+			}
 			else
-				hero->setShipCurrentClipIndex(1);
+			{
+
+				if (hero->getCurrentClipIndex() == 1)
+					hero->setShipCurrentClipIndex(2);
+				else
+					hero->setShipCurrentClipIndex(1);
+			}
 		}
 	}
 	else
 	{
-		hero->setShipCurrentClipIndex(0);
+		if (hero->getIsThrusting())
+		{
+			if (frames % 3 == 0)
+				hero->changeShipCurrentClipIndex();
+
+		}
+		else
+		{
+			hero->setShipCurrentClipIndex(0);
+
+		}
 	}
 	planets.clean();
 	if (hero->getAlive())
@@ -84,9 +105,9 @@ void BattleScreen::render()
 	{
 		Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
-	
+
 	frames++;
-	
+
 }
 void BattleScreen::handleEvents(SDL_Event& event)
 {
@@ -104,17 +125,14 @@ void BattleScreen::handleEvents(SDL_Event& event)
 	if (currentKeyStates[SDL_SCANCODE_UP])
 	{
 		hero->move(UP);
+		hero->setIsThrusting(true);
 	}
-
-	/*
-	if (currentKeyStates[SDL_SCANCODE_DOWN])
-	{
-		hero->move(DOWN);
-	}
-	*/
 	else
 	{
+		hero->setIsThrusting(false);
 		planets.pull(hero);
 		hero->move();
 	}
+
+
 }

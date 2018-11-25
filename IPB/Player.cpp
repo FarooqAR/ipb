@@ -6,16 +6,16 @@
 Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 {
 	this->objTexture = new LTexture;
-	this->objTexture->loadFromFile("assets/herosprite.png", gRenderer);
+	this->objTexture->loadFromFile("assets/herosprite1.png", gRenderer);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = 36;
-	this->height = 60;
+	this->height = 75;
 	this->health = 100;
 	this->fuel = 100;
 	this->oxygen = 100;
 	this->shipCurrentClipIndex = 0;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 11; i++)
 	{
 		shipSpriteClips[i] = { this->width * i, 0, this->width, this->height };
 	}
@@ -38,7 +38,14 @@ void Player::setShipCurrentClipIndex(int i)
 {
 	this->shipCurrentClipIndex = i;
 }
-void Player::setHealth(int health)
+void Player::changeShipCurrentClipIndex()
+{
+	if (shipCurrentClipIndex > 3 && shipCurrentClipIndex < 8)
+		shipCurrentClipIndex++;
+	else
+		shipCurrentClipIndex = 4;
+}
+void Player::setHealth(float health)
 {
 	if (this->health > 0 && this->health <= 100)
 		this->health = health;
@@ -69,7 +76,7 @@ void Player::setFuel(int fuel)
 		this->alive = false;
 	}
 }
-int Player::getHealth()
+float Player::getHealth()
 {
 	return health;
 }
@@ -88,7 +95,12 @@ int Player::getCurrentClipIndex()
 	return shipCurrentClipIndex;
 }
 
-void Player::GetPulled()
+bool Player::getIsThrusting()
 {
-	
+	return isThrusting;
+}
+
+void Player::setIsThrusting(bool b)
+{
+	isThrusting = b;
 }

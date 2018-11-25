@@ -55,7 +55,6 @@ void Unit::move(int direction)
 	if (direction == RIGHT)
 	{
 		this->angle += 3;
-		cout << "angle: " << angle << endl;
 	}
 
 	if (direction == UP)
