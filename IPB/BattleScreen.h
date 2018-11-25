@@ -12,12 +12,15 @@ class BattleScreen: public GameScreen
 {
 private:
 	int frames;
+	int explosionSpriteIndex;
 	LTexture* backgroundTexture;
+	LTexture* explosionTexture;
 	LTexture* healthBarTexture;
 	LTexture* oxygenBarTexture;
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
 	SDL_Renderer* renderer;
+	SDL_Rect explosionSpriteClips[20];
 	Player* hero;
 	Level* currentLevel;
 	Queue planets;

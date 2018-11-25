@@ -17,10 +17,12 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	healthBarTexture = new LTexture;
 	oxygenBarTexture = new LTexture;
 	fuelBarTexture = new LTexture;
+	explosionTexture = new LTexture;
 	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
 	healthBarTexture->loadFromFile("assets/health.png", renderer);
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
 	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
+	explosionTexture->loadFromFile("assets/explosion.png", renderer);
 
 	hero = new Player(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	planets.enqueue(new Attractor(renderer, "assets/mercury.png", 100, 550, 0.4));
@@ -29,6 +31,10 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	planets.enqueue(new Attractor(renderer, "assets/earth.png", 195, 140, 0.5));
 	planets.enqueue(new Attractor(renderer, "assets/jupiter.png", 400, 400, 0.57));
 	planets.enqueue(new Attractor(renderer, "assets/neptune.png", 700, 530, 0.49));
+	for (int i = 0; i < 20; i++)
+	{
+		explosionSpriteClips[i] = { 96 * i, 0, 96, 96 };
+	}
 }
 BattleScreen::~BattleScreen()
 {
@@ -103,7 +109,16 @@ void BattleScreen::render()
 	}
 	else
 	{
-		Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
+		explosionTexture->renderTexture(
+			hero->getPosition().x + hero->getWidth() / 2 - 96 / 2,
+			hero->getPosition().y + hero->getHeight() / 2 - 96 / 2,
+			renderer,
+			&explosionSpriteClips[explosionSpriteIndex]
+		);
+		if (frames % 4 == 0)
+			explosionSpriteIndex++;
+		if (explosionSpriteIndex == 19)
+			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
 
 	frames++;
