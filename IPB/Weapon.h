@@ -19,7 +19,7 @@ public:
 	Weapon(const char*, int, int, int ammo = 30);
 	~Weapon();
 	int GetDelay();
-	Bullet *  Fire(SDL_Renderer* gRenderer, int, int, double);
+	Bullet *  Fire(SDL_Renderer* gRenderer, LTexture*, int, int, double);
 	const char* GetWeaponName();
 	int GetAmmo();
 };

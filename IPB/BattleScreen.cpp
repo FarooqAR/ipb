@@ -8,6 +8,7 @@
 #include "Unit.h"
 #include "Player.h"
 #include "Game.h"
+#include "Enemy.h"
 #include <cmath>
 #include <string>
 
@@ -21,14 +22,17 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	oxygenBarTexture = new LTexture;
 	fuelBarTexture = new LTexture;
 	explosionTexture = new LTexture;
+	bulletTexture = new LTexture;
 	alphabetsSpriteSheet = new LTexture;
 	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
 	healthBarTexture->loadFromFile("assets/health.png", renderer);
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
 	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
 	explosionTexture->loadFromFile("assets/explosion.png", renderer);
+	bulletTexture->loadFromFile("assets/bullet.png", renderer);
 
 	hero = new Player(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
+	enemy = new Enemy(renderer, constants::WINDOW_WIDTH - 200, 30);
 	planets.enqueue(new Attractor(renderer, "assets/mercury.png", 100, 550, 0.4));
 	planets.enqueue(new Attractor(renderer, "assets/venus.png", 500, 140, 0.45));
 	planets.enqueue(new Attractor(renderer, "assets/mars.png", 750, 310, 0.35));
@@ -61,6 +65,27 @@ void BattleScreen::render()
 	backgroundTexture->renderTexture(0, 0, renderer);
 	WeaponTitle->render(renderer);
 	AmmoCount->render(renderer);
+	if (enemy->getAlive() && hero->checkCollision(enemy))
+	{
+		hero->setHealth(0);
+		enemy->setHealth(0);
+	}
+	if (enemy->getAlive() && PlayerBulletQueue.checkCollision(enemy, true))
+	{
+		enemy->setHealth(enemy->getHealth() - 5);
+		PlayerBulletQueue.clean();
+	
+	}
+	if (EnemyBulletQueue.checkCollision(hero, true))
+	{
+		hero->setHealth(hero->getHealth() - 5);
+		EnemyBulletQueue.clean();
+	}
+
+	PlayerBulletQueue.render();
+	EnemyBulletQueue.render();
+	PlayerBulletQueue.move();
+	EnemyBulletQueue.move();
 
 	int i = 0;
 	while (i < hero->getHealth())
@@ -80,12 +105,18 @@ void BattleScreen::render()
 		fuelBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 20, renderer);
 		i += 1;
 	}
-
+	i = 0;
+	while (i < enemy->getHealth())
+	{
+		healthBarTexture->renderTexture(20 + enemy->getPosition().x + i*0.5, enemy->getPosition().y - 10, renderer);
+		i += 1;
+	}
 	planets.render();
 	bool isColliding = planets.checkCollision(hero);
 	// toggle ship color when it collides
 	if (isColliding)
 	{
+		hero->setHealth(hero->getHealth() - 0.1);
 		if (frames % 20 == 0)
 		{
 			if (hero->getIsThrusting())
@@ -111,21 +142,49 @@ void BattleScreen::render()
 		{
 			if (frames % 3 == 0)
 				hero->changeShipCurrentClipIndex();
-
 		}
 		else
 		{
 			hero->setShipCurrentClipIndex(0);
-
 		}
 	}
 
 	planets.clean();
+	if (enemy->getAlive() && hero->getAlive())
+	{
+		if (frames % 50 == 0)
+		{
+			Bullet *bullet = enemy->getWeapon()->Fire(
+				renderer,
+				bulletTexture,
+				enemy->getPosition().x + enemy->getWidth() / 2,
+				enemy->getPosition().y + enemy->getHeight() / 2,
+				atan2(
+					hero->getPosition().x + hero->getWidth() / 2 - enemy->getPosition().x - enemy->getWidth() / 2,
+					enemy->getPosition().y + enemy->getHeight() / 2 - hero->getPosition().y - hero->getHeight() / 2
+				) * 180 / M_PI
+			);
+			EnemyBulletQueue.enqueue(bullet);
+		}
+
+	}
+	if (enemy->getAlive())
+		enemy->render();
+	
+	if (!enemy->getAlive())
+	{
+		explosionTexture->renderTexture(
+			enemy->getPosition().x + enemy->getWidth() / 2 - 100 / 2,
+			enemy->getPosition().y + enemy->getHeight() / 2 - 63 / 2,
+			renderer,
+			&explosionSpriteClips[enemExplosionSpriteIndex]
+		);
+		if (frames % 4 == 0)
+			enemExplosionSpriteIndex++;
+	}
 	if (hero->getAlive())
 	{
 		hero->render();
-		BulletQueue.render();
-		BulletQueue.move();
 	}
 	else
 	{
@@ -133,13 +192,15 @@ void BattleScreen::render()
 			hero->getPosition().x + hero->getWidth() / 2 - 96 / 2,
 			hero->getPosition().y + hero->getHeight() / 2 - 96 / 2,
 			renderer,
-			&explosionSpriteClips[explosionSpriteIndex]
+			&explosionSpriteClips[heroExplosionSpriteIndex]
 		);
 		if (frames % 4 == 0)
-			explosionSpriteIndex++;
-		if (explosionSpriteIndex == 19)
+			heroExplosionSpriteIndex++;
+		if (heroExplosionSpriteIndex == 19)
 			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
+
+
 
 	frames++;
 }
@@ -147,7 +208,7 @@ void BattleScreen::handleEvents(SDL_Event& event)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	hero->SetDelay(hero->GetDelay() + 1);
-	BulletQueue.clean();
+
 
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
@@ -175,8 +236,8 @@ void BattleScreen::handleEvents(SDL_Event& event)
 	{
 		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0)
 		{
-			Bullet *bullet = hero->Shoot(renderer);
-			BulletQueue.enqueue(bullet);
+			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
+			PlayerBulletQueue.enqueue(bullet);
 			hero->SetDelay(0);
 			hero->SetAmmo(hero->GetAmmo() - 1);
 			string title = "Ammo: " + to_string(hero->GetAmmo());

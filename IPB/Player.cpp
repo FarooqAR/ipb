@@ -6,7 +6,7 @@
 Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
 {
 	this->objTexture = new LTexture;
-	this->weapons = new Weapon;
+	this->weapons = new Weapon("hhel", 10, 2);
 	this->objTexture->loadFromFile("assets/herosprite1.png", gRenderer);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
@@ -46,9 +46,9 @@ void Player::render()
 	);
 }
 
-Bullet* Player::Shoot(SDL_Renderer* gRenderer)
+Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* bulletTexture)
 {
-	return weapons->Fire(gRenderer, this->position.x, this->position.y, this->angle);
+	return weapons->Fire(gRenderer, bulletTexture, this->position.x, this->position.y, this->angle);
 }
 
 void Player::setShipCurrentClipIndex(int i)
@@ -68,9 +68,10 @@ void Player::setHealth(float health)
 		this->health = health;
 	else
 	{
-		this->health = 0;
-		this->alive = false;
+		this->health = 0;		
 	}
+	if (this->health == 0)
+		this->alive = false;
 }
 
 void Player::setOxygen(int oxygen)

@@ -77,19 +77,7 @@ void Queue::clean()
 			temp = temp->next;
 	}
 }
-void Queue::checkCollision(Unit* unit)
-{
-	Node* temp = head;
-	while (temp != NULL)
-	{
-		if (temp->unit->checkCollision(unit))
-		{
-			unit->setAlive(false);
-		}
-		temp = temp->next;
-	}
-}
-bool Queue::checkCollision(Player* unit)
+bool Queue::checkCollision(Unit* unit, bool selfDestruct)
 {
 	Node* temp = head;
 	bool isColliding = false;
@@ -97,8 +85,9 @@ bool Queue::checkCollision(Player* unit)
 	{
 		if (temp->unit->checkCollision(unit))
 		{
-			unit->setHealth(unit->getHealth() - 1);
 			isColliding = true;
+			if (selfDestruct)
+				temp->unit->setAlive(false);
 		}
 		temp = temp->next;
 	}

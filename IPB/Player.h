@@ -22,7 +22,7 @@ public:
 	//capital
 	Player(SDL_Renderer*, int, int);
 	~Player(); 
-	Bullet* Shoot(SDL_Renderer* gRenderer);
+	Bullet* Shoot(SDL_Renderer* gRenderer, LTexture*);
 	void SetAmmo(int);
 	void SetDelay(int);
 	int GetDelay();

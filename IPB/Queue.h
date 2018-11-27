@@ -14,8 +14,7 @@ public:
 	~Queue();
 	void enqueue(Unit*);
 	void pull(Player*);
-	void checkCollision(Unit*);
-	bool checkCollision(Player*);
+	bool checkCollision(Unit*, bool selfDestruct = false);
 	void clean();
 	void render();
 	void move();

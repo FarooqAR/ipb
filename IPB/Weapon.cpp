@@ -41,21 +41,21 @@ int Weapon::GetAmmo()
 	return Ammo;
 }
 
-Bullet* Weapon::Fire(SDL_Renderer* gRenderer, int xcord, int ycord, double angle)
+Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* bulletTexture, int xcord, int ycord, double angle)
 {
 	if (WeaponType == 1)
 	{
-		bullets = new Bullet(gRenderer, "assets/bullet.png", xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.018, angle, 10);
+		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180)+11, 0.018, angle, 10);
 	}
 
 	if (WeaponType == 2)
 	{
-		bullets = new Bullet(gRenderer, "assets/missile.png", xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.018, angle, 20);
+		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.018, angle, 20);
 	}
 
 	if (WeaponType == 3)
 	{
-		bullets = new Bullet(gRenderer, "assets/laser.png", xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.059, angle, 30);
+		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.059, angle, 30);
 	}
 	
 	return bullets;

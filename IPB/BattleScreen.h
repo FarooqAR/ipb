@@ -8,14 +8,17 @@
 #include "Queue.h" 
 #include "Unit.h"
 #include "Word.h"
+#include "Enemy.h"
 
 class BattleScreen: public GameScreen 
 {
 private:
 	int frames;
-	int explosionSpriteIndex;
+	int heroExplosionSpriteIndex;
+	int enemExplosionSpriteIndex;
 	LTexture* backgroundTexture;
 	LTexture* explosionTexture;
+	LTexture* bulletTexture;
 	LTexture* healthBarTexture;
 	LTexture* oxygenBarTexture;
 	LTexture* fuelBarTexture;
@@ -26,9 +29,11 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	Player* hero;
+	Enemy* enemy;
 	Level* currentLevel;
 	Queue planets;
-	Queue BulletQueue;
+	Queue PlayerBulletQueue;
+	Queue EnemyBulletQueue;
 
 public:
 	BattleScreen(SDL_Renderer* renderer);
