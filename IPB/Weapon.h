@@ -21,5 +21,6 @@ public:
 	int GetDelay();
 	Bullet *  Fire(SDL_Renderer* gRenderer, LTexture*, int, int, double);
 	const char* GetWeaponName();
+	int GetWeaponType();
 	int GetAmmo();
 };

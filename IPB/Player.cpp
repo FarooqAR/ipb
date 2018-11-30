@@ -2,9 +2,10 @@
 #include "Player.h"
 #include <cmath>
 
-
-Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY)
+Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY, float Angle)
 {
+	this->angle = Angle;
+	//PlayerAngle = angle;
 	this->objTexture = new LTexture;
 	this->weapons = new Weapon("hhel", 10, 2);
 	this->objTexture->loadFromFile("assets/herosprite1.png", gRenderer);
@@ -39,6 +40,8 @@ void Player::render()
 		renderer,
 		&shipSpriteClips[this->shipCurrentClipIndex],
 		SDL_FLIP_NONE,
+		//PlayerAngle,
+		
 		this->angle,
 		nullptr,
 		scale,
@@ -171,4 +174,8 @@ int Player::GetWeaponAmmo()
 int Player::GetAmmo()
 {
 	return Ammo;
+}
+int Player::GetWeaponType()
+{
+	return weapons->GetWeaponType();
 }

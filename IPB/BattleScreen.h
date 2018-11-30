@@ -7,8 +7,11 @@
 #include "Level.h"
 #include "Queue.h" 
 #include "Unit.h"
-#include "Word.h"
 #include "Enemy.h"
+#include "Button.h"
+#include "Word.h"
+#include <iostream>
+
 
 class BattleScreen: public GameScreen 
 {
@@ -34,9 +37,15 @@ private:
 	Queue planets;
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
+	Queue BulletQueue;
+	string s;
+
+	LTexture* buttonSpriteSheet;
 
 public:
-	BattleScreen(SDL_Renderer* renderer);
+	int ok = 1;
+	BattleScreen();
+	BattleScreen(SDL_Renderer* renderer, int h = 490, int w = 500, float angle = 0);
 	~BattleScreen();
 	void render();
 	void handleEvents(SDL_Event&);

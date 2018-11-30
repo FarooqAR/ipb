@@ -35,7 +35,10 @@ const char* Weapon::GetWeaponName()
 {
 	return name;
 }
-
+int Weapon::GetWeaponType()
+{
+	return WeaponType;
+}
 int Weapon::GetAmmo()
 {
 	return Ammo;

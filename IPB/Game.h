@@ -3,6 +3,7 @@
 #include "GameScreen.h"
 #include "LTexture.h"
 #include "constants.h"
+#include <string>
 
 class Game
 {
@@ -16,6 +17,7 @@ public:
 	void render();
 	void clean();
 	bool running();
+	void ReadFile(string);
 private:
 	static GameScreen* currentScreen;
 	static SDL_Renderer * renderer;
@@ -24,4 +26,15 @@ private:
 	LTexture* backgroundTexture;
 	static Game* instance;
 	Game();
+	int width; int height;
+	float angle;
+	int health;
+	int oxygen;
+	int fuel;
+	int weapon;
+	int weaponDelay;
+	int weaponAmmo;
+	int ammo;
+	int CurrentClipIndex;
+
 };

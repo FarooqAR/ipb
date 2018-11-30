@@ -42,6 +42,9 @@ void MainMenuScreen::render()
 
 	gameTitle->setPosition(gameTitle->getX(), y);
 }
+
+
+
 void MainMenuScreen::handleEvents(SDL_Event& event)
 {
 	int x = 0; int y = 0;
@@ -49,6 +52,7 @@ void MainMenuScreen::handleEvents(SDL_Event& event)
 	bool isQuitGameBtnClicked;
 	bool isSelectLevelBtnClicked;
 
+	bool isLoadGameBtnClicked;
 	switch (event.type)
 	{
 	case SDL_MOUSEBUTTONDOWN:
@@ -63,11 +67,13 @@ void MainMenuScreen::handleEvents(SDL_Event& event)
 
 		SDL_GetMouseState(&x, &y);
 		isStartGameBtnClicked = startGameBtn->onClickUp(x, y);
-		loadGameBtn->onClickUp(x, y);
 		isSelectLevelBtnClicked = selectLevelBtn->onClickUp(x, y);
+		isLoadGameBtnClicked = loadGameBtn->onClickUp(x, y);
 		isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
 		if (isStartGameBtnClicked)
 			Game::setCurrentScreen(constants::BATTLE_SCREEN);
+		else if (isLoadGameBtnClicked)
+			Game::setCurrentScreen(constants::LOAD_GAME_SCREEN);
 		else if (isQuitGameBtnClicked)
 			exit(0);
 		else if (isSelectLevelBtnClicked)

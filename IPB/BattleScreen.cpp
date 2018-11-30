@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <stdio.h>
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
@@ -9,14 +10,25 @@
 #include "Player.h"
 #include "Game.h"
 #include "Enemy.h"
-#include <cmath>
-#include <string>
+#include "Button.h"
+#include <fstream>
+#include "Word.h"
+
 
 using namespace std;
 
-BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
+BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : renderer(renderer)
 {
+
+	alphabetsSpriteSheet = new LTexture;
+	buttonSpriteSheet = new LTexture;
+
+	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
+	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
+
+
 	frames = 0;
+	explosionTexture = new LTexture;
 	backgroundTexture = new LTexture;
 	healthBarTexture = new LTexture;
 	oxygenBarTexture = new LTexture;
@@ -49,6 +61,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer) : renderer(renderer)
 	WeaponTitle = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27);
 	title = "Ammo: " + to_string(hero->GetAmmo());
 	AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
+
 }
 
 BattleScreen::~BattleScreen()
@@ -74,7 +87,7 @@ void BattleScreen::render()
 	{
 		enemy->setHealth(enemy->getHealth() - 5);
 		PlayerBulletQueue.clean();
-	
+
 	}
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
@@ -108,10 +121,11 @@ void BattleScreen::render()
 	i = 0;
 	while (i < enemy->getHealth())
 	{
-		healthBarTexture->renderTexture(20 + enemy->getPosition().x + i*0.5, enemy->getPosition().y - 10, renderer);
+		healthBarTexture->renderTexture(20 + enemy->getPosition().x + i * 0.5, enemy->getPosition().y - 10, renderer);
 		i += 1;
 	}
 	planets.render();
+
 	bool isColliding = planets.checkCollision(hero);
 	// toggle ship color when it collides
 	if (isColliding)
@@ -170,7 +184,7 @@ void BattleScreen::render()
 	}
 	if (enemy->getAlive())
 		enemy->render();
-	
+
 	if (!enemy->getAlive())
 	{
 		explosionTexture->renderTexture(
@@ -185,6 +199,9 @@ void BattleScreen::render()
 	if (hero->getAlive())
 	{
 		hero->render();
+		BulletQueue.render();
+		BulletQueue.move();
+		hero->move();
 	}
 	else
 	{
@@ -204,11 +221,15 @@ void BattleScreen::render()
 
 	frames++;
 }
+
+
+
 void BattleScreen::handleEvents(SDL_Event& event)
 {
+	int x = 0; int y = 0;
+
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	hero->SetDelay(hero->GetDelay() + 1);
-
 
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
@@ -237,12 +258,33 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0)
 		{
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
-			PlayerBulletQueue.enqueue(bullet);
+			BulletQueue.enqueue(bullet);
 			hero->SetDelay(0);
 			hero->SetAmmo(hero->GetAmmo() - 1);
 			string title = "Ammo: " + to_string(hero->GetAmmo());
 			delete AmmoCount;
 			AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
 		}
+	}
+	if (currentKeyStates[SDL_SCANCODE_ESCAPE])
+	{
+		ofstream myfile;
+		myfile.open("SavedGame1.txt");
+		myfile <<
+			hero->getPosition().x << endl <<
+			hero->getPosition().y << endl <<
+			hero->getAngle() << endl <<
+			hero->getHealth() << endl <<
+			hero->getOxygen() << endl <<
+			hero->getFuel() << endl <<
+			hero->GetWeaponType() << endl <<
+			2 << endl <<
+			hero->GetWeaponAmmo() << endl <<
+			hero->GetAmmo() << endl;// <<
+			//hero->getCurrentClipIndex() << endl;
+		myfile.close();
+		//Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
+		Game::setCurrentScreen(constants::PAUSE_SCREEN);
+
 	}
 }

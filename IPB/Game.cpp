@@ -5,16 +5,22 @@
 #include "MainMenuScreen.h"
 #include "GameOverScreen.h"
 #include "SelectLevelScreen.h"
+#include "LoadGameScreen.h"
 #include "LTexture.h"
+#include <fstream>
+#include <string>
+#include "PauseScreen.h"
+
 using namespace std;
 
 Game* Game::instance = nullptr;
 GameScreen* Game::currentScreen = nullptr;
 SDL_Renderer* Game::renderer = nullptr;
 
+
 Game::Game()
 {
-
+	int width; int height;
 }
 
 Game::~Game()
@@ -46,7 +52,61 @@ void Game::setCurrentScreen(int screen)
 	{
 		currentScreen = new SelectLevelScreen(renderer);
 	}
+	else if (screen == constants::LOAD_GAME_SCREEN)
+	{
+		currentScreen = new LoadGameScreen(renderer);
+	}
+	else if (screen == constants::SAVE_GAME_SCREEN)
+	{
+		Game game;
+		game.ReadFile("SavedGame1.text");
+		currentScreen = new BattleScreen(renderer, game.width, game.height);
+	}
+	else if (screen == constants::PAUSE_SCREEN)
+	{
+		currentScreen = new PauseScreen(renderer);
+	}
 }
+
+void Game::ReadFile(string fileName)
+{
+	string line;
+	ifstream myfile(fileName);
+	if (myfile.is_open())
+	{
+		for (int lineno = 0; getline(myfile, line) && lineno < 7; lineno++)
+		{
+			if (lineno == 0)
+				width = stoi(line);
+			if (lineno == 1)
+				height = stoi(line);
+			if (lineno == 2)
+				angle = stof(line);
+			if (lineno == 3)
+				health = stoi(line);
+			if (lineno == 4)
+				oxygen = stoi(line);
+			if (lineno == 5)
+				fuel = stoi(line);
+			if (lineno == 6)
+				//strcpy(WeaponName, line.c_str());
+				weapon = stoi(line);
+			if (lineno == 7)
+				weaponDelay = stoi(line);
+			if (lineno == 8)
+				weaponAmmo = stoi(line);
+			if (lineno == 9)
+				ammo = stoi(line);
+			if (lineno == 10)
+				CurrentClipIndex = stoi(line);
+
+		}
+
+		myfile.close();
+	}
+
+}
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
