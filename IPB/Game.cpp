@@ -35,7 +35,7 @@ Game * Game::getInstance()
 }
 void Game::setCurrentScreen(int screen)
 {
-	delete currentScreen;
+	//delete currentScreen;
 	if (screen == constants::MAIN_MENU_SCREEN)
 	{
 		currentScreen = new MainMenuScreen(renderer);

@@ -20,15 +20,8 @@ using namespace std;
 
 BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : renderer(renderer)
 {
-
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
-
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-
-
 	frames = 0;
+
 	explosionTexture = new LTexture;
 	backgroundTexture = new LTexture;
 	healthBarTexture = new LTexture;
@@ -36,13 +29,20 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : 
 	fuelBarTexture = new LTexture;
 	explosionTexture = new LTexture;
 	bulletTexture = new LTexture;
+	buttonSpriteSheet = new LTexture;
 	alphabetsSpriteSheet = new LTexture;
+	wormHoleTexture = new LTexture;
+	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
+	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
 	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
 	healthBarTexture->loadFromFile("assets/health.png", renderer);
 	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
 	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
 	explosionTexture->loadFromFile("assets/explosion.png", renderer);
 	bulletTexture->loadFromFile("assets/bullet.png", renderer);
+	wormHoleTexture->loadFromFile("assets/wormhole.png", renderer);
+	wormHole = new Unit(renderer, wormHoleTexture, 0, 0, 0);
+	wormHole->setPosition(100, 300);
 
 	hero = new Player(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, constants::WINDOW_WIDTH - 200, 30);
@@ -62,7 +62,10 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : 
 	WeaponTitle = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27);
 	title = "Ammo: " + to_string(hero->GetAmmo());
 	AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
-
+	enemyHealthBoundary = { 0, 0, 95, 10 };
+	heroHealthBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 50, 105, 10 };
+	heroOxygenBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 35, 105, 10 };
+	heroFuelBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 20, 105, 10 };
 }
 
 BattleScreen::~BattleScreen()
@@ -79,6 +82,33 @@ void BattleScreen::render()
 	backgroundTexture->renderTexture(0, 0, renderer);
 	WeaponTitle->render(renderer);
 	AmmoCount->render(renderer);
+	enemyHealthBoundary.x = enemy->getPosition().x;
+	enemyHealthBoundary.y = enemy->getPosition().y - 10;
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
+	if (enemy->getAlive())
+		SDL_RenderDrawRect(renderer, &enemyHealthBoundary);
+	SDL_RenderDrawRect(renderer, &heroHealthBoundary);
+	SDL_SetRenderDrawColor(renderer, 88, 180, 180, 1);
+	SDL_RenderDrawRect(renderer, &heroOxygenBoundary);
+	SDL_SetRenderDrawColor(renderer, 228, 123, 36, 1);
+	SDL_RenderDrawRect(renderer, &heroFuelBoundary);
+	if (!enemy->getAlive() && hero->getAlive())
+	{
+		wormHole->setAngle(wormHole->getAngle() - 0.2);
+		if (!intoWormHole)
+		{
+			wormHole->setScale(wormHole->getScale() + 0.1);
+		}
+		else
+		{
+			hero->setScale(hero->getScale() - 0.1);
+		}
+		if (wormHole->checkCollision(hero, true))
+		{
+			intoWormHole = true;
+		}
+		wormHole->render();
+	}
 	if (enemy->getAlive() && hero->checkCollision(enemy))
 	{
 		hero->setHealth(0);
@@ -121,9 +151,10 @@ void BattleScreen::render()
 	i = 0;
 	while (i < enemy->getHealth())
 	{
-		healthBarTexture->renderTexture(20 + enemy->getPosition().x + i * 0.5, enemy->getPosition().y - 10, renderer);
+		healthBarTexture->renderTexture(enemy->getPosition().x + i * 0.9, enemy->getPosition().y - 10, renderer);
 		i += 1;
 	}
+
 	planets.render();
 
 	bool isColliding = planets.checkCollision(hero);
@@ -184,7 +215,7 @@ void BattleScreen::render()
 	}
 	if (enemy->getAlive())
 		enemy->render();
-	if (!enemy->getAlive())
+	else if (enemExplosionSpriteIndex < 20)
 	{
 		explosionTexture->renderTexture(
 			enemy->getPosition().x + enemy->getWidth() / 2 - 100 / 2,
@@ -197,9 +228,12 @@ void BattleScreen::render()
 	}
 	if (hero->getAlive())
 	{
-		hero->render();
+		if (hero->getScale() > 0.1)
+			hero->render();
+		else
+			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
 	}
-	else
+	else if (heroExplosionSpriteIndex < 20)
 	{
 		explosionTexture->renderTexture(
 			hero->getPosition().x + hero->getWidth() / 2 - 96 / 2,
@@ -213,7 +247,7 @@ void BattleScreen::render()
 			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
 
-  frames++;
+	frames++;
 }
 
 
@@ -235,21 +269,22 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		hero->move(LEFT);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_UP])
+	if (currentKeyStates[SDL_SCANCODE_UP] && hero->getAlive())
 	{
 		hero->move(UP);
 		hero->setIsThrusting(true);
 	}
-	else
+	else if (hero->getAlive())
 	{
 		hero->setIsThrusting(false);
 		planets.pull(hero);
-		hero->move();
+		if (!intoWormHole)
+			hero->move();
 	}
 
 	if (currentKeyStates[SDL_SCANCODE_SPACE])
 	{
-		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0)
+		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0 && !intoWormHole)
 		{
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
 			PlayerBulletQueue.enqueue(bullet);

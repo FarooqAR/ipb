@@ -8,10 +8,12 @@ class Unit
 {
 public:
 	Unit();
+	Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle);
 	~Unit();
 	void setAlive(bool);
 	bool getAlive();
 	bool checkCollision(Unit* unit);
+	bool checkCollision(Unit* unit, bool isCentered);
 	void setPosition(int x, int y);
 	Point getPosition();
 	int getWidth();
@@ -21,8 +23,10 @@ public:
 	virtual void move();
 	void move(int direction); 
 	virtual void render();
-	float speedX;
-	float speedY;
+	float speedX; // make protected!
+	float speedY; // make protected!
+	void setScale(float scale);
+	float getScale();
 
 protected:
 	Point position;

@@ -17,6 +17,7 @@ private:
 	int frames;
 	int heroExplosionSpriteIndex;
 	int enemExplosionSpriteIndex;
+	bool intoWormHole;
 	LTexture* backgroundTexture;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
@@ -25,10 +26,16 @@ private:
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
 	LTexture* alphabetsSpriteSheet;
+	LTexture* wormHoleTexture;
+	Unit* wormHole;
 	Word* WeaponTitle;
 	Word* AmmoCount;
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
+	SDL_Rect enemyHealthBoundary;
+	SDL_Rect heroHealthBoundary;
+	SDL_Rect heroOxygenBoundary;
+	SDL_Rect heroFuelBoundary;
 	Player* hero;
 	Enemy* enemy;
 	Level* currentLevel;
@@ -36,7 +43,6 @@ private:
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
 	string s;
-
 	LTexture* buttonSpriteSheet;
 
 public:

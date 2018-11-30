@@ -12,7 +12,12 @@ Unit::Unit()
 	alive = 1;
 	angle = 0.0;
 }
-
+Unit::Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle)
+	:scale(scale), alive(alive), angle(angle), objTexture(unitTexture), renderer(renderer)
+{
+	width = unitTexture->getWidth();
+	height = unitTexture->getHeight();
+}
 Unit::~Unit()
 {
 }
@@ -26,6 +31,17 @@ bool Unit::checkCollision(Unit* unit)
 		return false;
 	}
 	return true;
+}
+bool Unit::checkCollision(Unit* unit, bool isCentered)
+{
+	if ((unit->getPosition().x >= position.x  &&
+		unit->getPosition().x <= position.x + width) &&
+		(unit->getPosition().y >= position.y &&
+		unit->getPosition().y <= position.y + height))
+	{
+		return true;
+	}
+	return false;
 }
 
 void Unit::setAlive(bool alive)
@@ -62,7 +78,7 @@ void Unit::move(int direction)
 		speedX += cos((angle - 90) * M_PI / 180)*thrust;
 		speedY += sin((angle - 90) * M_PI / 180)*thrust;
 
-		
+
 
 		speedXdecimal = speedX - floor(speedX);
 		speedYdecimal = speedY - floor(speedY);
@@ -80,9 +96,9 @@ void Unit::move(int direction)
 			if (count1%static_cast<int>(1 / speedYdecimal) == 0)
 				position.y += 1 * (speedYdecimal / abs(speedYdecimal));
 		}
-		
+
 		count1++;
-		
+
 		position.x += speedX;
 		position.y += speedY;
 	}
@@ -96,20 +112,20 @@ void Unit::move()
 	speedYdecimal = speedY - floor(speedY);
 
 	//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
-	
+
 
 	if (speedXdecimal != 0)
 	{
-		if (count1 %static_cast<int>(1 / speedXdecimal)== 0)
+		if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
 			position.x += 1 * (speedXdecimal / abs(speedXdecimal));
 	}
 	if (speedYdecimal != 0)
 	{
-		if (count1%static_cast<int>(1 / speedYdecimal)== 0)
+		if (count1%static_cast<int>(1 / speedYdecimal) == 0)
 			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
 	}
-	
-	
+
+
 	position.x += speedX;
 	position.y += speedY;
 
@@ -129,7 +145,7 @@ void Unit::move()
 	{
 		position.y = 0;
 	}
-	
+
 
 	count1++;
 
@@ -173,4 +189,15 @@ void Unit::render()
 		scale,
 		false // if true, shows red rectangle around the unit for debugging purposes
 	);
+}
+
+void Unit::setScale(float scale)
+{
+	if (scale >= 0 && scale <= 1)
+		this->scale = scale;
+}
+
+float Unit::getScale()
+{
+	return this->scale;
 }

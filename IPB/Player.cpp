@@ -14,8 +14,8 @@ Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY, float Angle)
 	this->width = 36;
 	this->height = 75;
 	this->health = 100;
-	this->fuel = 100;
-	this->oxygen = 100;
+	this->fuel = 80;
+	this->oxygen = 90;
 	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 11; i++)
 	{
