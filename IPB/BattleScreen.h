@@ -10,8 +10,6 @@
 #include "Enemy.h"
 #include "Button.h"
 #include "Word.h"
-#include <iostream>
-
 
 class BattleScreen: public GameScreen 
 {
@@ -37,7 +35,6 @@ private:
 	Queue planets;
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
-	Queue BulletQueue;
 	string s;
 
 	LTexture* buttonSpriteSheet;

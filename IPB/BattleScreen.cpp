@@ -1,19 +1,20 @@
 #include "pch.h"
-#include <stdio.h>
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
 #include "Word.h"
-#include <iostream>
 #include "Attractor.h"
 #include "Unit.h"
 #include "Player.h"
 #include "Game.h"
 #include "Enemy.h"
 #include "Button.h"
-#include <fstream>
 #include "Word.h"
-
+#include <fstream>
+#include <iostream>
+#include <stdio.h>
+#include <cmath>
+#include <string>
 
 using namespace std;
 
@@ -87,7 +88,6 @@ void BattleScreen::render()
 	{
 		enemy->setHealth(enemy->getHealth() - 5);
 		PlayerBulletQueue.clean();
-
 	}
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
@@ -184,7 +184,6 @@ void BattleScreen::render()
 	}
 	if (enemy->getAlive())
 		enemy->render();
-
 	if (!enemy->getAlive())
 	{
 		explosionTexture->renderTexture(
@@ -199,9 +198,6 @@ void BattleScreen::render()
 	if (hero->getAlive())
 	{
 		hero->render();
-		BulletQueue.render();
-		BulletQueue.move();
-		hero->move();
 	}
 	else
 	{
@@ -217,9 +213,7 @@ void BattleScreen::render()
 			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
 
-
-
-	frames++;
+  frames++;
 }
 
 
@@ -258,7 +252,7 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0)
 		{
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
-			BulletQueue.enqueue(bullet);
+			PlayerBulletQueue.enqueue(bullet);
 			hero->SetDelay(0);
 			hero->SetAmmo(hero->GetAmmo() - 1);
 			string title = "Ammo: " + to_string(hero->GetAmmo());
