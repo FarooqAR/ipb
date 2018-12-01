@@ -3,6 +3,7 @@
 
 namespace constants
 {
+	const double PI = 3.14159265358979323846;
 	const int WINDOW_WIDTH = 1024;
 	const int WINDOW_HEIGHT = 700;
 	const int CHARACTER_WIDTH = 60;
@@ -22,8 +23,11 @@ namespace constants
 	const int PLAYER_HEIGHT = 75;
 	const int ENEMY_WIDTH = 93;
 	const int ENEMY_HEIGHT = 57;
+	const int FADE_SCREEN_BG_WIDTH = 980;
+	const int FADE_SCREEN_BG_HEIGHT = 560;
 
 	const Point HEALTH_SPRITE_START_POSITION = {1024, 0};
+	const Point FADE_SCREEN_BG_START_POSITION = {1024 + STATUS_WIDTH * 3, 0};
 	const Point PLANETS_SPRITE_START_POSITION = {0, 786};
 	const Point PLAYER_SPRITE_START_POSITION = {0, 986};
 	const Point EXPLOSION_SPRITE_START_POSITION = {0, 1061};

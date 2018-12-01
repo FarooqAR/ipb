@@ -75,8 +75,8 @@ void Unit::move(int direction)
 
 	if (direction == UP)
 	{
-		speedX += cos((angle - 90) * M_PI / 180)*thrust;
-		speedY += sin((angle - 90) * M_PI / 180)*thrust;
+		speedX += cos((angle - 90) * constants::PI / 180)*thrust;
+		speedY += sin((angle - 90) * constants::PI / 180)*thrust;
 
 
 

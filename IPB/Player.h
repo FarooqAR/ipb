@@ -44,4 +44,5 @@ public:
 	void setIsThrusting(bool);
 	int GetX();
 	int GetY();
+	void setWeaponName(const char* w_name);
 };

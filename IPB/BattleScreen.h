@@ -11,6 +11,7 @@
 #include "Enemy.h"
 #include "Button.h"
 #include "Word.h"
+#include <fstream>
 
 class BattleScreen: public GameScreen 
 {
@@ -18,6 +19,9 @@ private:
 	int frames;
 	int heroExplosionSpriteIndex;
 	int enemExplosionSpriteIndex;
+	int level;
+	bool isPaused;
+	bool isMoving;
 	bool intoWormHole;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
@@ -27,6 +31,7 @@ private:
 	LTexture* destinationTexture;
 	LTexture* wormHoleTexture;
 	Unit* wormHole;
+	LTexture* fadeScreenTexture;
 	Word* WeaponTitle;
 	Word* AmmoCount;
 	SDL_Renderer* renderer;
@@ -34,6 +39,7 @@ private:
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
 	SDL_Rect fuelSpriteClip;
+	SDL_Rect pauseScreenSpriteClip;
 	SDL_Rect enemyHealthBoundary;
 	SDL_Rect heroHealthBoundary;
 	SDL_Rect heroOxygenBoundary;
@@ -44,13 +50,20 @@ private:
 	Queue planets;
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
+	Button* ResumeGameBtn;
+	Button* saveGameBtn;
+	Button* backBtn;
+	Button* quitGameBtn;
+	Word* PauseTitle;
 	string s;
 
 public:
 	int ok = 1;
 	BattleScreen();
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet);
+	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
 	void render();
 	void handleEvents(SDL_Event&);
+
 };

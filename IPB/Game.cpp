@@ -19,6 +19,7 @@ SDL_Renderer* Game::renderer = nullptr;
 UnitFactory* Game::unitFactory = nullptr;
 LTexture* Game::imagesSpriteSheet = nullptr;
 
+
 Game::Game()
 {
 }
@@ -36,7 +37,8 @@ Game * Game::getInstance()
 	}
 	return instance;
 }
-void Game::setCurrentScreen(int screen)
+
+void Game::setCurrentScreen(int screen, const char* savedFilename)
 {
 	//delete currentScreen;
 	if (screen == constants::MAIN_MENU_SCREEN)
@@ -67,46 +69,22 @@ void Game::setCurrentScreen(int screen)
 	{
 		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
 	}
-}
-
-void Game::ReadFile(string fileName)
-{
-	string line;
-	ifstream myfile(fileName);
-	if (myfile.is_open())
+	else if (screen == constants::LOAD_GAME_SCREEN)
 	{
-		for (int lineno = 0; getline(myfile, line) && lineno < 7; lineno++)
-		{
-			if (lineno == 0)
-				width = stoi(line);
-			if (lineno == 1)
-				height = stoi(line);
-			if (lineno == 2)
-				angle = stof(line);
-			if (lineno == 3)
-				health = stoi(line);
-			if (lineno == 4)
-				oxygen = stoi(line);
-			if (lineno == 5)
-				fuel = stoi(line);
-			if (lineno == 6)
-				//strcpy(WeaponName, line.c_str());
-				weapon = stoi(line);
-			if (lineno == 7)
-				weaponDelay = stoi(line);
-			if (lineno == 8)
-				weaponAmmo = stoi(line);
-			if (lineno == 9)
-				ammo = stoi(line);
-			if (lineno == 10)
-				CurrentClipIndex = stoi(line);
-
-		}
-
-		myfile.close();
+		currentScreen = new LoadGameScreen(renderer, imagesSpriteSheet);
 	}
+	else if (screen == constants::SAVE_GAME_SCREEN)
+	{
 
+		currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, savedFilename);
+
+	}
+	else if (screen == constants::PAUSE_SCREEN)
+	{
+		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
+	}
 }
+
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {

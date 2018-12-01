@@ -23,4 +23,6 @@ public:
 	const char* GetWeaponName();
 	int GetWeaponType();
 	int GetAmmo();
+	void setWeapon(int number);
+	void setWeaponName(const char* w_name);
 };

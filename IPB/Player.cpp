@@ -44,6 +44,8 @@ void Player::render()
 		renderer,
 		&shipSpriteClips[this->shipCurrentClipIndex],
 		SDL_FLIP_NONE,
+		//PlayerAngle,
+		
 		this->angle,
 		nullptr,
 		scale,
@@ -155,7 +157,11 @@ string Player::GetWeaponName()
 {
 	string name(weapons->GetWeaponName());
 	return name;
+}
 
+void Player::setWeaponName(const char* w_name)
+{
+	weapons->setWeaponName(w_name);
 }
 
 int Player::GetWeaponDelay()
@@ -172,6 +178,7 @@ int Player::GetWeaponAmmo()
 {
 	return weapons->GetAmmo();
 }
+
 
 int Player::GetAmmo()
 {

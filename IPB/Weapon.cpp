@@ -45,21 +45,26 @@ int Weapon::GetAmmo()
 	return Ammo;
 }
 
+void Weapon::setWeaponName(const char * w_name)
+{
+	name = w_name;
+}
+
 Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int xcord, int ycord, double angle)
 {
 	if (WeaponType == constants::SIMPLE_BULLET)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.15, angle, 10, constants::BULLET_WIDTH, constants::BULLET_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.15, angle, 10, constants::BULLET_WIDTH, constants::BULLET_HEIGHT);
 	}
 
 	if (WeaponType == constants::MISSILE)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.3, angle, 20, constants::BULLET_WIDTH, constants::MISSILE_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 20, constants::BULLET_WIDTH, constants::MISSILE_HEIGHT);
 	}
 
 	if (WeaponType == constants::LASER)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
 	}
 	
 	return bullets;

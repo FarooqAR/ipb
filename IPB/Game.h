@@ -5,20 +5,20 @@
 #include "UnitFactory.h"
 #include "LTexture.h"
 #include "constants.h"
+#include <string>
 
 class Game
 {
 public:
 	~Game();
 	static Game * getInstance();
-	static void setCurrentScreen(int);
+	static void setCurrentScreen(int, const char* savedFilename = "");
 	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 	void handleEvents();
 	void update();
 	void render();
 	void clean();
 	bool running();
-	void ReadFile(string);
 private:
 	static GameScreen* currentScreen;
 	static SDL_Renderer * renderer;
@@ -30,15 +30,5 @@ private:
 	SDL_Rect backgroundRect;
 	static Game* instance;
 	Game();
-	int width; int height;
-	float angle;
-	int health;
-	int oxygen;
-	int fuel;
-	int weapon;
-	int weaponDelay;
-	int weaponAmmo;
-	int ammo;
-	int CurrentClipIndex;
-
 };
+
