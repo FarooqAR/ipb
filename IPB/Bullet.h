@@ -12,5 +12,5 @@ class Bullet : public Unit
 		Bullet();
 		~Bullet();
 		virtual void move();
-		Bullet(SDL_Renderer* gRenderer, LTexture*, int x, int y, float scale, double angle, int damage);
+		Bullet(SDL_Renderer* gRenderer, LTexture*, int bulletType, int x, int y, float scale, double angle, int damage, int bulletWidth, int bulletHeight);
 };

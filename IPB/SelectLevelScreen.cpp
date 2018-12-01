@@ -7,24 +7,19 @@
 #include "Game.h"
 
 
-SelectLevelScreen::SelectLevelScreen(SDL_Renderer* renderer) : renderer(renderer)
+SelectLevelScreen::SelectLevelScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : renderer(renderer)
 {
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
+	
+	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
 
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-	int x = (constants::WINDOW_WIDTH - buttonSpriteSheet->getWidth()) / 2;
-
-	lvl1 = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Level 1: Intro to Galaxy", x - 120, 200, 560, 52);
-	lvl2 = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Level 2: Save Elon Musk", x - 120, 200 + 80, 560, 52);
-	lvl3 = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Level 3: Into the Warzone", x - 120, 200 + 80*2, 560, 52);
-	lvl4 = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Level 4: The fake Rambo", x - 120, 200 + 80*3, 560, 52);
-
-	BackBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Back", x - 120, 250 + 80 * 4, 150, 52);
+	lvl1 = new Button(imagesSpriteSheet, "Level 1", x, 200);
+	lvl2 = new Button(imagesSpriteSheet, "Level 2", x, 200 + 80);
+	lvl3 = new Button(imagesSpriteSheet, "Level 3", x, 200 + 80*2);
+	lvl4 = new Button(imagesSpriteSheet, "Level 4", x, 200 + 80*3);
+	BackBtn = new Button(imagesSpriteSheet, "Back", x, 250 + 80 * 4);
 
 	string title = "Select Level";
-	ScreenTitle = new Word(title, alphabetsSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
+	ScreenTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	ScreenTitle->setXCentered();
 }
 

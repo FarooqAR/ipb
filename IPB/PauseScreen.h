@@ -8,9 +8,6 @@
 class PauseScreen : public GameScreen
 {
 private:
-	LTexture* alphabetsSpriteSheet;
-	LTexture* buttonSpriteSheet;
-
 	Button* ResumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;
@@ -18,7 +15,7 @@ private:
 	SDL_Renderer* renderer;
 	Word* gameTitle;
 public:
-	PauseScreen(SDL_Renderer*);
+	PauseScreen(SDL_Renderer*, LTexture*);
 	~PauseScreen();
 	void render();
 	void handleEvents(SDL_Event&);

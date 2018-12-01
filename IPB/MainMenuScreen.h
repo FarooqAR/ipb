@@ -8,8 +8,7 @@
 class MainMenuScreen : public GameScreen
 {
 private:
-	LTexture* alphabetsSpriteSheet;
-	LTexture* buttonSpriteSheet;
+	LTexture* imagesSpriteSheet;
 
 	Button* startGameBtn;
 	Button* loadGameBtn;
@@ -18,7 +17,7 @@ private:
 	SDL_Renderer* renderer;
 	Word* gameTitle;
 public:
-	MainMenuScreen(SDL_Renderer*);
+	MainMenuScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~MainMenuScreen();
 	void render();
 	void handleEvents(SDL_Event&);

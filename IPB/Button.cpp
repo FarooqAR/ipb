@@ -1,5 +1,7 @@
 #include "pch.h"
+#include "constants.h"
 #include "Button.h"
+#include "Point.h"
 
 Button::Button()
 {
@@ -9,9 +11,6 @@ Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string lab
 {
 	width = w;
 	height = h;
-	spriteClips[0] = { 0, 0, width, height };
-	spriteClips[1] = { 0, 56, width, height };
-	spriteClips[2] = { 0, 109, width, height };
 	spriteIndex = 0;
 	this->btnTexture = bgTexture; 
 	float labelScale = 0.7;
@@ -21,6 +20,28 @@ Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string lab
 		alphabetsSpriteSheet, 
 		x + labelX/2,
 		y, 
+		labelScale
+	);
+	setPosition(x, y);
+}
+
+Button::Button(LTexture * imagesSpriteSheet, string label, int x, int y, int w, int h)
+{
+	width = w;
+	height = h;
+	Point spritePos = constants::BUTTONS_SPRITE_START_POSITION;
+	spriteClips[0] = { spritePos.x, spritePos.y, width, height };
+	spriteClips[1] = { spritePos.x, spritePos.y + 56, width, height };
+	spriteClips[2] = { spritePos.x, spritePos.y + 109, width, height };
+	spriteIndex = 0;
+	this->btnTexture = imagesSpriteSheet;
+	float labelScale = 0.7;
+	int labelX = width - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale;
+	this->label = new Word(
+		label,
+		imagesSpriteSheet,
+		x + labelX / 2,
+		y,
 		labelScale
 	);
 	setPosition(x, y);

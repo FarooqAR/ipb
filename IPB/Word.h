@@ -7,7 +7,7 @@
 class Word
 {
 public:
-	Word(string str, LTexture * gSpriteSheetTexture, int x, int y, float scale = 1);
+	Word(string str, LTexture * imagesSpriteSheet, int x, int y, float scale = 1);
 	~Word();
 	void render(SDL_Renderer * gRenderer);
 	void setText(string str);

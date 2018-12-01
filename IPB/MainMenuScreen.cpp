@@ -6,21 +6,18 @@
 #include "Button.h"
 #include "Game.h"
 
-MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer) : renderer(renderer)
+MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) 
+	: renderer(renderer)
 {
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
-
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-	int x = (constants::WINDOW_WIDTH - buttonSpriteSheet->getWidth()) / 2;
-	startGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Start Game", x, 200);
-	loadGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Load Game", x, 200 + 65);
-	selectLevelBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Select Level", x, 200 + 65 * 2);
-	quitGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Quit Game", x, 200 + 65 * 3);
+	this->imagesSpriteSheet = imagesSpriteSheet;
+	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
+	startGameBtn = new Button(imagesSpriteSheet, "Start Game", x, 200);
+	loadGameBtn = new Button(imagesSpriteSheet, "Load Game", x, 200 + 65);
+	selectLevelBtn = new Button(imagesSpriteSheet, "Select Level", x, 200 + 65 * 2);
+	quitGameBtn = new Button(imagesSpriteSheet, "Quit Game", x, 200 + 65 * 3);
 
 	string title = "Interplanetory Battlefield";
-	gameTitle = new Word(title, alphabetsSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
+	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	gameTitle->setXCentered();
 }
 MainMenuScreen::~MainMenuScreen()

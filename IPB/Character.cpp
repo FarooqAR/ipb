@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Character.h"
+#include "constants.h"
 
 Character::Character()
 {
@@ -44,8 +45,8 @@ void Character::setChar(char c)
 	if (ascii >= 32 && ascii <= 122)
 	{
 		ascii -= 32;
-	    this->charRect.x = ascii * 60;
-	    this->charRect.y = 0;
+	    this->charRect.x = constants::ALPHABETS_SPRITE_START_POSITION.x + ascii * 60;
+	    this->charRect.y = constants::ALPHABETS_SPRITE_START_POSITION.y;
 	}
 	else
 	{

@@ -16,11 +16,11 @@ using namespace std;
 Game* Game::instance = nullptr;
 GameScreen* Game::currentScreen = nullptr;
 SDL_Renderer* Game::renderer = nullptr;
-
+UnitFactory* Game::unitFactory = nullptr;
+LTexture* Game::imagesSpriteSheet = nullptr;
 
 Game::Game()
 {
-	int width; int height;
 }
 
 Game::~Game()
@@ -30,7 +30,10 @@ Game::~Game()
 Game * Game::getInstance()
 {
 	if (instance == nullptr)
+	{
 		instance = new Game();
+		instance->backgroundRect = {0, 0, 1024, 786};
+	}
 	return instance;
 }
 void Game::setCurrentScreen(int screen)
@@ -38,33 +41,31 @@ void Game::setCurrentScreen(int screen)
 	//delete currentScreen;
 	if (screen == constants::MAIN_MENU_SCREEN)
 	{
-		currentScreen = new MainMenuScreen(renderer);
+		currentScreen = new MainMenuScreen(renderer, imagesSpriteSheet);
 	}
 	else if (screen == constants::BATTLE_SCREEN)
 	{
-		currentScreen = new BattleScreen(renderer);
+		currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet);
 	}
 	else if (screen == constants::GAME_OVER_SCREEN)
 	{
-		currentScreen = new GameOverScreen(renderer);
+		currentScreen = new GameOverScreen(renderer, imagesSpriteSheet);
 	}
 	else if (screen == constants::SELECT_LEVEL_SCREEN)
 	{
-		currentScreen = new SelectLevelScreen(renderer);
+		currentScreen = new SelectLevelScreen(renderer, imagesSpriteSheet);
 	}
 	else if (screen == constants::LOAD_GAME_SCREEN)
 	{
-		currentScreen = new LoadGameScreen(renderer);
+		currentScreen = new LoadGameScreen(renderer, imagesSpriteSheet);
 	}
-	else if (screen == constants::SAVE_GAME_SCREEN)
+	/*else if (screen == constants::SAVE_GAME_SCREEN)
 	{
-		Game game;
-		game.ReadFile("SavedGame1.text");
-		currentScreen = new BattleScreen(renderer, game.width, game.height);
-	}
+		currentScreen = new BattleScreen(renderer, , unitFactory);
+	}*/
 	else if (screen == constants::PAUSE_SCREEN)
 	{
-		currentScreen = new PauseScreen(renderer);
+		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
 	}
 }
 
@@ -137,9 +138,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	{
 		isRunning = false;
 	}
-	currentScreen = new MainMenuScreen(renderer);
-	backgroundTexture = new LTexture;
-	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
+	unitFactory = UnitFactory::getInstance(renderer);
+	imagesSpriteSheet = new LTexture;
+	imagesSpriteSheet->loadFromFile("assets/images.png", renderer);
+	setCurrentScreen(constants::MAIN_MENU_SCREEN);
 }
 
 void Game::handleEvents()
@@ -165,8 +167,7 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	backgroundTexture->renderTexture(0, 0, renderer);
-	// render stuff
+	imagesSpriteSheet->renderTexture(0, 0, renderer, &backgroundRect);
 	currentScreen->render();
 	SDL_RenderPresent(renderer);
 }

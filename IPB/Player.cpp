@@ -1,25 +1,29 @@
 #include "pch.h"
+#include "constants.h"
 #include "Player.h"
 #include <cmath>
 
-Player::Player(SDL_Renderer* gRenderer, int initialX, int initialY, float Angle)
+Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX, int initialY, float Angle)
 {
 	this->angle = Angle;
-	//PlayerAngle = angle;
-	this->objTexture = new LTexture;
-	this->weapons = new Weapon("hhel", 10, 2);
-	this->objTexture->loadFromFile("assets/herosprite1.png", gRenderer);
+	this->objTexture = imageSpriteSheet;
+	this->weapons = new Weapon("Gun", 10, constants::SIMPLE_BULLET);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
-	this->width = 36;
-	this->height = 75;
+	this->width = constants::PLAYER_WIDTH;
+	this->height = constants::PLAYER_HEIGHT;
 	this->health = 100;
 	this->fuel = 80;
 	this->oxygen = 90;
 	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 11; i++)
 	{
-		shipSpriteClips[i] = { this->width * i, 0, this->width, this->height };
+		shipSpriteClips[i] = { 
+			constants::PLAYER_SPRITE_START_POSITION.x + this->width * i,
+			constants::PLAYER_SPRITE_START_POSITION.y, 
+			this->width, 
+			this->height 
+		};
 	}
 	Ammo = weapons->GetAmmo();
 	ShootDelay = weapons->GetDelay();
@@ -40,8 +44,6 @@ void Player::render()
 		renderer,
 		&shipSpriteClips[this->shipCurrentClipIndex],
 		SDL_FLIP_NONE,
-		//PlayerAngle,
-		
 		this->angle,
 		nullptr,
 		scale,
@@ -49,9 +51,9 @@ void Player::render()
 	);
 }
 
-Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* bulletTexture)
+Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet)
 {
-	return weapons->Fire(gRenderer, bulletTexture, this->position.x, this->position.y, this->angle);
+	return weapons->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
 }
 
 void Player::setShipCurrentClipIndex(int i)

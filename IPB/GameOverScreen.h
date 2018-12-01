@@ -8,15 +8,12 @@
 class GameOverScreen : public GameScreen
 {
 private:
-	LTexture* alphabetsSpriteSheet;
-	LTexture* buttonSpriteSheet;
-
 	Button* mainMenuBtn;
 	Button* quitBtn;
 	SDL_Renderer* renderer;
 	Word* gameOverTitle;
 public:
-	GameOverScreen(SDL_Renderer*);
+	GameOverScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~GameOverScreen();
 	void render();
 	void handleEvents(SDL_Event&);

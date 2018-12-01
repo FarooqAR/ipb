@@ -12,7 +12,7 @@ private:
 	float gravConstant = 1;
 public:
 	Attractor();
-	Attractor(SDL_Renderer* gRenderer, const char * filename, int x, int y, float scale);
+	Attractor(SDL_Renderer* gRenderer, LTexture* planetsTexture, int planetType, int x, int y, float scale);
 	~Attractor();
 	void gravForce(Player*);
 };

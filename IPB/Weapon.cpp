@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "constants.h"
 #include "Weapon.h"
 #include <cmath>
 
@@ -6,7 +7,7 @@ Weapon::Weapon()
 {
 	bullets = nullptr;
 	name = "Gun";
-	WeaponType = 1;
+	WeaponType = constants::SIMPLE_BULLET;
 	TimeDelay = 30;
 	Ammo = 30;
 }
@@ -44,21 +45,21 @@ int Weapon::GetAmmo()
 	return Ammo;
 }
 
-Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* bulletTexture, int xcord, int ycord, double angle)
+Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int xcord, int ycord, double angle)
 {
-	if (WeaponType == 1)
+	if (WeaponType == constants::SIMPLE_BULLET)
 	{
-		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180)+11, 0.018, angle, 10);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.15, angle, 10, constants::BULLET_WIDTH, constants::BULLET_HEIGHT);
 	}
 
-	if (WeaponType == 2)
+	if (WeaponType == constants::MISSILE)
 	{
-		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.018, angle, 20);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.3, angle, 20, constants::BULLET_WIDTH, constants::MISSILE_HEIGHT);
 	}
 
-	if (WeaponType == 3)
+	if (WeaponType == constants::LASER)
 	{
-		bullets = new Bullet(gRenderer, bulletTexture, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.059, angle, 30);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * M_PI / 180) + 11, ycord + sin((angle - 90) * M_PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
 	}
 	
 	return bullets;

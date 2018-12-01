@@ -6,26 +6,18 @@
 #include "Button.h"
 #include "Game.h"
 
-GameOverScreen::GameOverScreen(SDL_Renderer* renderer) : renderer(renderer)
+GameOverScreen::GameOverScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : renderer(renderer)
 {
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
-
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-	int x = (constants::WINDOW_WIDTH - buttonSpriteSheet->getWidth()) / 2;
-	mainMenuBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Main Menu", x, 400);
-	quitBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Quit", x, 400 + 65);
+	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
+	mainMenuBtn = new Button(imagesSpriteSheet, "Main Menu", x, 400);
+	quitBtn = new Button(imagesSpriteSheet, "Quit", x, 400 + 65);
 
 	string title = "Game Over!";
-	gameOverTitle = new Word(title, alphabetsSpriteSheet, 0, 300, 1); // 300 here is the starting y coord, it will animate to 100
+	gameOverTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord, it will animate to 100
 	gameOverTitle->setXCentered(); // puts word at the center of the screen
-
 }
 GameOverScreen::~GameOverScreen()
 {
-	delete alphabetsSpriteSheet;
-	delete buttonSpriteSheet;
 	delete mainMenuBtn;
 	delete quitBtn;
 	delete gameOverTitle;

@@ -1,4 +1,5 @@
 #pragma once
+#include "UnitFactory.h"
 #include "GameScreen.h"
 #include "LTexture.h"
 #include "Player.h"
@@ -18,20 +19,21 @@ private:
 	int heroExplosionSpriteIndex;
 	int enemExplosionSpriteIndex;
 	bool intoWormHole;
-	LTexture* backgroundTexture;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
 	LTexture* healthBarTexture;
 	LTexture* oxygenBarTexture;
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
-	LTexture* alphabetsSpriteSheet;
 	LTexture* wormHoleTexture;
 	Unit* wormHole;
 	Word* WeaponTitle;
 	Word* AmmoCount;
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
+	SDL_Rect healthSpriteClip;
+	SDL_Rect oxygenSpriteClip;
+	SDL_Rect fuelSpriteClip;
 	SDL_Rect enemyHealthBoundary;
 	SDL_Rect heroHealthBoundary;
 	SDL_Rect heroOxygenBoundary;
@@ -43,12 +45,11 @@ private:
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
 	string s;
-	LTexture* buttonSpriteSheet;
 
 public:
 	int ok = 1;
 	BattleScreen();
-	BattleScreen(SDL_Renderer* renderer, int h = 490, int w = 500, float angle = 0);
+	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet);
 	~BattleScreen();
 	void render();
 	void handleEvents(SDL_Event&);

@@ -8,9 +8,6 @@
 class LoadGameScreen : public GameScreen
 {
 private:
-	LTexture* alphabetsSpriteSheet;
-	LTexture* buttonSpriteSheet;
-
 	Button* selectSaved1Btn; 
 	Button* selectSaved2Btn;
 	Button* selectSaved3Btn;
@@ -19,7 +16,7 @@ private:
 	Word* ScreenTitle;
 	Word* SubTitle;
 public:
-	LoadGameScreen(SDL_Renderer*);
+	LoadGameScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~LoadGameScreen();
 	void handleEvents(SDL_Event&);
 	void startSavedGameFromFile(const char *);

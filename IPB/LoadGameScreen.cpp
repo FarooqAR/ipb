@@ -8,26 +8,19 @@
 
 using namespace std;
 
-LoadGameScreen::LoadGameScreen(SDL_Renderer* renderer) : renderer(renderer)
+LoadGameScreen::LoadGameScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : renderer(renderer)
 {
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
-
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-
-	int x = (constants::WINDOW_WIDTH - buttonSpriteSheet->getWidth()) / 2;
-	selectSaved1Btn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "11-26 00:35:14", x, 200+70);
-	selectSaved2Btn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Saved Game 2", x, 200 + 65+70);
-	selectSaved3Btn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Saved Game 3", x, 200 + 65 * 2+70);
-	backBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Back to Menu", x, 200 + 65 * 3+70);
+	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
+	selectSaved1Btn = new Button(imagesSpriteSheet, "11-26 00:35:14", x, 200 + 70);
+	selectSaved2Btn = new Button(imagesSpriteSheet, "Saved Game 2", x, 200 + 65 + 70);
+	selectSaved3Btn = new Button(imagesSpriteSheet, "Saved Game 3", x, 200 + 65 * 2 + 70);
+	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 3+70);
 
 	string title = "Load Saved Game";
 	string subtitle = "Choose the date";
-	ScreenTitle = new Word(title, alphabetsSpriteSheet, 10, 300, 1.5); // 300 here is the starting y coord
+	ScreenTitle = new Word(title, imagesSpriteSheet, 10, 300, 1.5f); 
 	ScreenTitle->setXCentered();
-	SubTitle = new Word(subtitle, alphabetsSpriteSheet, 350, 200, 0.7); // 300 here is the starting y coord
-	//SubTitle->setXCentered();
+	SubTitle = new Word(subtitle, imagesSpriteSheet, 350, 200, 0.7f); 
 }
 
 LoadGameScreen::~LoadGameScreen()

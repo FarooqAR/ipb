@@ -4,11 +4,11 @@
 #include "Word.h"
 #include "constants.h"
 
-Word::Word(string str, LTexture * gSpriteSheetTexture, int x, int y, float scale)
+Word::Word(string str, LTexture * imagesSpriteSheet, int x, int y, float scale)
 {
 	this->scale = scale;
 	this->charSpacing = 30 * scale;
-	this->txtTexture = gSpriteSheetTexture;
+	this->txtTexture = imagesSpriteSheet;
 	this->setText(str);
 	this->setPosition(x, y);
 }
@@ -61,6 +61,7 @@ void Word::setText(string str)
 		this->characters[i].setChar(str[i]);
 		this->characters[i].setScale(this->scale);
 	}
+	setPosition(position.x, position.y);
 }
 int Word::getX()
 {

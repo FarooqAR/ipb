@@ -12,7 +12,7 @@
 class SelectLevelScreen : public GameScreen
 {
 public:
-	SelectLevelScreen(SDL_Renderer*);
+	SelectLevelScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~SelectLevelScreen();
 	void selectLevel();
 	void handleEvents(SDL_Event&);
@@ -21,8 +21,6 @@ public:
 
 
 private:
-	LTexture* alphabetsSpriteSheet;
-	LTexture* buttonSpriteSheet;
 	Button* selectLevelBtns;
 	Level* levels;
 	Level* selectedLevel;

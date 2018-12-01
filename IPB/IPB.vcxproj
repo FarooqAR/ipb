@@ -194,6 +194,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverScreen.cpp" />
+    <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="IPB.cpp" />
     <ClCompile Include="LoadGameScreen.cpp" />
     <ClCompile Include="LTexture.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="SelectLevelScreen.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="UnitFactory.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Word.cpp" />
   </ItemGroup>

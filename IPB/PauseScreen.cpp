@@ -7,21 +7,16 @@
 #include "Game.h"
 
 
-PauseScreen::PauseScreen(SDL_Renderer* renderer) : renderer(renderer)
+PauseScreen::PauseScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : renderer(renderer)
 {
-	alphabetsSpriteSheet = new LTexture;
-	buttonSpriteSheet = new LTexture;
-
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-	int x = (constants::WINDOW_WIDTH - buttonSpriteSheet->getWidth()) / 2;
-	ResumeGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Resume", x, 200);
-	saveGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Save Game", x, 200 + 65);
-	backBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Back to Menu", x, 200 + 65 * 2);
-	quitGameBtn = new Button(buttonSpriteSheet, alphabetsSpriteSheet, "Quit", x, 200 + 65 * 3);
+	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
+	ResumeGameBtn = new Button(imagesSpriteSheet, "Resume", x, 200);
+	saveGameBtn = new Button(imagesSpriteSheet, "Save Game", x, 200 + 65);
+	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 2);
+	quitGameBtn = new Button(imagesSpriteSheet, "Quit", x, 200 + 65 * 3);
 
 	string title = "Game Paused";
-	gameTitle = new Word(title, alphabetsSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
+	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	gameTitle->setXCentered();
 }
 

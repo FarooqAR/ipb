@@ -14,14 +14,14 @@ private:
 	int fuel;;
 	Weapon * weapons; 
 	bool isThrusting;
-	SDL_Rect shipSpriteClips[3];
+	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;
 	int ShootDelay;
 	int Ammo;
 public:
 	~Player(); 
 	Bullet* Shoot(SDL_Renderer* gRenderer, LTexture*);
-	Player(SDL_Renderer*, int, int, float Angle = 0);
+	Player(SDL_Renderer*, LTexture*, int, int, float Angle = 0);
 	void SetAmmo(int);
 	void SetDelay(int);
 	int GetDelay();

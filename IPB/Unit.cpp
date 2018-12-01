@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "constants.h"
 #include "Unit.h"
 #include <iostream>
 #include <cmath>
@@ -10,13 +11,12 @@ Unit::Unit()
 {
 	scale = 1;
 	alive = 1;
-	angle = 0.0;
+	angle = 0.0;	
 }
 Unit::Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle)
 	:scale(scale), alive(alive), angle(angle), objTexture(unitTexture), renderer(renderer)
 {
-	width = unitTexture->getWidth();
-	height = unitTexture->getHeight();
+	
 }
 Unit::~Unit()
 {
@@ -182,7 +182,7 @@ void Unit::render()
 		position.x,
 		position.y,
 		renderer,
-		nullptr,
+		&destRect,
 		SDL_FLIP_NONE,
 		this->angle,
 		nullptr,
@@ -195,6 +195,13 @@ void Unit::setScale(float scale)
 {
 	if (scale >= 0 && scale <= 1)
 		this->scale = scale;
+}
+
+void Unit::setClip(SDL_Rect clip)
+{
+	width = clip.w;
+	height = clip.h;
+	destRect = clip;
 }
 
 float Unit::getScale()

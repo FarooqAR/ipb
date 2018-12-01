@@ -15,53 +15,67 @@
 #include <stdio.h>
 #include <cmath>
 #include <string>
+#include "UnitFactory.h"
 
 using namespace std;
 
-BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : renderer(renderer)
+BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet)
+	: renderer(renderer)
 {
 	frames = 0;
+	this->unitFactory = unitFactory;
+	explosionTexture = imagesSpriteSheet;
+	healthBarTexture = imagesSpriteSheet;
+	oxygenBarTexture = imagesSpriteSheet;
+	fuelBarTexture = imagesSpriteSheet;
+	bulletTexture = imagesSpriteSheet;
+	wormHoleTexture = imagesSpriteSheet;
 
-	explosionTexture = new LTexture;
-	backgroundTexture = new LTexture;
-	healthBarTexture = new LTexture;
-	oxygenBarTexture = new LTexture;
-	fuelBarTexture = new LTexture;
-	explosionTexture = new LTexture;
-	bulletTexture = new LTexture;
-	buttonSpriteSheet = new LTexture;
-	alphabetsSpriteSheet = new LTexture;
-	wormHoleTexture = new LTexture;
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-	buttonSpriteSheet->loadFromFile("assets/button_sprite.png", renderer);
-	backgroundTexture->loadFromFile("assets/space.jpg", renderer);
-	healthBarTexture->loadFromFile("assets/health.png", renderer);
-	fuelBarTexture->loadFromFile("assets/fuel.png", renderer);
-	oxygenBarTexture->loadFromFile("assets/oxygen.png", renderer);
-	explosionTexture->loadFromFile("assets/explosion.png", renderer);
-	bulletTexture->loadFromFile("assets/bullet.png", renderer);
-	wormHoleTexture->loadFromFile("assets/wormhole.png", renderer);
+	healthSpriteClip = {
+		constants::HEALTH_SPRITE_START_POSITION.x, 
+		constants::HEALTH_SPRITE_START_POSITION .y,
+		constants::STATUS_WIDTH,
+		constants::STATUS_HEIGHT
+	};
+	fuelSpriteClip = {
+		constants::HEALTH_SPRITE_START_POSITION.x + constants::STATUS_WIDTH,
+		constants::HEALTH_SPRITE_START_POSITION.y,
+		constants::STATUS_WIDTH,
+		constants::STATUS_HEIGHT
+	};
+	oxygenSpriteClip = {
+		constants::HEALTH_SPRITE_START_POSITION.x + constants::STATUS_WIDTH * 2,
+		constants::HEALTH_SPRITE_START_POSITION.y,
+		constants::STATUS_WIDTH,
+		constants::STATUS_HEIGHT
+	};
+	SDL_Rect wormHoleClip = {
+		constants::WORMHOLE_SPRITE_START_POSITION.x, 
+		constants::WORMHOLE_SPRITE_START_POSITION.y,
+		constants::WORMHOLE_WIDTH,
+		constants::WORMHOLE_HEIGHT
+	};
 	wormHole = new Unit(renderer, wormHoleTexture, 0, 0, 0);
 	wormHole->setPosition(100, 300);
+	wormHole->setClip(wormHoleClip);
 
-	hero = new Player(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
-	enemy = new Enemy(renderer, constants::WINDOW_WIDTH - 200, 30);
-	planets.enqueue(new Attractor(renderer, "assets/mercury.png", 100, 550, 0.4));
-	planets.enqueue(new Attractor(renderer, "assets/venus.png", 500, 140, 0.45));
-	planets.enqueue(new Attractor(renderer, "assets/mars.png", 750, 310, 0.35));
-	planets.enqueue(new Attractor(renderer, "assets/earth.png", 195, 140, 0.5));
-	planets.enqueue(new Attractor(renderer, "assets/jupiter.png", 400, 400, 0.57));
-	planets.enqueue(new Attractor(renderer, "assets/neptune.png", 700, 530, 0.49));
+	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
+	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
+	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
+
 	for (int i = 0; i < 20; i++)
 	{
-		explosionSpriteClips[i] = { 96 * i, 0, 96, 96 };
+		explosionSpriteClips[i] = { constants::EXPLOSION_SPRITE_START_POSITION.x + 96 * i, constants::EXPLOSION_SPRITE_START_POSITION.y, 96, 96 };
 	}
-	alphabetsSpriteSheet->loadFromFile("assets/spries.png", renderer, 1, 0, 0, 0);
-
 	string title = "Weapon: " + hero->GetWeaponName();
-	WeaponTitle = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27);
+	WeaponTitle = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27f);
 	title = "Ammo: " + to_string(hero->GetAmmo());
-	AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
+	AmmoCount = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27f);
 	enemyHealthBoundary = { 0, 0, 95, 10 };
 	heroHealthBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 50, 105, 10 };
 	heroOxygenBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 35, 105, 10 };
@@ -70,16 +84,11 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, int h, int w, float angle) : 
 
 BattleScreen::~BattleScreen()
 {
-	delete backgroundTexture;
-	delete healthBarTexture;
-	delete oxygenBarTexture;
-	delete fuelBarTexture;
-	delete alphabetsSpriteSheet;
+	
 }
 
 void BattleScreen::render()
 {
-	backgroundTexture->renderTexture(0, 0, renderer);
 	WeaponTitle->render(renderer);
 	AmmoCount->render(renderer);
 	enemyHealthBoundary.x = enemy->getPosition().x;
@@ -97,11 +106,11 @@ void BattleScreen::render()
 		wormHole->setAngle(wormHole->getAngle() - 0.2);
 		if (!intoWormHole)
 		{
-			wormHole->setScale(wormHole->getScale() + 0.1);
+			wormHole->setScale(wormHole->getScale() + 0.1f);
 		}
 		else
 		{
-			hero->setScale(hero->getScale() - 0.1);
+			hero->setScale(hero->getScale() - 0.1f);
 		}
 		if (wormHole->checkCollision(hero, true))
 		{
@@ -133,25 +142,25 @@ void BattleScreen::render()
 	int i = 0;
 	while (i < hero->getHealth())
 	{
-		healthBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 50, renderer);
+		healthBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 50, renderer, &healthSpriteClip);
 		i += 1;
 	}
 	i = 0;
 	while (i < hero->getOxygen())
 	{
-		oxygenBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 35, renderer);
+		oxygenBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 35, renderer, &oxygenSpriteClip);
 		i += 1;
 	}
 	i = 0;
 	while (i < hero->getFuel())
 	{
-		fuelBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 20, renderer);
+		fuelBarTexture->renderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 20, renderer, &fuelSpriteClip);
 		i += 1;
 	}
 	i = 0;
 	while (i < enemy->getHealth())
 	{
-		healthBarTexture->renderTexture(enemy->getPosition().x + i * 0.9, enemy->getPosition().y - 10, renderer);
+		healthBarTexture->renderTexture(enemy->getPosition().x + i * 0.9, enemy->getPosition().y - 10, renderer, &healthSpriteClip);
 		i += 1;
 	}
 
@@ -291,27 +300,26 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			hero->SetDelay(0);
 			hero->SetAmmo(hero->GetAmmo() - 1);
 			string title = "Ammo: " + to_string(hero->GetAmmo());
-			delete AmmoCount;
-			AmmoCount = new Word(title, alphabetsSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27);
+			AmmoCount->setText(title);
 		}
 	}
 	if (currentKeyStates[SDL_SCANCODE_ESCAPE])
 	{
-		ofstream myfile;
-		myfile.open("SavedGame1.txt");
-		myfile <<
-			hero->getPosition().x << endl <<
-			hero->getPosition().y << endl <<
-			hero->getAngle() << endl <<
-			hero->getHealth() << endl <<
-			hero->getOxygen() << endl <<
-			hero->getFuel() << endl <<
-			hero->GetWeaponType() << endl <<
-			2 << endl <<
-			hero->GetWeaponAmmo() << endl <<
-			hero->GetAmmo() << endl;// <<
-			//hero->getCurrentClipIndex() << endl;
-		myfile.close();
+		//ofstream myfile;
+		//myfile.open("SavedGame1.txt");
+		//myfile <<
+		//	hero->getPosition().x << endl <<
+		//	hero->getPosition().y << endl <<
+		//	hero->getAngle() << endl <<
+		//	hero->getHealth() << endl <<
+		//	hero->getOxygen() << endl <<
+		//	hero->getFuel() << endl <<
+		//	hero->GetWeaponType() << endl <<
+		//	2 << endl <<
+		//	hero->GetWeaponAmmo() << endl <<
+		//	hero->GetAmmo() << endl;// <<
+		//	//hero->getCurrentClipIndex() << endl;
+		//myfile.close();
 		//Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
 		Game::setCurrentScreen(constants::PAUSE_SCREEN);
 

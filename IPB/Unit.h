@@ -1,5 +1,4 @@
 #pragma once
-#include "Game.h"
 #include "Point.h"
 #include "LTexture.h"
 
@@ -26,6 +25,7 @@ public:
 	float speedX; // make protected!
 	float speedY; // make protected!
 	void setScale(float scale);
+	void setClip(SDL_Rect);
 	float getScale();
 
 protected:
@@ -39,7 +39,7 @@ protected:
 	float speedXdecimal;
 	float speedYdecimal;
 	int count1 = 0;
-	float thrust = .0355;
+	float thrust = .0355f;
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer* renderer;
 

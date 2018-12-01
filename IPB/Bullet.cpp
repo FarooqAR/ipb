@@ -27,14 +27,20 @@ Bullet::~Bullet()
 	delete objTexture;
 }
 
-Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* bulletTexture, int x, int y, float scale, double angle, int damage) : Unit()
+Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletType, int x, int y, float scale, double angle, int damage, int bulletWidth, int bulletHeight) : Unit()
 {
 	setPosition(x, y);
-	objTexture = bulletTexture;
+	objTexture = imageSpriteSheet;
 	renderer = gRenderer;
 	this->scale = scale;
-	this->width = this->objTexture->getWidth() * scale;
-	this->height = this->objTexture->getHeight() * scale;
+	this->destRect = { 
+		constants::BULLETS_SPRITE_START_POSITION.x + bulletWidth * bulletType,
+		constants::BULLETS_SPRITE_START_POSITION.y, 
+		bulletWidth, 
+		bulletHeight 
+	};
+	this->width = bulletWidth * scale;
+	this->height = bulletHeight * scale;
 	this->angle = angle;
 	this->damage = damage;
 }
