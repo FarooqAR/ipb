@@ -104,7 +104,7 @@ void Queue::render()
 	}
 }
 
-void Queue::pull(Player* player)
+void Queue::pull(Unit* player)
 {
 	Node* temp = head;
 	while (temp != NULL)

@@ -23,6 +23,7 @@
     <ClCompile Include="Word.cpp" />
     <ClCompile Include="UnitFactory.cpp" />
     <ClCompile Include="GameScreen.cpp" />
+    <ClCompile Include="orbs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attractor.h" />
@@ -52,5 +53,6 @@
     <ClInclude Include="UnitFactory.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Word.h" />
+    <ClInclude Include="orbs.h" />
   </ItemGroup>
 </Project>

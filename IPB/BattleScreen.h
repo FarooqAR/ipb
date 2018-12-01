@@ -12,6 +12,8 @@
 #include "Button.h"
 #include "Word.h"
 #include <fstream>
+#include "orbs.h"
+
 
 class BattleScreen: public GameScreen 
 {
@@ -46,6 +48,7 @@ private:
 	SDL_Rect heroFuelBoundary;
 	Player* hero;
 	Enemy* enemy;
+	orbs** ball;
 	Level* currentLevel;
 	Queue planets;
 	Queue PlayerBulletQueue;

@@ -13,7 +13,7 @@ public:
 	Queue();
 	~Queue();
 	void enqueue(Unit*);
-	void pull(Player*);
+	void pull(Unit*);
 	bool checkCollision(Unit*, bool selfDestruct = false);
 	void clean();
 	void render();

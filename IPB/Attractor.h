@@ -9,10 +9,10 @@ class Attractor : public Unit
 {
 private:
 	Gravity pull;
-	float gravConstant = 1;
+	float gravConstant = 2;
 public:
 	Attractor();
 	Attractor(SDL_Renderer* gRenderer, LTexture* planetsTexture, int planetType, int x, int y, float scale);
 	~Attractor();
-	void gravForce(Player*);
+	void gravForce(Unit*);
 };

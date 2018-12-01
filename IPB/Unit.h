@@ -27,6 +27,9 @@ public:
 	void setScale(float scale);
 	void setClip(SDL_Rect);
 	float getScale();
+	void setSpeed(float x, float y);
+	float getxSpeed();
+	float getySpeed();
 
 protected:
 	Point position;

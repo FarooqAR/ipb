@@ -44,3 +44,21 @@ Weapon * Enemy::getWeapon()
 {
 	return weapon;
 }
+
+void Enemy::move()
+{
+	if (position.x > constants::WINDOW_WIDTH / 2)
+	{
+		speedX = speedX - .01;
+	}
+	if (position.x < constants::WINDOW_WIDTH / 2)
+	{
+		speedX = speedX + .01;
+	}
+	
+
+	position.x = position.x + speedX;
+
+
+
+}

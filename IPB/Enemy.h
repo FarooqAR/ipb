@@ -9,6 +9,7 @@ public:
 	Enemy(SDL_Renderer* renderer, LTexture* imageSpriteSheet, int initialX, int initialY);
 	~Enemy();
 	void setHealth(float);
+	void move();
 	float getHealth();
 	Weapon* getWeapon();
 

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <stdio.h>
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
@@ -11,12 +10,13 @@
 #include "Enemy.h"
 #include "Button.h"
 #include "Word.h"
+#include "orbs.h"
+#include "UnitFactory.h"
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
 #include <cmath>
 #include <string>
-#include "UnitFactory.h"
 
 using namespace std;
 
@@ -86,6 +86,14 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 
 	PauseTitle = new Word("Game Paused", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	PauseTitle->setXCentered();
+	//ball = new orbs(renderer, 100, 100);
+	ball = new orbs*[10];
+
+	for (int x = 0; x < 10; x++)
+	{
+		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, .09 / (x + 3));
+	}
+
 	for (int i = 0; i < 20; i++)
 	{
 		explosionSpriteClips[i] = { constants::EXPLOSION_SPRITE_START_POSITION.x + 96 * i, constants::EXPLOSION_SPRITE_START_POSITION.y, 96, 96 };
@@ -216,7 +224,7 @@ void BattleScreen::render()
 	}
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
-		hero->setHealth(hero->getHealth() - 5);
+		hero->setHealth(hero->getHealth());
 		EnemyBulletQueue.clean();
 	}
 
@@ -279,7 +287,7 @@ void BattleScreen::render()
 			}
 		}
 	}
-	else if(!isPaused)
+	else if (!isPaused)
 	{
 		if (hero->getIsThrusting())
 		{
@@ -327,9 +335,17 @@ void BattleScreen::render()
 	if (hero->getAlive())
 	{
 		if (hero->getScale() > 0.1)
+		{
 			hero->render();
+			for (int x = 0; x < 10; x++)
+			{
+				ball[x]->render();
+			}
+		}
 		else
 			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
+
+
 	}
 	else if (heroExplosionSpriteIndex < 20)
 	{
@@ -398,6 +414,15 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			planets.pull(hero);
 			if (!intoWormHole)
 				hero->move();
+		}
+		for (int y = 0; y < 10; y++)
+		{
+			ball[y]->setPosit(hero);
+			for (int z = y; z < 6 * y; z++)
+			{
+				planets.pull(ball[y]);
+				ball[y]->move();
+			}
 		}
 	}
 	if (currentKeyStates[SDL_SCANCODE_SPACE] && isPaused == false)

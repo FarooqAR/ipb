@@ -77,15 +77,8 @@ void Unit::move(int direction)
 	{
 		speedX += cos((angle - 90) * constants::PI / 180)*thrust;
 		speedY += sin((angle - 90) * constants::PI / 180)*thrust;
-
-
-
 		speedXdecimal = speedX - floor(speedX);
 		speedYdecimal = speedY - floor(speedY);
-
-		//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
-
-
 		if (speedXdecimal != 0)
 		{
 			if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
@@ -98,7 +91,6 @@ void Unit::move(int direction)
 		}
 
 		count1++;
-
 		position.x += speedX;
 		position.y += speedY;
 	}
@@ -107,7 +99,7 @@ void Unit::move(int direction)
 
 void Unit::move()
 {
-
+	
 	speedXdecimal = speedX - floor(speedX);
 	speedYdecimal = speedY - floor(speedY);
 
@@ -124,7 +116,6 @@ void Unit::move()
 		if (count1%static_cast<int>(1 / speedYdecimal) == 0)
 			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
 	}
-
 
 	position.x += speedX;
 	position.y += speedY;
@@ -145,8 +136,6 @@ void Unit::move()
 	{
 		position.y = 0;
 	}
-
-
 	count1++;
 
 }
@@ -207,4 +196,19 @@ void Unit::setClip(SDL_Rect clip)
 float Unit::getScale()
 {
 	return this->scale;
+}
+void Unit::setSpeed(float x, float y)
+{
+	this->speedX = x;
+	this->speedY = y;
+}
+
+float Unit::getxSpeed()
+{
+	return speedX;
+}
+
+float Unit::getySpeed()
+{
+	return speedY;
 }

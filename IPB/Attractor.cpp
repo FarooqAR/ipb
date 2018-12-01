@@ -31,7 +31,7 @@ Attractor::~Attractor()
 {
 }
 
-void Attractor::gravForce(Player* player)
+void Attractor::gravForce(Unit* player)
 {
 	int playerX = player->getPosition().x;
 	int playerY = player->getPosition().y;
