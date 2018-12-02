@@ -19,7 +19,7 @@ Queue::~Queue()
 	}
 }
 
-void Queue::enqueue(Unit* unit)
+void Queue::Enqueue(Unit* unit)
 {
 	if (head == NULL)
 	{
@@ -40,12 +40,12 @@ void Queue::enqueue(Unit* unit)
 }
 
 
-void Queue::clean()
+void Queue::Clean()
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		if (temp->unit->getAlive() == false)
+		if (temp->unit->GetAlive() == false)
 		{
 			if (temp->prev == NULL)
 			{
@@ -77,52 +77,52 @@ void Queue::clean()
 			temp = temp->next;
 	}
 }
-bool Queue::checkCollision(Unit* unit, bool selfDestruct)
+bool Queue::CheckCollision(Unit* unit, bool selfDestruct)
 {
 	Node* temp = head;
 	bool isColliding = false;
 	while (temp != NULL)
 	{
-		if (temp->unit->checkCollision(unit))
+		if (temp->unit->CheckCollision(unit))
 		{
 			isColliding = true;
 			if (selfDestruct)
-				temp->unit->setAlive(false);
+				temp->unit->SetAlive(false);
 		}
 		temp = temp->next;
 	}
 	return isColliding;
 }
 
-void Queue::render()
+void Queue::Render()
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		temp->unit->render();
+		temp->unit->Render();
 		temp = temp->next;
 	}
 }
 
 
 //pulls hero towards all of the planets
-void Queue::pull(Unit* player)
+void Queue::Pull(Unit* player)
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
 		//applies gravity for temp planet
-		((Attractor*)temp->unit)->gravForce(player);
+		((Attractor*)temp->unit)->GravForce(player);
 		temp = temp->next;
 	}
 
 }
-void Queue::move()
+void Queue::Move()
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		temp->unit->move();
+		temp->unit->Move();
 		temp = temp->next;
 	}
 }

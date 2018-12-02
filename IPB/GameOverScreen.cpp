@@ -14,7 +14,7 @@ GameOverScreen::GameOverScreen(SDL_Renderer* renderer, LTexture* imagesSpriteShe
 
 	string title = "Game Over!";
 	gameOverTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord, it will animate to 100
-	gameOverTitle->setXCentered(); // puts word at the center of the screen
+	gameOverTitle->SetXCentered(); // puts word at the center of the screen
 }
 GameOverScreen::~GameOverScreen()
 {
@@ -22,13 +22,13 @@ GameOverScreen::~GameOverScreen()
 	delete quitBtn;
 	delete gameOverTitle;
 }
-void GameOverScreen::render()
+void GameOverScreen::Render()
 {
-	gameOverTitle->render(renderer);
-	mainMenuBtn->render(renderer);
-	quitBtn->render(renderer);
+	gameOverTitle->Render(renderer);
+	mainMenuBtn->Render(renderer);
+	quitBtn->Render(renderer);
 }
-void GameOverScreen::handleEvents(SDL_Event& event)
+void GameOverScreen::HandleEvents(SDL_Event& event)
 {
 	int x = 0; int y = 0;
 	bool isMainMenuBtnClicked;
@@ -37,25 +37,25 @@ void GameOverScreen::handleEvents(SDL_Event& event)
 	{
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		mainMenuBtn->onClickDown(x, y);
-		quitBtn->onClickDown(x, y);
+		mainMenuBtn->OnClickDown(x, y);
+		quitBtn->OnClickDown(x, y);
 
 		break;
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		isQuitBtnClicked = quitBtn->onClickUp(x, y);
-		isMainMenuBtnClicked = mainMenuBtn->onClickUp(x, y);
+		isQuitBtnClicked = quitBtn->OnClickUp(x, y);
+		isMainMenuBtnClicked = mainMenuBtn->OnClickUp(x, y);
 		if (isMainMenuBtnClicked)
-			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitBtnClicked)
 			exit(0); // needs change; should signal Game.cpp which will exit properly
 
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		mainMenuBtn->onHover(x, y);
-		quitBtn->onHover(x, y);
+		mainMenuBtn->OnHover(x, y);
+		quitBtn->OnHover(x, y);
 		break;
 	default:
 		break;

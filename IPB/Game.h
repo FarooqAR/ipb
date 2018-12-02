@@ -12,16 +12,16 @@ class Game
 {
 public:
 	~Game();
-	static Game * getInstance();
-	static void setCurrentScreen(int, const char* savedFilename = nullptr);
-	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+	static Game * GetInstance();
+	static void SetCurrentScreen(int, const char* savedFilename = nullptr);
+	void Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 	void PlayMusic(int MUSIC_TYPE);
 	void StopMusic(int channel = -1);
-	void handleEvents();
-	void update();
-	void render();
-	void clean();
-	bool running();
+	void HandleEvents();
+	void Update();
+	void Render();
+	void Clean();
+	bool Running();
 private:
 	static GameScreen* currentScreen;
 	static SDL_Renderer * renderer;

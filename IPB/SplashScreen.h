@@ -16,6 +16,6 @@ private:
 public:
 	SplashScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~SplashScreen();
-	void render();
-	void handleEvents(SDL_Event&);
+	void Render();
+	void HandleEvents(SDL_Event&);
 };

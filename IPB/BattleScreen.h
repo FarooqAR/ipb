@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Attractor.h"
 #include "EasterEgg.h"
-#include "Level.h"
 #include "Queue.h" 
 #include "Unit.h"
 #include "Enemy.h"
@@ -33,8 +32,8 @@ private:
 	LTexture* wormHoleTexture;
 	Unit* wormHole;
 	LTexture* fadeScreenTexture;
-	Word* WeaponTitle;
-	Word* AmmoCount;
+	Word* weaponTitle;
+	Word* ammoCount;
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
@@ -47,27 +46,23 @@ private:
 	SDL_Rect heroFuelBoundary;
 	Player* hero;
 	Enemy* enemy;
-	orbs** ball;
-	Level* currentLevel;
+	Orbs** ball;
 	Queue planets;
-	Queue PlayerBulletQueue;
-	Queue EnemyBulletQueue;
-	Button* ResumeGameBtn;
+	Queue playerBulletQueue;
+	Queue enemyBulletQueue;
+	Button* resumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;
 	Button* quitGameBtn;
-	Word* PauseTitle;
+	Word* pauseTitle;
 	string s;
 
 public:
-	int ok = 1;
-	BattleScreen();
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu = false);
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
-	void render();
-	bool isEmpty(string);
-	void writeFile(string);
-	void handleEvents(SDL_Event&);
-
+	void Render();
+	bool IsEmpty(string);
+	void WriteFile(string);
+	void HandleEvents(SDL_Event&);
 };

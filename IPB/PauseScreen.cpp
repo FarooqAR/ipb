@@ -17,32 +17,32 @@ PauseScreen::PauseScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : 
 
 	string title = "Game Paused";
 	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
-	gameTitle->setXCentered();
+	gameTitle->SetXCentered();
 }
 
 PauseScreen::~PauseScreen()
 {
 }
-void PauseScreen::render()
+void PauseScreen::Render()
 {
-	gameTitle->render(renderer);
-	double y = gameTitle->getY();
-	if (gameTitle->getY() > 100) // handle animation; move the title to y=100
-		y = gameTitle->getY() * 0.9;
+	gameTitle->Render(renderer);
+	double y = gameTitle->GetY();
+	if (gameTitle->GetY() > 100) // handle animation; move the title to y=100
+		y = gameTitle->GetY() * 0.9;
 	else
 	{
-		ResumeGameBtn->render(renderer);
-		saveGameBtn->render(renderer);
-		backBtn->render(renderer);
-		quitGameBtn->render(renderer);
+		ResumeGameBtn->Render(renderer);
+		saveGameBtn->Render(renderer);
+		backBtn->Render(renderer);
+		quitGameBtn->Render(renderer);
 	}
 
-	gameTitle->setPosition(gameTitle->getX(), (int)y);
+	gameTitle->SetPosition(gameTitle->GetX(), (int)y);
 }
 
 
 
-void PauseScreen::handleEvents(SDL_Event& event)
+void PauseScreen::HandleEvents(SDL_Event& event)
 {
 	int x = 0; int y = 0;
 	bool isResumeGameBtnClicked;
@@ -53,33 +53,33 @@ void PauseScreen::handleEvents(SDL_Event& event)
 	{
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onClickDown(x, y);
-		saveGameBtn->onClickDown(x, y);
-		backBtn->onClickDown(x, y);
-		quitGameBtn->onClickDown(x, y);
+		ResumeGameBtn->OnClickDown(x, y);
+		saveGameBtn->OnClickDown(x, y);
+		backBtn->OnClickDown(x, y);
+		quitGameBtn->OnClickDown(x, y);
 
 		break;
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		isResumeGameBtnClicked = ResumeGameBtn->onClickUp(x, y);
-		issaveGameBtnClicked = saveGameBtn->onClickUp(x, y);
-		isBackBtnClicked = backBtn->onClickUp(x, y);
-		isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		isResumeGameBtnClicked = ResumeGameBtn->OnClickUp(x, y);
+		issaveGameBtnClicked = saveGameBtn->OnClickUp(x, y);
+		isBackBtnClicked = backBtn->OnClickUp(x, y);
+		isQuitGameBtnClicked = quitGameBtn->OnClickUp(x, y);
 		if (isResumeGameBtnClicked)
-			Game::setCurrentScreen(constants::BATTLE_SCREEN);
+			Game::SetCurrentScreen(constants::BATTLE_SCREEN);
 		else if (isBackBtnClicked)
-			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitGameBtnClicked)
 			exit(0);
 		break;
 
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onHover(x, y);
-		saveGameBtn->onHover(x, y);
-		backBtn->onHover(x, y);
-		quitGameBtn->onHover(x, y);
+		ResumeGameBtn->OnHover(x, y);
+		saveGameBtn->OnHover(x, y);
+		backBtn->OnHover(x, y);
+		quitGameBtn->OnHover(x, y);
 		break;
 	default:
 		break;

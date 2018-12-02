@@ -17,7 +17,7 @@ UnitFactory * UnitFactory::getInstance(SDL_Renderer* gRenderer)
 	return instance;
 }
 
-Attractor * UnitFactory::createPlanet(LTexture* imageSpriteSheet, int planetType, int x, int y, float scale)
+Attractor * UnitFactory::CreatePlanet(LTexture* imageSpriteSheet, int planetType, int x, int y, float scale)
 {
 	return new Attractor(gRenderer, imageSpriteSheet, planetType, x, y, scale);
 }

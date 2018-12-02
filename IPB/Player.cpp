@@ -8,7 +8,7 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 	this->angle = Angle;
 	this->objTexture = imageSpriteSheet;
 	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
-	this->setPosition(initialX, initialY);
+	this->SetPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = constants::PLAYER_WIDTH;
 	this->height = constants::PLAYER_HEIGHT;
@@ -25,9 +25,6 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 			this->height 
 		};
 	}
-	Ammo = weapon->GetAmmo();
-	ShootDelay = weapon->GetDelay();
-	
 }
 
 Player::~Player()
@@ -36,9 +33,9 @@ Player::~Player()
 	delete objTexture;
 }
 
-void Player::render()
+void Player::Render()
 {
-	this->objTexture->renderTexture(
+	this->objTexture->RenderTexture(
 		position.x,
 		position.y,
 		renderer,
@@ -59,18 +56,18 @@ Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet)
 	return weapon->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
 }
 
-void Player::setShipCurrentClipIndex(int i)
+void Player::SetShipCurrentClipIndex(int i)
 {
 	this->shipCurrentClipIndex = i;
 }
-void Player::changeShipCurrentClipIndex()
+void Player::ChangeShipCurrentClipIndex()
 {
 	if (shipCurrentClipIndex > 3 && shipCurrentClipIndex < 8)
 		shipCurrentClipIndex++;
 	else
 		shipCurrentClipIndex = 4;
 }
-void Player::setHealth(float health)
+void Player::SetHealth(float health)
 {
 	if (this->health > 0 && this->health <= 100)
 		this->health = health;
@@ -82,7 +79,7 @@ void Player::setHealth(float health)
 		this->alive = false;
 }
 
-void Player::setOxygen(int oxygen)
+void Player::SetOxygen(int oxygen)
 {
 	if (this->oxygen > 0 && this->oxygen <= 100)
 		this->oxygen = oxygen;
@@ -93,7 +90,7 @@ void Player::setOxygen(int oxygen)
 	}
 }
 
-void Player::setFuel(int fuel)
+void Player::SetFuel(int fuel)
 {
 	if (this->fuel > 0 && this->fuel <= 100)
 		this->fuel = fuel;
@@ -106,41 +103,41 @@ void Player::setFuel(int fuel)
 
 void Player::SetAmmo(int bullets)
 {
-	Ammo = bullets;
+	weapon->SetAmmo(bullets);
 }
 
 void Player::SetDelay(int time)
 {
-	ShootDelay = time;
+	shootDelay = time;
 }
 
 //--Getters
 
-float Player::getHealth()
+float Player::GetHealth()
 {
 	return health;
 }
-int Player::getOxygen()
+int Player::GetOxygen()
 {
 	return oxygen;
 }
 
-int Player::getFuel()
+int Player::GetFuel()
 {
 	return fuel;
 }
 
-int Player::getCurrentClipIndex()
+int Player::GetCurrentClipIndex()
 {
 	return shipCurrentClipIndex;
 }
 
-bool Player::getIsThrusting()
+bool Player::GetIsThrusting()
 {
 	return isThrusting;
 }
 
-void Player::setIsThrusting(bool b)
+void Player::SetIsThrusting(bool b)
 {
 	isThrusting = b;
 }
@@ -167,18 +164,12 @@ int Player::GetWeaponDelay()
 
 int Player::GetDelay()
 {
-	return ShootDelay;
+	return shootDelay;
 }
-
-int Player::GetWeaponAmmo()
-{
-	return weapon->GetAmmo();
-}
-
 
 int Player::GetAmmo()
 {
-	return Ammo;
+	return weapon->GetAmmo();
 }
 int Player::GetWeaponType()
 {

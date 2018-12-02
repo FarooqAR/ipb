@@ -170,7 +170,6 @@
     <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="Gravity.h" />
-    <ClInclude Include="Level.h" />
     <ClInclude Include="LoadGameScreen.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="MainMenuScreen.h" />

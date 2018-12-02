@@ -7,7 +7,7 @@ Enemy::Enemy(SDL_Renderer * gRenderer, LTexture* imageSpriteSheet, int initialX,
 {
 	this->objTexture = imageSpriteSheet;
 	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
-	this->setPosition(initialX, initialY);
+	this->SetPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = constants::ENEMY_WIDTH;
 	this->height = constants::ENEMY_HEIGHT;
@@ -24,7 +24,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::setHealth(float health)
+void Enemy::SetHealth(float health)
 {
 	if (health > 0 && health <= 100)
 		this->health = health;
@@ -35,17 +35,17 @@ void Enemy::setHealth(float health)
 	}
 }
 
-float Enemy::getHealth()
+float Enemy::GetHealth()
 {
 	return this->health;
 }
 
-Weapon * Enemy::getWeapon()
+Weapon * Enemy::GetWeapon()
 {
 	return weapon;
 }
 
-void Enemy::move()
+void Enemy::Move()
 {
 	if (position.x > constants::WINDOW_WIDTH / 2)
 	{
