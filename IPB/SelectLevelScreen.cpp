@@ -40,7 +40,7 @@ void SelectLevelScreen::render()
 		BackBtn->render(renderer);
 	}
 
-	ScreenTitle->setPosition(ScreenTitle->getX(), y);
+	ScreenTitle->setPosition(ScreenTitle->getX(), (int)y);
 }
 
 

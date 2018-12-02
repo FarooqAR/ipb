@@ -78,8 +78,8 @@ void Unit::move(int direction)
 	if (direction == UP)
 	{
 		//vectorize thrust
-		speedX += cos((angle - 90) * constants::PI / 180)*thrust;
-		speedY += sin((angle - 90) * constants::PI / 180)*thrust;
+		speedX += (float) (cos((angle - 90) * constants::PI / 180)*thrust);
+		speedY += (float) (sin((angle - 90) * constants::PI / 180)*thrust);
 
 		//gets the decimal value
 		speedXdecimal = speedX - floor(speedX);
@@ -89,19 +89,19 @@ void Unit::move(int direction)
 		if (speedXdecimal != 0)
 		{
 			if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
-				position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+				position.x += (int) (1 * (speedXdecimal / abs(speedXdecimal)));
 		}
 		if (speedYdecimal != 0)
 		{
 			if (count1%static_cast<int>(1 / speedYdecimal) == 0)
-				position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+				position.y += (int) (1 * (speedYdecimal / abs(speedYdecimal)));
 		}
 
 		count1++;
 
 		//changes position
-		position.x += speedX;
-		position.y += speedY;
+		position.x += (int) speedX;
+		position.y += (int) speedY;
 	}
 
 }
@@ -117,17 +117,17 @@ void Unit::move()
 	if (speedXdecimal != 0)
 	{
 		if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
-			position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+			position.x += (int) (1 * (speedXdecimal / abs(speedXdecimal)));
 	}
 	if (speedYdecimal != 0)
 	{
 		if (count1%static_cast<int>(1 / speedYdecimal) == 0)
-			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+			position.y += (int) (1 * (speedYdecimal / abs(speedYdecimal)));
 	}
 
 	//changes position
-	position.x += speedX;
-	position.y += speedY;
+	position.x += (int) speedX;
+	position.y += (int) speedY;
 
 
 	//teleports from sides
