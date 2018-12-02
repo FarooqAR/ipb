@@ -30,9 +30,9 @@ Game::Game()
 
 Game::~Game()
 {
-	clean();
+	Clean();
 }
-Game * Game::getInstance()
+Game * Game::GetInstance()
 {
 	if (instance == nullptr)
 	{
@@ -42,9 +42,9 @@ Game * Game::getInstance()
 	return instance;
 }
 
-void Game::setCurrentScreen(int screen, const char* savedFilename)
+void Game::SetCurrentScreen(int screen, const char* savedFilename)
 {
-	Game::getInstance()->StopMusic();
+	Game::GetInstance()->StopMusic();
 	if (screen == constants::MAIN_MENU_SCREEN)
 	{
 		currentScreen = new MainMenuScreen(renderer, imagesSpriteSheet);
@@ -99,7 +99,7 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 }
 
 
-void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
+void Game::Init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
 	if (fullscreen) {
@@ -134,13 +134,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	}
 	unitFactory = UnitFactory::getInstance(renderer);
 	imagesSpriteSheet = new LTexture;
-	imagesSpriteSheet->loadFromFile("assets/images.png", renderer);
+	imagesSpriteSheet->LoadFromFile("assets/images.png", renderer);
 	themeChunk = Mix_LoadWAV("assets/sounds/theme.wav");
 	explosionChunk = Mix_LoadWAV("assets/sounds/explosion.wav");
 	btnClickChunk = Mix_LoadWAV("assets/sounds/button_press.wav");
 	btnHoverChunk = Mix_LoadWAV("assets/sounds/button_hover.wav");
 	bulletChunk = Mix_LoadWAV("assets/sounds/bullet.wav");
-	setCurrentScreen(constants::SPLASH_SCREEN);
+	SetCurrentScreen(constants::SPLASH_SCREEN);
 }
 
 void Game::PlayMusic(int MUSIC_TYPE)
@@ -171,7 +171,7 @@ void Game::StopMusic(int channel)
 {
 	Mix_HaltChannel(channel);
 }
-void Game::handleEvents()
+void Game::HandleEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -183,23 +183,23 @@ void Game::handleEvents()
 	default:
 		break;
 	}
-	currentScreen->handleEvents(event);
+	currentScreen->HandleEvents(event);
 }
 
-void Game::update()
+void Game::Update()
 {
 	// update stuff
 }
 
-void Game::render()
+void Game::Render()
 {
 	SDL_RenderClear(renderer);
-	imagesSpriteSheet->renderTexture(0, 0, renderer, &backgroundRect);
-	currentScreen->render();
+	imagesSpriteSheet->RenderTexture(0, 0, renderer, &backgroundRect);
+	currentScreen->Render();
 	SDL_RenderPresent(renderer);
 }
 
-void Game::clean()
+void Game::Clean()
 {
 	Mix_FreeChunk(btnClickChunk);
 	Mix_FreeChunk(btnHoverChunk);
@@ -216,7 +216,7 @@ void Game::clean()
 	std::cout << "Game clean" << std::endl;
 }
 
-bool Game::running()
+bool Game::Running()
 {
 	return isRunning;
 }

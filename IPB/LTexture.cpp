@@ -12,10 +12,10 @@ LTexture::LTexture()
 
 LTexture::~LTexture()
 {
-	free();
+	Free();
 }
 
-bool LTexture::loadFromFile(const char* path, SDL_Renderer* gRenderer, bool flagColorKey, Uint8 redColorKey, Uint8 greenColorKey, Uint8 blueColorKey)
+bool LTexture::LoadFromFile(const char* path, SDL_Renderer* gRenderer, bool flagColorKey, Uint8 redColorKey, Uint8 greenColorKey, Uint8 blueColorKey)
 {
 	SDL_Surface* loadedSurface = NULL;
 	SDL_Texture* newTexture = NULL;
@@ -47,7 +47,7 @@ bool LTexture::loadFromFile(const char* path, SDL_Renderer* gRenderer, bool flag
 }
 
 
-void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip, SDL_RendererFlip flip, double angle, SDL_Point* center, float scaleX, float scaleY, bool debug)
+void LTexture::RenderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip, SDL_RendererFlip flip, double angle, SDL_Point* center, float scaleX, float scaleY, bool debug)
 {
 	SDL_Rect rectCoordinates = { x, y, width, height };
 	if (scaleY == -1.0f)
@@ -68,7 +68,7 @@ void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* cl
 	SDL_RenderCopyEx(gRenderer, texture, clip, &rectCoordinates, angle, center, flip);
 }
 
-void LTexture::free()
+void LTexture::Free()
 {
 	if (texture != NULL)
 	{
@@ -80,23 +80,23 @@ void LTexture::free()
 }
 
 
-int LTexture::getWidth()
+int LTexture::GetWidth()
 {
 	return width;
 }
 
-int LTexture::getHeight()
+int LTexture::GetHeight()
 {
 	return height;
 }
 
-void LTexture::setBlendMode(SDL_BlendMode blending)
+void LTexture::SetBlendMode(SDL_BlendMode blending)
 {
 	//Set blending function
 	SDL_SetTextureBlendMode(texture, blending);
 }
 
-void LTexture::setAlpha(Uint8 alpha)
+void LTexture::SetAlpha(Uint8 alpha)
 {
 	//Modulate texture alpha
 	SDL_SetTextureAlphaMod(texture, alpha);

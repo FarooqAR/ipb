@@ -10,13 +10,13 @@ class Button
 public:
 	Button();
 	~Button();
-	void onHover(int clickX, int clickY);
-	void onClickDown(int clickX, int clickY);
-	bool onClickUp(int clickX, int clickY);
+	void OnHover(int clickX, int clickY);
+	void OnClickDown(int clickX, int clickY);
+	bool OnClickUp(int clickX, int clickY);
 	Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string label, int x, int y, int w = 300, int h = 52);
 	Button(LTexture * imagesSpriteSheet, string label, int x, int y, int w = 300, int h = 52);
-	void render(SDL_Renderer * gRenderer);
-	void setPosition(int x, int y);
+	void Render(SDL_Renderer * gRenderer);
+	void SetPosition(int x, int y);
 private:
 	Word * label;
 	Point position;

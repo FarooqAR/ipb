@@ -27,6 +27,7 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="EasterEgg.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
+    <ClCompile Include="PauseScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attractor.h" />
@@ -41,7 +42,6 @@
     <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="Gravity.h" />
-    <ClInclude Include="Level.h" />
     <ClInclude Include="LoadGameScreen.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="MainMenuScreen.h" />

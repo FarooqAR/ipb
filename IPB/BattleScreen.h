@@ -41,6 +41,9 @@ private:
 	LTexture* HealthEasterEggTexture;
 	LTexture* WeaponEasterEggTexture;
 	//Clips
+	Word* weaponTitle;
+	Word* ammoCount;
+	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
@@ -84,9 +87,8 @@ public:
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu = false);
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
-	void render();
-	bool isEmpty(string);
-	void writeFile(string);
-	void handleEvents(SDL_Event&);
-
+	void Render();
+	bool IsEmpty(string);
+	void WriteFile(string);
+	void HandleEvents(SDL_Event&);
 };

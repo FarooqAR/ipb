@@ -8,8 +8,8 @@ class ControlsIntroScreen : public GameScreen
 public:
 	ControlsIntroScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~ControlsIntroScreen();
-	void render();
-	void handleEvents(SDL_Event&);
+	void Render();
+	void HandleEvents(SDL_Event&);
 
 private:
 	Button* upBtn;

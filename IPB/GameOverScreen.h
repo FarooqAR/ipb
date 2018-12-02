@@ -15,7 +15,6 @@ private:
 public:
 	GameOverScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~GameOverScreen();
-	void render();
-	void handleEvents(SDL_Event&);
-	Word* setWordPosition(int x, int y);
+	void Render();
+	void HandleEvents(SDL_Event&);
 };

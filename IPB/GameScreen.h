@@ -8,8 +8,8 @@ protected:
 	UnitFactory* unitFactory;
 	LTexture* imagesSpriteSheet;
 public:	
-	virtual void render() = 0;
-	virtual void handleEvents(SDL_Event&) = 0;
-	void setUnitFactory(UnitFactory*);
-	void setImagesSpriteSheet(LTexture*);
+	virtual void Render() = 0;
+	virtual void HandleEvents(SDL_Event&) = 0;
+	void SetUnitFactory(UnitFactory*);
+	void SetImagesSpriteSheet(LTexture*);
 };

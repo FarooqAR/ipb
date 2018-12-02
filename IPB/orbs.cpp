@@ -8,24 +8,24 @@ using namespace std;
 orbs::orbs(SDL_Renderer * gRenderer, int initialX, int initialY, float scale)
 {
 	this->objTexture = new LTexture;
-	this->objTexture->loadFromFile("assets/bluecirlce.png", gRenderer);
-	this->setPosition(initialX, initialY);
+	this->objTexture->LoadFromFile("assets/bluecirlce.png", gRenderer);
+	((Unit*)this)->SetPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->scale = scale;
 	this->alive = true;
 	this->destRect = {0, 0, 600, 600};
 }
 
-orbs::~orbs()
+Orbs::~Orbs()
 {
 
 }
 
 //sets position and speed of orbs to that of the player
-void orbs::setPosit(Player* player)
+void Orbs::SetPosition(Player* player)
 {
 	position.x = player->GetX()+10;
 	position.y = player->GetY()+25;
-	this->setSpeed(player->getxSpeed()*1.05f, player->getySpeed()*1.05f);
+	this->SetSpeed(player->GetXSpeed()*1.05f, player->GetYSpeed()*1.05f);
 
 }

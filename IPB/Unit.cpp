@@ -22,47 +22,47 @@ Unit::Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool aliv
 Unit::~Unit()
 {
 }
-bool Unit::checkCollision(Unit* unit)
+bool Unit::CheckCollision(Unit* unit)
 {
 	//checks for collisions
-	if (position.x + width < unit->getPosition().x ||
-		position.x > unit->getPosition().x + unit->getWidth() ||
-		position.y + height < unit->getPosition().y ||
-		position.y > unit->getPosition().y + unit->getHeight())
+	if (position.x + width < unit->GetPosition().x ||
+		position.x > unit->GetPosition().x + unit->GetWidth() ||
+		position.y + height < unit->GetPosition().y ||
+		position.y > unit->GetPosition().y + unit->GetHeight())
 	{
 		return false;
 	}
 	return true;
 }
-bool Unit::checkCollision(Unit* unit, bool isCentered)
+bool Unit::CheckCollision(Unit* unit, bool isCentered)
 {
 	//checks for collisions
-	if ((unit->getPosition().x >= position.x  &&
-		unit->getPosition().x <= position.x + width) &&
-		(unit->getPosition().y >= position.y &&
-		unit->getPosition().y <= position.y + height))
+	if ((unit->GetPosition().x >= position.x  &&
+		unit->GetPosition().x <= position.x + width) &&
+		(unit->GetPosition().y >= position.y &&
+		unit->GetPosition().y <= position.y + height))
 	{
 		return true;
 	}
 	return false;
 }
 
-void Unit::setAlive(bool alive)
+void Unit::SetAlive(bool alive)
 {
 	this->alive = alive;
 }
 
-bool Unit::getAlive()
+bool Unit::GetAlive()
 {
 	return alive;
 }
 
-void Unit::setPosition(int x, int y)
+void Unit::SetPosition(int x, int y)
 {
 	position.x = x;
 	position.y = y;
 }
-void Unit::move(int direction)
+void Unit::Move(int direction)
 {
 
 
@@ -107,7 +107,7 @@ void Unit::move(int direction)
 
 }
 
-void Unit::move()
+void Unit::Move()
 {
 	
 	//gets the decimal value
@@ -152,33 +152,33 @@ void Unit::move()
 }
 
 
-Point Unit::getPosition()
+Point Unit::GetPosition()
 {
 	return position;
 }
-int Unit::getWidth()
+int Unit::GetWidth()
 {
 	return width;
 }
 
-int Unit::getHeight()
+int Unit::GetHeight()
 {
 	return height;
 }
 
-void Unit::setAngle(double angle)
+void Unit::SetAngle(double angle)
 {
 	this->angle = angle;
 }
 
-double Unit::getAngle()
+double Unit::GetAngle()
 {
 	return this->angle;
 }
 
-void Unit::render()
+void Unit::Render()
 {
-	this->objTexture->renderTexture(
+	this->objTexture->RenderTexture(
 		position.x,
 		position.y,
 		renderer,
@@ -192,35 +192,35 @@ void Unit::render()
 	);
 }
 
-void Unit::setScale(float scale)
+void Unit::SetScale(float scale)
 {
 	if (scale >= 0 && scale <= 1)
 		this->scale = scale;
 }
 
-void Unit::setClip(SDL_Rect clip)
+void Unit::SetClip(SDL_Rect clip)
 {
 	width = clip.w;
 	height = clip.h;
 	destRect = clip;
 }
 
-float Unit::getScale()
+float Unit::GetScale()
 {
 	return this->scale;
 }
-void Unit::setSpeed(float x, float y)
+void Unit::SetSpeed(float x, float y)
 {
 	this->speedX = x;
 	this->speedY = y;
 }
 
-float Unit::getxSpeed()
+float Unit::GetXSpeed()
 {
 	return speedX;
 }
 
-float Unit::getySpeed()
+float Unit::GetYSpeed()
 {
 	return speedY;
 }

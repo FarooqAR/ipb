@@ -10,9 +10,9 @@ ControlsIntroScreen::ControlsIntroScreen(SDL_Renderer * gRenderer, LTexture * im
 	this->imagesSpriteSheet = imagesSpriteSheet;
 	int x = constants::WINDOW_WIDTH - 90;
 	title = new Word("Controls", imagesSpriteSheet, x, 30);
-	title->setXCentered();
+	title->SetXCentered();
 	thrustLabel = new Word("Thrust", imagesSpriteSheet, x, 150, 0.5);
-	thrustLabel->setXCentered();
+	thrustLabel->SetXCentered();
 	upBtn = new Button(imagesSpriteSheet, "UP", x / 2, 200, 90);
 	goBtn = new Button(imagesSpriteSheet, "GO!", x / 2, 550, 90);
 	spaceBtn = new Button(imagesSpriteSheet, "SPACEBAR", (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2, 400);
@@ -22,7 +22,7 @@ ControlsIntroScreen::ControlsIntroScreen(SDL_Renderer * gRenderer, LTexture * im
 	turnLeftLabel = new Word("Turn Left", imagesSpriteSheet, 120, 310, 0.5);
 	turnRightLabel = new Word("Turn Right", imagesSpriteSheet, 750, 310, 0.5);
 	shootLabel = new Word("Shoot", imagesSpriteSheet, 0, 450, 0.5);
-	shootLabel->setXCentered();
+	shootLabel->SetXCentered();
 }
 
 ControlsIntroScreen::~ControlsIntroScreen()
@@ -39,21 +39,21 @@ ControlsIntroScreen::~ControlsIntroScreen()
 	delete shootLabel;
 }
 
-void ControlsIntroScreen::render()
+void ControlsIntroScreen::Render()
 {
-	upBtn->render(renderer);
-	leftBtn->render(renderer);
-	spaceBtn->render(renderer);
-	rightBtn->render(renderer);
-	goBtn->render(renderer);
-	turnLeftLabel->render(renderer);
-	turnRightLabel->render(renderer);
-	thrustLabel->render(renderer);
-	shootLabel->render(renderer);
-	title->render(renderer);
+	upBtn->Render(renderer);
+	leftBtn->Render(renderer);
+	spaceBtn->Render(renderer);
+	rightBtn->Render(renderer);
+	goBtn->Render(renderer);
+	turnLeftLabel->Render(renderer);
+	turnRightLabel->Render(renderer);
+	thrustLabel->Render(renderer);
+	shootLabel->Render(renderer);
+	title->Render(renderer);
 }
 
-void ControlsIntroScreen::handleEvents(SDL_Event & event)
+void ControlsIntroScreen::HandleEvents(SDL_Event & event)
 {
 	int x, y;
 	bool isGoBtnClicked = false;
@@ -61,17 +61,17 @@ void ControlsIntroScreen::handleEvents(SDL_Event & event)
 	switch (event.type)
 	{
 	case SDL_MOUSEBUTTONDOWN:
-		goBtn->onClickDown(x, y);
+		goBtn->OnClickDown(x, y);
 
 		break;
 	case SDL_MOUSEBUTTONUP:
-		isGoBtnClicked = goBtn->onClickUp(x, y);
+		isGoBtnClicked = goBtn->OnClickUp(x, y);
 		if (isGoBtnClicked)
-			Game::setCurrentScreen(constants::BATTLE_SCREEN);
+			Game::SetCurrentScreen(constants::BATTLE_SCREEN);
 
 		break;
 	case SDL_MOUSEMOTION:
-		goBtn->onHover(x, y);
+		goBtn->OnHover(x, y);
 		break;
 	default:
 		break;

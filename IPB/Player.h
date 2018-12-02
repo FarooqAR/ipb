@@ -16,8 +16,8 @@ private:
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;
-	int ShootDelay;
-	int Ammo;
+	int shootDelay;
+	int ammo;
 public:
 	~Player(); 
 	Bullet* Shoot(SDL_Renderer* gRenderer, LTexture*);
@@ -26,18 +26,19 @@ public:
 	void SetDelay(int);
 	int GetDelay();
 	int GetAmmo();
-	void render();
-	void setHealth(float);
-	void setOxygen(float);
-	void setFuel(float);
-	void setShipCurrentClipIndex(int);
-	void changeShipCurrentClipIndex();
-	float getHealth();
-	float getOxygen();
-	float getFuel();
-	int getCurrentClipIndex();
-	bool getIsThrusting();
-	void setIsThrusting(bool);
+
+	void Render();
+	void SetHealth(float);
+	void SetOxygen(int);
+	void SetFuel(int);
+	void SetShipCurrentClipIndex(int);
+	void ChangeShipCurrentClipIndex();
+	float GetHealth();
+	int GetOxygen();
+	int GetFuel();
+	int GetCurrentClipIndex();
+	bool GetIsThrusting();
+	void SetIsThrusting(bool);
 	int GetX();
 	int GetY();
 	Weapon* GetWeapon();

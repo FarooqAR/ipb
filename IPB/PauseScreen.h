@@ -17,7 +17,6 @@ private:
 public:
 	PauseScreen(SDL_Renderer*, LTexture*);
 	~PauseScreen();
-	void render();
-	void handleEvents(SDL_Event&);
-	Word* setWordPosition(int x, int y);
+	void Render();
+	void HandleEvents(SDL_Event&);
 };

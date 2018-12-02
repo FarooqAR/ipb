@@ -13,8 +13,8 @@ SplashScreen::SplashScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet)
 	frames = 0;
 	gameTitle = new Word("Interplanetary Battlefield", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	subTitle = new Word("FRAM Studios Copyright 2018", imagesSpriteSheet, 0, 400, 0.5); // 300 here is the starting y coord
-	gameTitle->setXCentered();
-	subTitle->setXCentered();
+	gameTitle->SetXCentered();
+	subTitle->SetXCentered();
 }
 SplashScreen::~SplashScreen()
 {
@@ -22,18 +22,18 @@ SplashScreen::~SplashScreen()
 	delete subTitle;
 }
 
-void SplashScreen::render()
+void SplashScreen::Render()
 {
 	if (frames == 120)
-		Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
+		Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 	
-	gameTitle->render(renderer);
-	subTitle->render(renderer);
+	gameTitle->Render(renderer);
+	subTitle->Render(renderer);
 	frames++;
 }
 
 
-void SplashScreen::handleEvents(SDL_Event& event)
+void SplashScreen::HandleEvents(SDL_Event& event)
 {	
 
 }

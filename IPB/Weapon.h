@@ -10,9 +10,9 @@ class Weapon : public Unit
 private:
 	const char* name;
 	Bullet * bullets;
-	int TimeDelay;
-	int WeaponType;
-	int Ammo;
+	int timeDelay;
+	int weaponType;
+	int ammo;
 
 public:
 	Weapon();
@@ -23,6 +23,7 @@ public:
 	const char* GetWeaponName();
 	int GetWeaponType();
 	int GetAmmo();
+	void SetAmmo(int);
 	void SetWeaponType(int);
-	void setWeaponName(const char* w_name);
+	void SetWeaponName(const char* w_name);
 };

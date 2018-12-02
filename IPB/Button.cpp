@@ -23,7 +23,7 @@ Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string lab
 		y,
 		labelScale
 	);
-	setPosition(x, y);
+	SetPosition(x, y);
 }
 
 Button::Button(LTexture * imagesSpriteSheet, string label, int x, int y, int w, int h)
@@ -45,12 +45,12 @@ Button::Button(LTexture * imagesSpriteSheet, string label, int x, int y, int w, 
 		y,
 		labelScale
 	);
-	setPosition(x, y);
+	SetPosition(x, y);
 }
 
-void Button::render(SDL_Renderer * gRenderer)
+void Button::Render(SDL_Renderer * gRenderer)
 {
-	this->btnTexture->renderTexture(
+	this->btnTexture->RenderTexture(
 		this->position.x,
 		this->position.y,
 		gRenderer,
@@ -61,16 +61,16 @@ void Button::render(SDL_Renderer * gRenderer)
 		(float)width / (float)constants::BUTTON_WIDTH,
 		(float)height / (float)constants::BUTTON_HEIGHT
 	);
-	this->label->render(gRenderer);
+	this->label->Render(gRenderer);
 }
 
-void Button::setPosition(int x, int y)
+void Button::SetPosition(int x, int y)
 {
 	this->position.x = x;
 	this->position.y = y;
 }
 
-void Button::onHover(int clickX, int clickY)
+void Button::OnHover(int clickX, int clickY)
 {
 
 	if (clickX >= position.x &&
@@ -79,13 +79,13 @@ void Button::onHover(int clickX, int clickY)
 		clickY <= position.y + height)
 	{
 		if (spriteIndex == 0)
-			Game::getInstance()->PlayMusic(constants::MUSIC_BTN_HOVER);
+			Game::GetInstance()->PlayMusic(constants::MUSIC_BTN_HOVER);
 		spriteIndex = 1;
 	}
 	else
 		spriteIndex = 0;
 }
-void Button::onClickDown(int clickX, int clickY)
+void Button::OnClickDown(int clickX, int clickY)
 {
 	if (clickX >= position.x &&
 		clickX <= position.x + width &&
@@ -93,10 +93,10 @@ void Button::onClickDown(int clickX, int clickY)
 		clickY <= position.y + height)
 	{
 		spriteIndex = 2;
-		Game::getInstance()->PlayMusic(constants::MUSIC_BTN_CLICK);
+		Game::GetInstance()->PlayMusic(constants::MUSIC_BTN_CLICK);
 	}
 }
-bool Button::onClickUp(int clickX, int clickY)
+bool Button::OnClickUp(int clickX, int clickY)
 {
 	if (clickX >= position.x &&
 		clickX <= position.x + width &&
@@ -104,7 +104,7 @@ bool Button::onClickUp(int clickX, int clickY)
 		clickY <= position.y + height)
 	{
 		/*if (spriteIndex == 0)*/
-		Game::getInstance()->PlayMusic(constants::MUSIC_BTN_CLICK);
+		Game::GetInstance()->PlayMusic(constants::MUSIC_BTN_CLICK);
 		spriteIndex = 1;
 		return true;
 	}
