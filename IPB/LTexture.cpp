@@ -58,8 +58,8 @@ void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* cl
 		rectCoordinates.w = clip->w;
 		rectCoordinates.h = clip->h;
 	}
-	rectCoordinates.w *= scaleX;
-	rectCoordinates.h *= scaleY;
+	rectCoordinates.w = (int) (rectCoordinates.w * scaleX);
+	rectCoordinates.h = (int) (rectCoordinates.h * scaleY);
 	if (debug == true)
 	{
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);

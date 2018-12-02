@@ -6,7 +6,7 @@
 Enemy::Enemy(SDL_Renderer * gRenderer, LTexture* imageSpriteSheet, int initialX, int initialY)
 {
 	this->objTexture = imageSpriteSheet;
-	this->weapon = new Weapon("gun", 10, constants::SIMPLE_BULLET);
+	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = constants::ENEMY_WIDTH;
@@ -49,15 +49,15 @@ void Enemy::move()
 {
 	if (position.x > constants::WINDOW_WIDTH / 2)
 	{
-		speedX = speedX - .01;
+		speedX = speedX - .01f;
 	}
 	if (position.x < constants::WINDOW_WIDTH / 2)
 	{
-		speedX = speedX + .01;
+		speedX = speedX + .01f;
 	}
 	
 
-	position.x = position.x + speedX;
+	position.x = (int) (position.x + speedX);
 
 
 

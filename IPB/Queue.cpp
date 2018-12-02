@@ -104,11 +104,14 @@ void Queue::render()
 	}
 }
 
+
+//pulls hero towards all of the planets
 void Queue::pull(Unit* player)
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
+		//applies gravity for temp planet
 		((Attractor*)temp->unit)->gravForce(player);
 		temp = temp->next;
 	}

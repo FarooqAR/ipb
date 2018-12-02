@@ -14,8 +14,8 @@ Bullet::Bullet()
 
 void Bullet::move()
 {
-	position.x += (cos((angle - 90) * constants::PI / 180)) * 10;
-	position.y += (sin((angle - 90) * constants::PI / 180)) * 10;
+	position.x += (int) (cos((angle - 90) * constants::PI / 180) * 10);
+	position.y += (int) (sin((angle - 90) * constants::PI / 180) * 10);
 	if (position.y < -100 || position.y > constants::WINDOW_HEIGHT || position.x <  -100 || position.x > constants::WINDOW_WIDTH)
 	{
 		setAlive(false);
@@ -39,8 +39,8 @@ Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletTy
 		bulletWidth, 
 		bulletHeight 
 	};
-	this->width = bulletWidth * scale;
-	this->height = bulletHeight * scale;
+	this->width = (int) (bulletWidth * scale);
+	this->height = (int) (bulletHeight * scale);
 	this->angle = angle;
 	this->damage = damage;
 }

@@ -11,16 +11,14 @@ using namespace std;
 LoadGameScreen::LoadGameScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) : renderer(renderer)
 {
 	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
-	selectSaved1Btn = new Button(imagesSpriteSheet, "11-26 00:35:14", x, 200 + 70);
-	selectSaved2Btn = new Button(imagesSpriteSheet, "Saved Game 2", x, 200 + 65 + 70);
-	selectSaved3Btn = new Button(imagesSpriteSheet, "Saved Game 3", x, 200 + 65 * 2 + 70);
-	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 3+70);
+	selectSaved1Btn = new Button(imagesSpriteSheet, "Saved Game 1", x, 200);
+	selectSaved2Btn = new Button(imagesSpriteSheet, "Saved Game 2", x, 200 + 65);
+	selectSaved3Btn = new Button(imagesSpriteSheet, "Saved Game 3", x, 200 + 65 * 2);
+	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 3);
 
 	string title = "Load Saved Game";
-	string subtitle = "Choose the date";
-	ScreenTitle = new Word(title, imagesSpriteSheet, 10, 300, 1.5f); 
+	ScreenTitle = new Word(title, imagesSpriteSheet, 10, 300); 
 	ScreenTitle->setXCentered();
-	SubTitle = new Word(subtitle, imagesSpriteSheet, 350, 200, 0.7f); 
 }
 
 LoadGameScreen::~LoadGameScreen()
@@ -29,7 +27,6 @@ LoadGameScreen::~LoadGameScreen()
 void LoadGameScreen::render()
 {
 	ScreenTitle->render(renderer);
-	SubTitle->render(renderer);
 	double y = ScreenTitle->getY();
 	if (ScreenTitle->getY() > 100) // handle animation; move the title to y=100
 		y = ScreenTitle->getY() * 0.9;
@@ -41,7 +38,7 @@ void LoadGameScreen::render()
 		backBtn->render(renderer);
 	}
 
-	ScreenTitle->setPosition(ScreenTitle->getX(), y);
+	ScreenTitle->setPosition(ScreenTitle->getX(), (int)y);
 }
 
 

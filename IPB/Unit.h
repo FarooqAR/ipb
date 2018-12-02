@@ -22,8 +22,6 @@ public:
 	virtual void move();
 	void move(int direction); 
 	virtual void render();
-	float speedX; // make protected!
-	float speedY; // make protected!
 	void setScale(float scale);
 	void setClip(SDL_Rect);
 	float getScale();
@@ -44,6 +42,8 @@ protected:
 	float speedYdecimal;
 	int count1 = 0;
 	float thrust = .0355f;
+	float speedX; 
+	float speedY; 
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer* renderer;
 

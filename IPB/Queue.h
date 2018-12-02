@@ -21,4 +21,5 @@ public:
 	void clean();
 	void render();
 	void move();
+	Node* Top();
 };

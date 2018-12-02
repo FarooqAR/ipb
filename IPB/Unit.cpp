@@ -24,6 +24,7 @@ Unit::~Unit()
 }
 bool Unit::checkCollision(Unit* unit)
 {
+	//checks for collisions
 	if (position.x + width < unit->getPosition().x ||
 		position.x > unit->getPosition().x + unit->getWidth() ||
 		position.y + height < unit->getPosition().y ||
@@ -35,6 +36,7 @@ bool Unit::checkCollision(Unit* unit)
 }
 bool Unit::checkCollision(Unit* unit, bool isCentered)
 {
+	//checks for collisions
 	if ((unit->getPosition().x >= position.x  &&
 		unit->getPosition().x <= position.x + width) &&
 		(unit->getPosition().y >= position.y &&
@@ -76,24 +78,31 @@ void Unit::move(int direction)
 
 	if (direction == UP)
 	{
-		speedX += cos((angle - 90) * constants::PI / 180)*thrust;
-		speedY += sin((angle - 90) * constants::PI / 180)*thrust;
+		//vectorize thrust
+		speedX += (float) (cos((angle - 90) * constants::PI / 180)*thrust);
+		speedY += (float) (sin((angle - 90) * constants::PI / 180)*thrust);
+
+		//gets the decimal value
 		speedXdecimal = speedX - floor(speedX);
 		speedYdecimal = speedY - floor(speedY);
+
+		//moves that decimal value in pixels
 		if (speedXdecimal != 0)
 		{
 			if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
-				position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+				position.x += (int) (1 * (speedXdecimal / abs(speedXdecimal)));
 		}
 		if (speedYdecimal != 0)
 		{
 			if (count1%static_cast<int>(1 / speedYdecimal) == 0)
-				position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+				position.y += (int) (1 * (speedYdecimal / abs(speedYdecimal)));
 		}
 
 		count1++;
-		position.x += speedX;
-		position.y += speedY;
+
+		//changes position
+		position.x += (int) speedX;
+		position.y += (int) speedY;
 	}
 
 }
@@ -101,26 +110,28 @@ void Unit::move(int direction)
 void Unit::move()
 {
 	
+	//gets the decimal value
 	speedXdecimal = speedX - floor(speedX);
 	speedYdecimal = speedY - floor(speedY);
 
-	//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
-
-
+	//moves that decimal value in pixels
 	if (speedXdecimal != 0)
 	{
 		if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
-			position.x += 1 * (speedXdecimal / abs(speedXdecimal));
+			position.x += (int) (1 * (speedXdecimal / abs(speedXdecimal)));
 	}
 	if (speedYdecimal != 0)
 	{
 		if (count1%static_cast<int>(1 / speedYdecimal) == 0)
-			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
+			position.y += (int) (1 * (speedYdecimal / abs(speedYdecimal)));
 	}
 
-	position.x += speedX;
-	position.y += speedY;
+	//changes position
+	position.x += (int) speedX;
+	position.y += (int) speedY;
 
+
+	//teleports from sides
 	if (position.x < 0)
 	{
 		position.x = constants::WINDOW_WIDTH;
@@ -138,7 +149,6 @@ void Unit::move()
 		position.y = 0;
 	}
 	count1++;
-
 }
 
 

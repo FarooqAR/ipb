@@ -7,7 +7,7 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 {
 	this->angle = Angle;
 	this->objTexture = imageSpriteSheet;
-	this->weapons = new Weapon("Gun", 10, constants::SIMPLE_BULLET);
+	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = constants::PLAYER_WIDTH;
@@ -25,14 +25,14 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 			this->height 
 		};
 	}
-	Ammo = weapons->GetAmmo();
-	ShootDelay = weapons->GetDelay();
+	Ammo = weapon->GetAmmo();
+	ShootDelay = weapon->GetDelay();
 	
 }
 
 Player::~Player()
 {
-	delete weapons;
+	delete weapon;
 	delete objTexture;
 }
 
@@ -56,7 +56,7 @@ void Player::render()
 
 Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet)
 {
-	return weapons->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
+	return weapon->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
 }
 
 void Player::setShipCurrentClipIndex(int i)

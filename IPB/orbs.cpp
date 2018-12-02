@@ -19,38 +19,11 @@ orbs::~orbs()
 
 }
 
-/*
-void orbs::move1()
-{
-	speedXdecimal = speedX - floor(speedX);
-	speedYdecimal = speedY - floor(speedY);
-
-	//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
-
-
-	if (speedXdecimal != 0)
-	{
-		if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
-			position.x += 1 * (speedXdecimal / abs(speedXdecimal));
-	}
-	if (speedYdecimal != 0)
-	{
-		if (count1%static_cast<int>(1 / speedYdecimal) == 0)
-			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
-	}
-
-	count1++;
-
-	position.x = position.x + speedX;
-	position.y = position.y + speedY;
-}
-*/
-
+//sets position and speed of orbs to that of the player
 void orbs::setPosit(Player* player)
 {
-	position.x = player->GetX();
-	position.y = player->GetY();
-//	cout << player->getxSpeed() << " " << player->getySpeed() << endl;
-	this->setSpeed(player->getxSpeed()*1.05, player->getySpeed()*1.05);
+	position.x = player->GetX()+10;
+	position.y = player->GetY()+25;
+	this->setSpeed(player->getxSpeed()*1.05f, player->getySpeed()*1.05f);
 
 }

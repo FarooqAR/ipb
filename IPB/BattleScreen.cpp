@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Node.h"
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
@@ -21,11 +22,10 @@
 
 using namespace std;
 
-BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet)
+BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu)
 	: renderer(renderer)
 {
 	isPaused = false;
-	level = 1;
 	frames = 0;
 	this->unitFactory = unitFactory;
 	fadeScreenTexture = imagesSpriteSheet;
@@ -105,15 +105,18 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	wormHole->setPosition(100, 300);
 	wormHole->setClip(wormHoleClip);
 
-
+	//creates player, enemy, planets 
 	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
+	if (comingFromMenu)
+	{
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
+	}
 
 	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
 	ResumeGameBtn = new Button(imagesSpriteSheet, "Resume", x, 200);
@@ -123,12 +126,13 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 
 	PauseTitle = new Word("Game Paused", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	PauseTitle->setXCentered();
-	//ball = new orbs(renderer, 100, 100);
-	ball = new orbs*[10];
 
+
+	//generates movement orbs
+	ball = new orbs*[10];
 	for (int x = 0; x < 10; x++)
 	{
-		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, .09 / (x + 3));
+		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, .09f / (x + 3));
 	}
 
 	for (int i = 0; i < 20; i++)
@@ -149,12 +153,17 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName)
 	: BattleScreen(renderer, unitFactory, imagesSpriteSheet)
 {
+	//reading from file
 	ifstream file(savedFileName);
 	string line;
+	bool readingPlanets = false;
+	bool readingAsteroids = false;
+	
 	if (!file || !file.is_open())
 		return;
 	int i = 1;
 	Point pos;
+	//reads each line and acts accordingly 
 	while (getline(file, line))
 	{
 		switch (i)
@@ -179,38 +188,72 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			hero->setFuel(stoi(line));
 			break;
 		case 7:
-			//hero->setWeaponName(line.c_str());
+			hero->SetWeaponType(stoi(line));;
 			break;
 		case 8:
-			hero->GetWeapon()->setWeaponName(line.c_str());
+			hero->SetAmmo(stoi(line));
+			AmmoCount->setText("Ammo: " + to_string(hero->GetAmmo()));
 			break;
 		case 9:
-			hero->SetAmmo(stoi(line));
-			break;
-		case 10:
 			hero->setShipCurrentClipIndex(stoi(line));
 			break;
-		case 11:
+		case 10:
 			pos.x = stoi(line);
 			break;
-		case 12:
+		case 11:
 			pos.y = stoi(line);
 			enemy->setPosition(pos.x, pos.y);
 			break;
-		case 13:
+		case 12:
 			enemy->setAngle(stod(line));
 			break;
-		case 14:
+		case 13:
 			enemy->setHealth(stof(line));
-			break;
-		case 15:
-			level = stoi(line);
 			break;
 		default:
 			break;
 		}
+		if (line == "planets")
+		{
+			readingPlanets = true;
+			continue;
+		}
+		else if (line == "asteroids")
+		{
+			readingPlanets = false;
+			readingAsteroids = true;
+			continue;
+		}
+		if (readingPlanets)
+		{
+			string tokens = "";
+			int x;
+			int y;
+			float scale;
+			int j = 0;
+			int k = 0;
+			int planetType = 0;
+			while (j != line.length())
+			{
+				if (line[j] == ' ' || j == line.length() - 1)
+				{
+					if (k == 0) x = stoi(tokens);
+					else if (k == 1) y = stoi(tokens);
+					else if (k == 2) planetType = stoi(tokens);
+					else scale = stof(tokens + line[j]);
+					k++;
+					tokens = "";
+				}
+				else
+				{
+					tokens += line[j];
+				}
+				j++;
+			}
+			planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, planetType, x, y, scale));
+		}
 		i++;
-		cout << line << '\n';
+
 	}
 	file.close();
 }
@@ -233,6 +276,8 @@ void BattleScreen::render()
 	SDL_RenderDrawRect(renderer, &heroOxygenBoundary);
 	SDL_SetRenderDrawColor(renderer, 228, 123, 36, 1);
 	SDL_RenderDrawRect(renderer, &heroFuelBoundary);
+
+	//creates wormhole
 	if (!enemy->getAlive() && hero->getAlive())
 	{
 		wormHole->setAngle(wormHole->getAngle() - 0.2);
@@ -250,19 +295,24 @@ void BattleScreen::render()
 		}
 		wormHole->render();
 	}
+
+	//kills both enemy and hero if they collide
 	if (enemy->getAlive() && hero->checkCollision(enemy))
 	{
 		hero->setHealth(0);
 		enemy->setHealth(0);
 	}
+
+	//does damage if hero gets hit by bullet
 	if (enemy->getAlive() && PlayerBulletQueue.checkCollision(enemy, true))
 	{
 		enemy->setHealth(enemy->getHealth() - 5);
 		PlayerBulletQueue.clean();
 	}
+	//does damage if enemy gets hit by bullet
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
-		hero->setHealth(hero->getHealth());
+		hero->setHealth(hero->getHealth() - 5);
 		EnemyBulletQueue.clean();
 	}
 
@@ -300,7 +350,7 @@ void BattleScreen::render()
 	i = 0;
 	while (i < enemy->getHealth())
 	{
-		healthBarTexture->renderTexture(enemy->getPosition().x + i * 0.9, enemy->getPosition().y - 10, renderer, &healthSpriteClip);
+		healthBarTexture->renderTexture((int)(enemy->getPosition().x + i * 0.9), enemy->getPosition().y - 10, renderer, &healthSpriteClip);
 		i += 1;
 	}
 
@@ -403,7 +453,7 @@ void BattleScreen::render()
 	// toggle ship color when it collides
 	if (isColliding)
 	{
-		hero->setHealth(hero->getHealth() - 0.1);
+		hero->setHealth(hero->getHealth() - 0.1f);
 		if (frames % 20 == 0)
 		{
 			if (hero->getIsThrusting())
@@ -462,6 +512,8 @@ void BattleScreen::render()
 		enemy->render();
 	else if (enemExplosionSpriteIndex < 20)
 	{
+		if (enemExplosionSpriteIndex == 0)
+			Game::getInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
 		explosionTexture->renderTexture(
 			enemy->getPosition().x + enemy->getWidth() / 2 - 100 / 2,
 			enemy->getPosition().y + enemy->getHeight() / 2 - 63 / 2,
@@ -475,11 +527,11 @@ void BattleScreen::render()
 	{
 		if (hero->getScale() > 0.1)
 		{
-			hero->render();
 			for (int x = 0; x < 10; x++)
 			{
 				ball[x]->render();
 			}
+			hero->render();
 		}
 		else
 			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
@@ -488,6 +540,9 @@ void BattleScreen::render()
 	}
 	else if (heroExplosionSpriteIndex < 20)
 	{
+		if (heroExplosionSpriteIndex == 0)
+			Game::getInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
+
 		explosionTexture->renderTexture(
 			hero->getPosition().x + hero->getWidth() / 2 - 96 / 2,
 			hero->getPosition().y + hero->getHeight() / 2 - 96 / 2,
@@ -500,6 +555,7 @@ void BattleScreen::render()
 			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
 
+	//checks for paused game
 	if (isPaused)
 	{
 		fadeScreenTexture->renderTexture(25, 50, renderer, &pauseScreenSpriteClip);
@@ -516,11 +572,65 @@ void BattleScreen::render()
 			quitGameBtn->render(renderer);
 		}
 
-		PauseTitle->setPosition(PauseTitle->getX(), y);
+		PauseTitle->setPosition(PauseTitle->getX(), (int)y);
 	}
 
 	frames++;
 }
+
+
+bool BattleScreen::isEmpty(string filename)
+{
+	ifstream file;
+	int length;
+	file.open(filename);
+	file.seekg(0, ios::end); // put the "cursor" at the end of the file
+	length = (int) file.tellg(); // find the position of the cursor
+
+	if (length == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void BattleScreen::writeFile(string filename)
+{
+	ofstream myfile;
+	Node* planetsCursor;
+	myfile.open(filename);
+	myfile <<
+		hero->getPosition().x << endl <<
+		hero->getPosition().y << endl <<
+		hero->getAngle() << endl <<
+		hero->getHealth() << endl <<
+		hero->getOxygen() << endl <<
+		hero->getFuel() << endl <<
+		hero->GetWeaponType() << endl <<
+		hero->GetAmmo() << endl <<
+		hero->getCurrentClipIndex() << endl <<
+		enemy->getPosition().x << endl <<
+		enemy->getPosition().y << endl <<
+		enemy->getAngle() << endl <<
+		enemy->getHealth() << endl
+		<< "planets" << endl;
+	planetsCursor = planets.Top();
+	while (planetsCursor != nullptr)
+	{
+		myfile <<
+			planetsCursor->unit->getPosition().x << " " <<
+			planetsCursor->unit->getPosition().y << " " <<
+			((Attractor*)planetsCursor->unit)->GetPlanetType() << " " <<
+			planetsCursor->unit->getScale() << endl;
+		planetsCursor = planetsCursor->next;
+	}
+	myfile << "asteroids" << endl;
+	myfile.close();
+}
+
 
 
 void BattleScreen::handleEvents(SDL_Event& event)
@@ -530,22 +640,26 @@ void BattleScreen::handleEvents(SDL_Event& event)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	hero->SetDelay(hero->GetDelay() + 1);
 
+	//handles running game
 	if (!isPaused)
 	{
+		//moving right
 		if (currentKeyStates[SDL_SCANCODE_RIGHT])
 		{
 			hero->move(RIGHT);
 		}
 
+		//moving left
 		if (currentKeyStates[SDL_SCANCODE_LEFT])
 		{
 			hero->move(LEFT);
 		}
 
+		//moving up
 		if (currentKeyStates[SDL_SCANCODE_UP] && hero->getAlive())
 		{
 			hero->move(UP);
-			hero->setIsThrusting(true);
+			hero->setIsThrusting(true); //shows thruster
 			hero->setFuel(hero->getFuel() - 0.4);
 		}
 		else if (hero->getAlive())
@@ -555,16 +669,21 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			if (!intoWormHole)
 				hero->move();
 		}
+
+		//iterates through orbs
 		for (int y = 0; y < 10; y++)
 		{
+			// sets all to current hero position
 			ball[y]->setPosit(hero);
 			for (int z = y; z < 6 * y; z++)
 			{
+				//pulls orbs accordingly 
 				planets.pull(ball[y]);
 				ball[y]->move();
 			}
 		}
 	}
+	//space for shooting
 	if (currentKeyStates[SDL_SCANCODE_SPACE] && isPaused == false)
 	{
 		if (hero->GetDelay() > hero->GetWeapon()->GetDelay() && hero->GetAmmo() > 0 && !intoWormHole)
@@ -577,10 +696,10 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			AmmoCount->setText(title);
 		}
 	}
-	bool isResumeGameBtnClicked;
-	bool isBackBtnClicked;
-	bool isQuitGameBtnClicked;
-	bool issaveGameBtnClicked;
+	bool isResumeGameBtnClicked = false;
+	bool isBackBtnClicked = false;
+	bool isQuitGameBtnClicked = false;
+	bool issaveGameBtnClicked = false;
 	switch (event.type)
 	{
 	case SDL_KEYUP:
@@ -589,44 +708,54 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onClickDown(x, y);
-		saveGameBtn->onClickDown(x, y);
-		backBtn->onClickDown(x, y);
-		quitGameBtn->onClickDown(x, y);
+		if (isPaused)
+		{
+			ResumeGameBtn->onClickDown(x, y);
+			saveGameBtn->onClickDown(x, y);
+			backBtn->onClickDown(x, y);
+			quitGameBtn->onClickDown(x, y);
+
+		}
 
 		break;
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		isResumeGameBtnClicked = ResumeGameBtn->onClickUp(x, y);
-		issaveGameBtnClicked = saveGameBtn->onClickUp(x, y);
-		isBackBtnClicked = backBtn->onClickUp(x, y);
-		isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		if (isPaused)
+		{
+			isResumeGameBtnClicked = ResumeGameBtn->onClickUp(x, y);
+			issaveGameBtnClicked = saveGameBtn->onClickUp(x, y);
+			isBackBtnClicked = backBtn->onClickUp(x, y);
+			isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		}
 		if (isResumeGameBtnClicked)
 			isPaused = false;
 		else if (issaveGameBtnClicked)
 		{
-			ofstream myfile;
-			myfile.open("SavedGame1.txt");
-			myfile <<
-				hero->getPosition().x << endl <<
-				hero->getPosition().y << endl <<
-				hero->getAngle() << endl <<
-				hero->getHealth() << endl <<
-				hero->getOxygen() << endl <<
-				hero->getFuel() << endl <<
-				hero->GetWeapon()->GetWeaponType() << endl <<
-				hero->GetWeapon()->GetWeaponName() << endl <<
-				hero->GetAmmo() << endl <<
-				hero->getCurrentClipIndex() << endl <<
-				enemy->getPosition().x << endl <<
-				enemy->getPosition().y << endl <<
-				enemy->getAngle() << endl <<
-				enemy->getHealth() << endl <<
-				level << endl;// <<
-				//hero->getCurrentClipIndex() << endl;
+			if (isEmpty("SavedGame1.txt") == true)
+			{
+				writeFile("SavedGame1.txt");
+			}
+			else
+			{
+				if (isEmpty("SavedGame2.txt") == true)
+				{
+					writeFile("SavedGame2.txt");
+				}
+				else
+				{
+					if (isEmpty("SavedGame3.txt") == true)
+					{
+						writeFile("SavedGame3.txt");
+					}
+					else
+					{
+						writeFile("SavedGame1.txt");
+					}
+				}
+			}
 
-			myfile.close();
+			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
 		}
 		else if (isBackBtnClicked)
 			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
@@ -636,10 +765,13 @@ void BattleScreen::handleEvents(SDL_Event& event)
 
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onHover(x, y);
-		saveGameBtn->onHover(x, y);
-		backBtn->onHover(x, y);
-		quitGameBtn->onHover(x, y);
+		if (isPaused)
+		{
+			ResumeGameBtn->onHover(x, y);
+			saveGameBtn->onHover(x, y);
+			backBtn->onHover(x, y);
+			quitGameBtn->onHover(x, y);
+		}
 		break;
 	default:
 		break;
