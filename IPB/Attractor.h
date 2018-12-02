@@ -9,7 +9,7 @@ class Attractor : public Unit
 {
 private:
 	Gravity pull;
-	float gravConstant = 2;
+	float gravConstant;
 	int planetType;
 public:
 	Attractor();

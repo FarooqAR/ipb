@@ -6,7 +6,6 @@
 #include "Attractor.h"
 #include "EasterEgg.h"
 #include "Asteroid.h"
-#include "Level.h"
 #include "Queue.h" 
 #include "Unit.h"
 #include "Enemy.h"
@@ -41,9 +40,6 @@ private:
 	LTexture* HealthEasterEggTexture;
 	LTexture* WeaponEasterEggTexture;
 	//Clips
-	Word* weaponTitle;
-	Word* ammoCount;
-	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
@@ -73,14 +69,12 @@ private:
 	Word* WeaponTitle;
 	Word* AmmoCount;
 	Word* PauseTitle;
-
 	UnitFactory* unitFactory;
 	Unit* wormHole;
 	SDL_Renderer* renderer;
 	Player* hero;
 	Enemy* enemy;
-	orbs** ball;
-	Level* currentLevel;
+	Orbs** ball;
 
 public:
 	BattleScreen();

@@ -231,7 +231,7 @@ void Unit::Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit
 	int Delay = 0;
 	while (Index < 10)
 	{
-		ExplosionTexture->renderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
+		ExplosionTexture->RenderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
 		if (Delay % 8 == 0)
 		{
 			Index++;

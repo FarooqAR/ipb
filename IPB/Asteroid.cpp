@@ -4,12 +4,12 @@
 
 
 //randomly sets the initial position of the asteroid
-void Asteroid::SetPosition()
+void Asteroid::setPosition()
 {
 	int x = 0;
 	int y = 0;
 
-	//coming from either the sides of the screen or top/bottom
+	//random selection of direction of asteroids coming 
 	if (rand() % 2 == 1)
 	{
 		y = rand() % 700;
@@ -38,7 +38,7 @@ void Asteroid::SetPosition()
 			direction = 'd';
 		}
 	}
-	this->setPosition(x, y);
+	this->SetPosition(x, y);
 
 }
 
@@ -51,7 +51,7 @@ Asteroid::Asteroid()
 
 Asteroid::Asteroid(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet,float scale, int damage, int speedX, int speedY) : Unit()
 {
-	SetPosition();
+	setPosition();
 	this->angle = (position.x <= 512 || position.y <= 350) ? rand() % 91 + 90 : rand() % 91 + 180;
 	this->objTexture = imageSpriteSheet;
 	this->renderer = gRenderer;
@@ -85,8 +85,9 @@ void Asteroid::move()
 		position.y += (cos((angle - 90) * M_PI / 180)) * speedY;
 	}
 
+	//deletes the asteroid object once it is out of the game screen frame
 	if (position.y < -100 || position.y > constants::WINDOW_HEIGHT + 20 || position.x <  -100 || position.x > constants::WINDOW_WIDTH + 20)
 	{
-		setAlive(false);
+		SetAlive(false);
 	}
 }

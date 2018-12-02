@@ -44,7 +44,7 @@ void Bullet::Move()
 	//deletes bullet once out of the game screen frame
 	if (position.y < -100 || position.y > constants::WINDOW_HEIGHT || position.x <  -100 || position.x > constants::WINDOW_WIDTH)
 	{
-		setAlive(false);
+		SetAlive(false);
 	}
 }
 

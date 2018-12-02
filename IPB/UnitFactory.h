@@ -17,7 +17,7 @@ private:
 	SDL_Renderer* gRenderer;
 public:
 	static UnitFactory * getInstance(SDL_Renderer*);
-	Attractor * createPlanet(LTexture*, int, int, int, float);
-	Asteroid * createAsteroid(LTexture*,  int scale);
-	EasterEgg * createEasterEgg(LTexture*, int EggType);
+	Attractor * CreatePlanet(LTexture*, int, int, int, float);
+	Asteroid * CreateAsteroid(LTexture*,  float scale);
+	EasterEgg * CreateEasterEgg(LTexture*, int EggType);
 };

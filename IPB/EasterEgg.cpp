@@ -52,7 +52,7 @@ EasterEgg::~EasterEgg()
 
 
 //Controls the movement of the easteregg 
-void EasterEgg::move()
+void EasterEgg::Move()
 {
 	angle = angle - 0.6;
 
@@ -81,17 +81,17 @@ void EasterEgg::HasCollected(Player * player)
 	{
 		if (type == constants::HEALTH)
 		{
-			player->setHealth(100);
+			player->SetHealth(100);
 		}
 
 		else if (type == constants::FUEL)
 		{
-			player->setFuel(100);
+			player->SetFuel(100);
 		}
 
 		else if (type == constants::OXYGEN)
 		{
-			player->setOxygen(100);
+			player->SetOxygen(100);
 		}
 
 		else if (type == constants::WEAPON)

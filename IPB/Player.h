@@ -11,12 +11,12 @@ class Player : public Unit
 private:
 	float health;
 	float oxygen;
-	float fuel;;
+	float fuel;
 	Weapon * weapon; 
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;
-	int shootDelay;
+	int ShootDelay;
 	int ammo;
 public:
 	~Player(); 
@@ -26,16 +26,15 @@ public:
 	void SetDelay(int);
 	int GetDelay();
 	int GetAmmo();
-
 	void Render();
 	void SetHealth(float);
-	void SetOxygen(int);
-	void SetFuel(int);
+	void SetOxygen(float);
+	void SetFuel(float);
 	void SetShipCurrentClipIndex(int);
 	void ChangeShipCurrentClipIndex();
 	float GetHealth();
-	int GetOxygen();
-	int GetFuel();
+	float GetOxygen();
+	float GetFuel();
 	int GetCurrentClipIndex();
 	bool GetIsThrusting();
 	void SetIsThrusting(bool);

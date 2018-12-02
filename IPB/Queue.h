@@ -13,13 +13,13 @@ private:
 public:
 	Queue();
 	~Queue();
-	void enqueue(Unit*);
-	void pull(Unit*);
-	bool checkCollision(Unit*, bool selfDestruct = false);
-	void checkCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destroy = false);
+	void Enqueue(Unit*);
+	void Pull(Unit*);
+	bool CheckCollision(Unit*, bool selfDestruct = false);
+	void CheckCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destroy = false);
 	void Collected(Player * player);
-	void clean();
-	void render();
-	void move();
+	void Clean();
+	void Render();
+	void Move();
 	Node* Top();
 };

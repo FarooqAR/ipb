@@ -5,7 +5,7 @@ using namespace std;
 
 /*Guide used to indicate the direction of the gravitational force pulling the player*/
 
-orbs::orbs(SDL_Renderer * gRenderer, int initialX, int initialY, float scale)
+Orbs::Orbs(SDL_Renderer * gRenderer, int initialX, int initialY, float scale)
 {
 	this->objTexture = new LTexture;
 	this->objTexture->LoadFromFile("assets/bluecirlce.png", gRenderer);
