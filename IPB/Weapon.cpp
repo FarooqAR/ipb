@@ -1,19 +1,19 @@
 #include "pch.h"
 #include "constants.h"
 #include "Weapon.h"
+#include "Game.h"
 #include <cmath>
 
 Weapon::Weapon()
 {
 	bullets = nullptr;
-	name = "Gun";
 	WeaponType = constants::SIMPLE_BULLET;
 	TimeDelay = 30;
 	Ammo = 30;
 }
 
 
-Weapon::Weapon(const char* name, int delay, int type, int ammo)
+Weapon::Weapon(int delay, int type, int ammo)
 {
 	bullets = nullptr;
 	this->name = name;
@@ -34,7 +34,11 @@ int Weapon::GetDelay()
 
 const char* Weapon::GetWeaponName()
 {
-	return name;
+	if (GetWeaponType() == constants::SIMPLE_BULLET)
+		return "Gun";
+	else if (GetWeaponType() == constants::MISSILE)
+		return "Launcher";
+	return "Laser";
 }
 int Weapon::GetWeaponType()
 {
@@ -43,6 +47,11 @@ int Weapon::GetWeaponType()
 int Weapon::GetAmmo()
 {
 	return Ammo;
+}
+
+void Weapon::SetWeaponType(int weaponType)
+{
+	this->WeaponType = weaponType;
 }
 
 void Weapon::setWeaponName(const char * w_name)
@@ -66,6 +75,6 @@ Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int x
 	{
 		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
 	}
-	
+	Game::getInstance()->PlayMusic(constants::MUSIC_BULLET);
 	return bullets;
 }

@@ -21,7 +21,6 @@ private:
 	int frames;
 	int heroExplosionSpriteIndex;
 	int enemExplosionSpriteIndex;
-	int level;
 	bool isPaused;
 	bool isMoving;
 	bool intoWormHole;
@@ -63,10 +62,12 @@ private:
 public:
 	int ok = 1;
 	BattleScreen();
-	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet);
+	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu = false);
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
 	void render();
+	bool isEmpty(string);
+	void writeFile(string);
 	void handleEvents(SDL_Event&);
 
 };

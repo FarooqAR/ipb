@@ -13,7 +13,6 @@
     <ClCompile Include="LoadGameScreen.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
-    <ClCompile Include="PauseScreen.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Queue.cpp" />
@@ -24,6 +23,8 @@
     <ClCompile Include="UnitFactory.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="orbs.cpp" />
+    <ClCompile Include="ControlsIntroScreen.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attractor.h" />
@@ -54,5 +55,7 @@
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Word.h" />
     <ClInclude Include="orbs.h" />
+    <ClInclude Include="ControlsIntroScreen.h" />
+    <ClInclude Include="SplashScreen.h" />
   </ItemGroup>
 </Project>

@@ -6,11 +6,14 @@ namespace constants
 	const double PI = 3.14159265358979323846;
 	const int WINDOW_WIDTH = 1024;
 	const int WINDOW_HEIGHT = 700;
+	const int BG_WIDTH = 1024;
+	const int BG_HEIGHT = 786;
 	const int CHARACTER_WIDTH = 60;
 	const int CHARACTER_HEIGHT = 77;
 	const int PLANET_WIDTH = 200;
 	const int PLANET_HEIGHT = 200;
 	const int BUTTON_WIDTH = 300;
+	const int BUTTON_HEIGHT = 52;
 	const int STATUS_WIDTH = 5;
 	const int STATUS_HEIGHT = 10;
 	const int BULLET_WIDTH = 30;
@@ -45,7 +48,8 @@ namespace constants
 		BATTLE_SCREEN,
 		GAME_OVER_SCREEN,
 		SAVE_GAME_SCREEN,
-		PAUSE_SCREEN
+		PAUSE_SCREEN,
+		CONTROLS_INRO_SCREEN
 	};
 	enum PLANETS_TYPES
 	{
@@ -62,5 +66,13 @@ namespace constants
 		SIMPLE_BULLET,
 		MISSILE,
 		LASER
+	};
+	enum MUSIC_TYPES
+	{
+		MUSIC_THEME,
+		MUSIC_BTN_HOVER,
+		MUSIC_BTN_CLICK,
+		MUSIC_EXPLOSION,
+		MUSIC_BULLET
 	};
 }

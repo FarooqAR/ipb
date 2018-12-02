@@ -6,7 +6,7 @@
 #include "Button.h"
 #include "Game.h"
 
-MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet) 
+MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteSheet)
 	: renderer(renderer)
 {
 	this->imagesSpriteSheet = imagesSpriteSheet;
@@ -19,9 +19,11 @@ MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteShe
 	string title = "Interplanetory Battlefield";
 	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	gameTitle->setXCentered();
+	Game::getInstance()->PlayMusic(constants::MUSIC_THEME);
 }
 MainMenuScreen::~MainMenuScreen()
 {
+
 }
 void MainMenuScreen::render()
 {
@@ -59,7 +61,7 @@ void MainMenuScreen::handleEvents(SDL_Event& event)
 		selectLevelBtn->onClickDown(x, y);
 		quitGameBtn->onClickDown(x, y);
 		break;
-			
+
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
@@ -72,7 +74,11 @@ void MainMenuScreen::handleEvents(SDL_Event& event)
 		else if (isLoadGameBtnClicked)
 			Game::setCurrentScreen(constants::LOAD_GAME_SCREEN);
 		else if (isQuitGameBtnClicked)
+		{
+			delete Game::getInstance();
 			exit(0);
+		}
+		
 		else if (isSelectLevelBtnClicked)
 			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
 		break;

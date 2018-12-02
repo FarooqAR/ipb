@@ -18,7 +18,7 @@ public:
 	LTexture();
 	~LTexture();
 	bool loadFromFile(const char*, SDL_Renderer*, bool flagColorKey = true, Uint8 redColorKey = 0, Uint8 greenColorKey = 0xFF, Uint8 blueColorKey = 0xFF);        ///takes arguments to ColorKey
-	void renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0.0, SDL_Point* center = NULL, float scale = 1, bool debug = false);
+	void renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0.0, SDL_Point* center = NULL, float scaleX = 1.0f, float scaleY = -1.0f, bool debug = false);
 	void free();
 	//Set blending
 	void setBlendMode(SDL_BlendMode blending);
