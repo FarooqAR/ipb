@@ -93,7 +93,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	ball = new orbs*[10];
 	for (int x = 0; x < 10; x++)
 	{
-		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, .09 / (x + 3));
+		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, static_cast<float>((.09 / (x + 3))));
 	}
 
 	for (int i = 0; i < 20; i++)
@@ -269,7 +269,7 @@ void BattleScreen::render()
 	i = 0;
 	while (i < enemy->getHealth())
 	{
-		healthBarTexture->renderTexture(enemy->getPosition().x + i * 0.9, enemy->getPosition().y - 10, renderer, &healthSpriteClip);
+		healthBarTexture->renderTexture(static_cast<int>(enemy->getPosition().x + i * 0.9), static_cast<int>(enemy->getPosition().y - 10), renderer, &healthSpriteClip);
 		i += 1;
 	}
 
@@ -279,7 +279,7 @@ void BattleScreen::render()
 	// toggle ship color when it collides
 	if (isColliding)
 	{
-		hero->setHealth(hero->getHealth() - 0.1);
+		hero->setHealth(hero->getHealth() - 0.1f);
 		if (frames % 20 == 0)
 		{
 			if (hero->getIsThrusting())
@@ -395,7 +395,7 @@ void BattleScreen::render()
 			quitGameBtn->render(renderer);
 		}
 
-		PauseTitle->setPosition(PauseTitle->getX(), y);
+		PauseTitle->setPosition(PauseTitle->getX(), static_cast<int>(y));
 	}
 
 	frames++;

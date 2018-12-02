@@ -55,17 +55,17 @@ Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int x
 {
 	if (WeaponType == constants::SIMPLE_BULLET)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.15, angle, 10, constants::BULLET_WIDTH, constants::BULLET_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, static_cast<int>(xcord + cos((angle - 90) * constants::PI / 180) + 11), static_cast<int>(ycord + sin((angle - 90) * constants::PI / 180) + 11), 0.15f, angle, 10, constants::BULLET_WIDTH, constants::BULLET_HEIGHT);
 	}
 
 	if (WeaponType == constants::MISSILE)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 20, constants::BULLET_WIDTH, constants::MISSILE_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, static_cast<int>(xcord + cos((angle - 90) * constants::PI / 180) + 11), static_cast<int>(ycord + sin((angle - 90) * constants::PI / 180) + 11), 0.3f, angle, 20, constants::BULLET_WIDTH, constants::MISSILE_HEIGHT);
 	}
 
 	if (WeaponType == constants::LASER)
 	{
-		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
+		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, static_cast<int>(xcord + cos((angle - 90) * constants::PI / 180) + 11), static_cast<int>(ycord + sin((angle - 90) * constants::PI / 180) + 11), 0.3f, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
 	}
 	Game::getInstance()->PlayMusic(constants::MUSIC_BULLET);
 	return bullets;

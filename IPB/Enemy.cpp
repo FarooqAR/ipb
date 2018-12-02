@@ -49,15 +49,15 @@ void Enemy::move()
 {
 	if (position.x > constants::WINDOW_WIDTH / 2)
 	{
-		speedX = speedX - .01;
+		speedX = speedX - .01f;
 	}
 	if (position.x < constants::WINDOW_WIDTH / 2)
 	{
-		speedX = speedX + .01;
+		speedX = speedX + .01f;
 	}
 	
 
-	position.x = position.x + speedX;
+	position.x = static_cast<int>(position.x + speedX);
 
 
 

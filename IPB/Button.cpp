@@ -14,8 +14,8 @@ Button::Button(LTexture * bgTexture, LTexture * alphabetsSpriteSheet, string lab
 	height = h;
 	spriteIndex = 0;
 	this->btnTexture = bgTexture;
-	float labelScale = 0.7;
-	int labelX = width - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale;
+	float labelScale = 0.7f;
+	int labelX = static_cast<int>(width - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale);
 	this->label = new Word(
 		label,
 		alphabetsSpriteSheet,
@@ -36,8 +36,8 @@ Button::Button(LTexture * imagesSpriteSheet, string label, int x, int y, int w, 
 	spriteClips[2] = { spritePos.x, spritePos.y + 109, constants::BUTTON_WIDTH, constants::BUTTON_HEIGHT };
 	spriteIndex = 0;
 	this->btnTexture = imagesSpriteSheet;
-	float labelScale = 0.7;
-	int labelX = width - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale;
+	float labelScale = 0.7f;
+	int labelX = static_cast<int>(width - label.length() * 60 * labelScale + (label.length() - 1) * 30 * labelScale);
 	this->label = new Word(
 		label,
 		imagesSpriteSheet,

@@ -4,8 +4,8 @@
 
 Character::Character()
 {
-	w = 60 * scale;
-	h = 77 * scale;
+	w = static_cast<int>(60 * scale);
+	h = static_cast<int>(77 * scale);
 	this->charRect.w = w;
 	this->charRect.h = h;
 }
@@ -19,8 +19,8 @@ Character::Character(char c, LTexture* alphabetsSpriteSheet)
 {
 	this->showChar = c;
 	this->alphabetsSpriteSheet = alphabetsSpriteSheet;
-	w = 60 * scale;
-	h = 77 * scale;
+	w = static_cast<int>(60 * scale);
+	h = static_cast<int>(77 * scale);
 	this->charRect.w = w;
 	this->charRect.h = h;
 	this->setPosition(0, 0);

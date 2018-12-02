@@ -39,7 +39,7 @@ void MainMenuScreen::render()
 		quitGameBtn->render(renderer);
 	}
 
-	gameTitle->setPosition(gameTitle->getX(), y);
+	gameTitle->setPosition(gameTitle->getX(), static_cast<int>(y));
 }
 
 
