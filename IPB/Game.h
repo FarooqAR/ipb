@@ -24,6 +24,7 @@ private:
 	static SDL_Renderer * renderer;
 	static UnitFactory* unitFactory;
 	static LTexture* imagesSpriteSheet;
+	static bool isFirstTimer;
 
 	bool isRunning;
 	SDL_Window * window;

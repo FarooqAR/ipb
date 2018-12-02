@@ -176,7 +176,8 @@ void Unit::render()
 		this->angle,
 		nullptr,
 		scale,
-		false // if true, shows red rectangle around the unit for debugging purposes
+		scale,
+		false
 	);
 }
 

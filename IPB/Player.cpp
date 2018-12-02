@@ -49,6 +49,7 @@ void Player::render()
 		this->angle,
 		nullptr,
 		scale,
+		scale,
 		false // if true, shows red rectangle around the unit for debugging purposes
 	);
 }

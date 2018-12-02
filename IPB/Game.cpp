@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include "PauseScreen.h"
+#include "ControlsIntroScreen.h"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ GameScreen* Game::currentScreen = nullptr;
 SDL_Renderer* Game::renderer = nullptr;
 UnitFactory* Game::unitFactory = nullptr;
 LTexture* Game::imagesSpriteSheet = nullptr;
+bool Game::isFirstTimer = true;
 
 
 Game::Game()
@@ -33,7 +35,7 @@ Game * Game::getInstance()
 	if (instance == nullptr)
 	{
 		instance = new Game();
-		instance->backgroundRect = {0, 0, 1024, 786};
+		instance->backgroundRect = { 0, 0, 1024, 786 };
 	}
 	return instance;
 }
@@ -47,7 +49,11 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 	}
 	else if (screen == constants::BATTLE_SCREEN)
 	{
-		currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet);
+		if (isFirstTimer)
+			currentScreen = new ControlsIntroScreen(renderer, imagesSpriteSheet);
+		else
+			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet);
+		isFirstTimer = false;
 	}
 	else if (screen == constants::GAME_OVER_SCREEN)
 	{
@@ -89,7 +95,7 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
-	
+
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
 	}

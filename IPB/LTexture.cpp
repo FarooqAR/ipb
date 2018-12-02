@@ -47,17 +47,19 @@ bool LTexture::loadFromFile(const char* path, SDL_Renderer* gRenderer, bool flag
 }
 
 
-void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip, SDL_RendererFlip flip, double angle, SDL_Point* center, float scale, bool debug)
+void LTexture::renderTexture(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip, SDL_RendererFlip flip, double angle, SDL_Point* center, float scaleX, float scaleY, bool debug)
 {
 	SDL_Rect rectCoordinates = { x, y, width, height };
-	
+	if (scaleY == -1.0f)
+		scaleY = scaleX;
+
 	if (clip != NULL)
 	{
 		rectCoordinates.w = clip->w;
 		rectCoordinates.h = clip->h;
 	}
-	rectCoordinates.w *= scale;
-	rectCoordinates.h *= scale;
+	rectCoordinates.w *= scaleX;
+	rectCoordinates.h *= scaleY;
 	if (debug == true)
 	{
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
