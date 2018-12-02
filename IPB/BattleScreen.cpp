@@ -69,6 +69,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	wormHole->setPosition(100, 300);
 	wormHole->setClip(wormHoleClip);
 
+	//creates player, enemy, planets 
 	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
 	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
@@ -86,9 +87,10 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 
 	PauseTitle = new Word("Game Paused", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	PauseTitle->setXCentered();
-	//ball = new orbs(renderer, 100, 100);
-	ball = new orbs*[10];
 
+
+	//generates movement orbs
+	ball = new orbs*[10];
 	for (int x = 0; x < 10; x++)
 	{
 		ball[x] = new orbs(renderer, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100, .09 / (x + 3));
@@ -111,12 +113,14 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName)
 	: BattleScreen(renderer, unitFactory, imagesSpriteSheet)
 {
+	//reading from file
 	ifstream file(savedFileName);
 	string line;
 	if (!file || !file.is_open())
 		return;
 	int i = 1;
 	Point pos;
+	//reads each line and acts accordingly 
 	while (getline(file, line))
 	{
 		switch (i)
@@ -196,6 +200,8 @@ void BattleScreen::render()
 	SDL_RenderDrawRect(renderer, &heroOxygenBoundary);
 	SDL_SetRenderDrawColor(renderer, 228, 123, 36, 1);
 	SDL_RenderDrawRect(renderer, &heroFuelBoundary);
+
+	//creates wormhole
 	if (!enemy->getAlive() && hero->getAlive())
 	{
 		wormHole->setAngle(wormHole->getAngle() - 0.2);
@@ -213,19 +219,24 @@ void BattleScreen::render()
 		}
 		wormHole->render();
 	}
+
+	//kills both enemy and hero if they collide
 	if (enemy->getAlive() && hero->checkCollision(enemy))
 	{
 		hero->setHealth(0);
 		enemy->setHealth(0);
 	}
+
+	//does damage if hero gets hit by bullet
 	if (enemy->getAlive() && PlayerBulletQueue.checkCollision(enemy, true))
 	{
 		enemy->setHealth(enemy->getHealth() - 5);
 		PlayerBulletQueue.clean();
 	}
+	//does damage if enemy gets hit by bullet
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
-		hero->setHealth(hero->getHealth());
+		hero->setHealth(hero->getHealth() - 1);
 		EnemyBulletQueue.clean();
 	}
 
@@ -367,6 +378,7 @@ void BattleScreen::render()
 			Game::setCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
 
+	//checks for paused game
 	if (isPaused)
 	{
 		fadeScreenTexture->renderTexture(25, 50, renderer, &pauseScreenSpriteClip);
@@ -388,6 +400,7 @@ void BattleScreen::render()
 
 	frames++;
 }
+
 
 bool BattleScreen::isEmpty(string filename)
 {
@@ -441,22 +454,26 @@ void BattleScreen::handleEvents(SDL_Event& event)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	hero->SetDelay(hero->GetDelay() + 1);
 
+	//handles running game
 	if (!isPaused)
 	{
+		//moving right
 		if (currentKeyStates[SDL_SCANCODE_RIGHT])
 		{
 			hero->move(RIGHT);
 		}
 
+		//moving left
 		if (currentKeyStates[SDL_SCANCODE_LEFT])
 		{
 			hero->move(LEFT);
 		}
 
+		//moving up
 		if (currentKeyStates[SDL_SCANCODE_UP] && hero->getAlive())
 		{
 			hero->move(UP);
-			hero->setIsThrusting(true);
+			hero->setIsThrusting(true);//shows truster
 		}
 		else if (hero->getAlive())
 		{
@@ -465,16 +482,21 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			if (!intoWormHole)
 				hero->move();
 		}
+
+		//iterates through orbs
 		for (int y = 0; y < 10; y++)
 		{
+			// sets all to current hero position
 			ball[y]->setPosit(hero);
 			for (int z = y; z < 6 * y; z++)
 			{
+				//pulls orbs accordingly 
 				planets.pull(ball[y]);
 				ball[y]->move();
 			}
 		}
 	}
+	//space for shooting
 	if (currentKeyStates[SDL_SCANCODE_SPACE] && isPaused == false)
 	{
 		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0 && !intoWormHole)

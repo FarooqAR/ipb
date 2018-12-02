@@ -23,6 +23,7 @@ Unit::~Unit()
 }
 bool Unit::checkCollision(Unit* unit)
 {
+	//checks for collisions
 	if (position.x + width < unit->getPosition().x ||
 		position.x > unit->getPosition().x + unit->getWidth() ||
 		position.y + height < unit->getPosition().y ||
@@ -34,6 +35,7 @@ bool Unit::checkCollision(Unit* unit)
 }
 bool Unit::checkCollision(Unit* unit, bool isCentered)
 {
+	//checks for collisions
 	if ((unit->getPosition().x >= position.x  &&
 		unit->getPosition().x <= position.x + width) &&
 		(unit->getPosition().y >= position.y &&
@@ -75,10 +77,15 @@ void Unit::move(int direction)
 
 	if (direction == UP)
 	{
+		//vectorize thrust
 		speedX += cos((angle - 90) * constants::PI / 180)*thrust;
 		speedY += sin((angle - 90) * constants::PI / 180)*thrust;
+
+		//gets the decimal value
 		speedXdecimal = speedX - floor(speedX);
 		speedYdecimal = speedY - floor(speedY);
+
+		//moves that decimal value in pixels
 		if (speedXdecimal != 0)
 		{
 			if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
@@ -91,6 +98,8 @@ void Unit::move(int direction)
 		}
 
 		count1++;
+
+		//changes position
 		position.x += speedX;
 		position.y += speedY;
 	}
@@ -100,12 +109,11 @@ void Unit::move(int direction)
 void Unit::move()
 {
 	
+	//gets the decimal value
 	speedXdecimal = speedX - floor(speedX);
 	speedYdecimal = speedY - floor(speedY);
 
-	//cout << "deltaX" << speedX << "        deltaY" << speedY << "  " << count1 << endl;
-
-
+	//moves that decimal value in pixels
 	if (speedXdecimal != 0)
 	{
 		if (count1 %static_cast<int>(1 / speedXdecimal) == 0)
@@ -117,9 +125,12 @@ void Unit::move()
 			position.y += 1 * (speedYdecimal / abs(speedYdecimal));
 	}
 
+	//changes position
 	position.x += speedX;
 	position.y += speedY;
 
+
+	//teleports from sides
 	if (position.x < 0)
 	{
 		position.x = constants::WINDOW_WIDTH;
@@ -137,7 +148,6 @@ void Unit::move()
 		position.y = 0;
 	}
 	count1++;
-
 }
 
 
