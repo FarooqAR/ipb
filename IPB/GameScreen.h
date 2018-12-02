@@ -8,7 +8,6 @@ protected:
 	UnitFactory* unitFactory;
 	LTexture* imagesSpriteSheet;
 public:	
-	//virtual ~GameScreen() = 0;
 	virtual void render() = 0;
 	virtual void handleEvents(SDL_Event&) = 0;
 	void setUnitFactory(UnitFactory*);

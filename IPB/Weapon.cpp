@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "constants.h"
 #include "Weapon.h"
+#include "Game.h"
 #include <cmath>
 
 Weapon::Weapon()
@@ -66,6 +67,6 @@ Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int x
 	{
 		bullets = new Bullet(gRenderer, imagesSpriteSheet, WeaponType, xcord + cos((angle - 90) * constants::PI / 180) + 11, ycord + sin((angle - 90) * constants::PI / 180) + 11, 0.3, angle, 30, constants::BULLET_WIDTH, constants::LASER_HEIGHT);
 	}
-	
+	Game::getInstance()->PlayMusic(constants::MUSIC_BULLET);
 	return bullets;
 }

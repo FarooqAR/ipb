@@ -11,6 +11,8 @@
 #include <string>
 #include "PauseScreen.h"
 #include "ControlsIntroScreen.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -42,7 +44,7 @@ Game * Game::getInstance()
 
 void Game::setCurrentScreen(int screen, const char* savedFilename)
 {
-	//delete currentScreen;
+	Game::getInstance()->StopMusic();
 	if (screen == constants::MAIN_MENU_SCREEN)
 	{
 		currentScreen = new MainMenuScreen(renderer, imagesSpriteSheet);
@@ -122,12 +124,49 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	{
 		isRunning = false;
 	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
 	unitFactory = UnitFactory::getInstance(renderer);
 	imagesSpriteSheet = new LTexture;
 	imagesSpriteSheet->loadFromFile("assets/images.png", renderer);
+	themeChunk = Mix_LoadWAV("assets/sounds/theme.wav");
+	explosionChunk = Mix_LoadWAV("assets/sounds/explosion.wav");
+	btnClickChunk = Mix_LoadWAV("assets/sounds/button_press.wav");
+	btnHoverChunk = Mix_LoadWAV("assets/sounds/button_hover.wav");
+	bulletChunk = Mix_LoadWAV("assets/sounds/bullet.wav");
 	setCurrentScreen(constants::MAIN_MENU_SCREEN);
 }
 
+void Game::PlayMusic(int MUSIC_TYPE)
+{
+	switch (MUSIC_TYPE)
+	{
+	case constants::MUSIC_BTN_CLICK:
+		Mix_PlayChannel(-1, btnClickChunk, 0);
+		break;
+	case constants::MUSIC_BTN_HOVER:
+		Mix_PlayChannel(-1, btnHoverChunk, 0);
+		break;
+	case constants::MUSIC_BULLET:
+		Mix_PlayChannel(-1, bulletChunk, 0);
+		break;
+	case constants::MUSIC_EXPLOSION:
+		Mix_PlayChannel(-1, explosionChunk, 0);
+		break;
+	case constants::MUSIC_THEME:
+		Mix_PlayChannel(-1, themeChunk, 0);
+		break;
+	default:
+		break;
+	}
+	
+}
+void Game::StopMusic(int channel)
+{
+	Mix_HaltChannel(channel);
+}
 void Game::handleEvents()
 {
 	SDL_Event event;
@@ -158,9 +197,16 @@ void Game::render()
 
 void Game::clean()
 {
+	Mix_FreeChunk(btnClickChunk);
+	Mix_FreeChunk(btnHoverChunk);
+	Mix_FreeChunk(bulletChunk);
+	Mix_FreeChunk(explosionChunk);
+	Mix_FreeChunk(themeChunk);
 	cout << SDL_GetError() << endl;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	Mix_Quit();
+	IMG_Quit();
 	SDL_Quit();
 	delete currentScreen;
 	std::cout << "Game clean" << std::endl;

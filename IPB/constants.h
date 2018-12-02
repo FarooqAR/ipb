@@ -65,4 +65,12 @@ namespace constants
 		MISSILE,
 		LASER
 	};
+	enum MUSIC_TYPES
+	{
+		MUSIC_THEME,
+		MUSIC_BTN_HOVER,
+		MUSIC_BTN_CLICK,
+		MUSIC_EXPLOSION,
+		MUSIC_BULLET
+	};
 }

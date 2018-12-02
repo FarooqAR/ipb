@@ -19,9 +19,11 @@ MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteShe
 	string title = "Interplanetory Battlefield";
 	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
 	gameTitle->setXCentered();
+	Game::getInstance()->PlayMusic(constants::MUSIC_THEME);
 }
 MainMenuScreen::~MainMenuScreen()
 {
+	
 }
 void MainMenuScreen::render()
 {

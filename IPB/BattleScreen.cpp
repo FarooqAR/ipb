@@ -323,6 +323,8 @@ void BattleScreen::render()
 		enemy->render();
 	else if (enemExplosionSpriteIndex < 20)
 	{
+		if (enemExplosionSpriteIndex == 0)
+			Game::getInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
 		explosionTexture->renderTexture(
 			enemy->getPosition().x + enemy->getWidth() / 2 - 100 / 2,
 			enemy->getPosition().y + enemy->getHeight() / 2 - 63 / 2,
@@ -349,6 +351,9 @@ void BattleScreen::render()
 	}
 	else if (heroExplosionSpriteIndex < 20)
 	{
+		if (heroExplosionSpriteIndex == 0)
+			Game::getInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
+
 		explosionTexture->renderTexture(
 			hero->getPosition().x + hero->getWidth() / 2 - 96 / 2,
 			hero->getPosition().y + hero->getHeight() / 2 - 96 / 2,
@@ -437,10 +442,10 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			AmmoCount->setText(title);
 		}
 	}
-	bool isResumeGameBtnClicked;
-	bool isBackBtnClicked;
-	bool isQuitGameBtnClicked;
-	bool issaveGameBtnClicked;
+	bool isResumeGameBtnClicked = false;
+	bool isBackBtnClicked = false;
+	bool isQuitGameBtnClicked = false;
+	bool issaveGameBtnClicked = false;
 	switch (event.type)
 	{
 	case SDL_KEYUP:
@@ -449,19 +454,26 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onClickDown(x, y);
-		saveGameBtn->onClickDown(x, y);
-		backBtn->onClickDown(x, y);
-		quitGameBtn->onClickDown(x, y);
+		if (isPaused)
+		{
+			ResumeGameBtn->onClickDown(x, y);
+			saveGameBtn->onClickDown(x, y);
+			backBtn->onClickDown(x, y);
+			quitGameBtn->onClickDown(x, y);
+
+		}
 
 		break;
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		isResumeGameBtnClicked = ResumeGameBtn->onClickUp(x, y);
-		issaveGameBtnClicked = saveGameBtn->onClickUp(x, y);
-		isBackBtnClicked = backBtn->onClickUp(x, y);
-		isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		if (isPaused)
+		{
+			isResumeGameBtnClicked = ResumeGameBtn->onClickUp(x, y);
+			issaveGameBtnClicked = saveGameBtn->onClickUp(x, y);
+			isBackBtnClicked = backBtn->onClickUp(x, y);
+			isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		}
 		if (isResumeGameBtnClicked)
 			isPaused = false;
 		else if (issaveGameBtnClicked)
@@ -496,10 +508,14 @@ void BattleScreen::handleEvents(SDL_Event& event)
 
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		ResumeGameBtn->onHover(x, y);
-		saveGameBtn->onHover(x, y);
-		backBtn->onHover(x, y);
-		quitGameBtn->onHover(x, y);
+		if (isPaused)
+		{
+			ResumeGameBtn->onHover(x, y);
+			saveGameBtn->onHover(x, y);
+			backBtn->onHover(x, y);
+			quitGameBtn->onHover(x, y);
+
+		}
 		break;
 	default:
 		break;
