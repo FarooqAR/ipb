@@ -26,6 +26,7 @@ private:
 	bool isMoving;
 	bool intoWormHole;
 
+	//Textures
 	LTexture* AsteroidTexture;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
@@ -34,15 +35,12 @@ private:
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
 	LTexture* wormHoleTexture;
-	Unit* wormHole;
 	LTexture* fadeScreenTexture;
 	LTexture* OxygenEasterEggTexture;
 	LTexture* FuelEasterEggTexture;
 	LTexture* HealthEasterEggTexture;
 	LTexture* WeaponEasterEggTexture;
-	UnitFactory* unitFactory;
-	Unit* wormHole;
-	SDL_Renderer* renderer;
+	//Clips
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
@@ -57,26 +55,31 @@ private:
 	SDL_Rect heroHealthBoundary;
 	SDL_Rect heroOxygenBoundary;
 	SDL_Rect heroFuelBoundary;
-	Player* hero;
-	Enemy* enemy;
-	orbs** ball;
-	Level* currentLevel;
+	//Queues
 	Queue planets;
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
 	Queue AsteroidQueue;
 	Queue EasterEggQueue;
+	//Buttons
 	Button* ResumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;
 	Button* quitGameBtn;
+	//Titles
 	Word* WeaponTitle;
 	Word* AmmoCount;
 	Word* PauseTitle;
-	string s;
+
+	UnitFactory* unitFactory;
+	Unit* wormHole;
+	SDL_Renderer* renderer;
+	Player* hero;
+	Enemy* enemy;
+	orbs** ball;
+	Level* currentLevel;
 
 public:
-	int ok = 1;
 	BattleScreen();
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu = false);
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);

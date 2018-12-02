@@ -16,6 +16,8 @@ EasterEgg::EasterEgg(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int T
 	disappear = false;
 	this->objTexture = imagesSpriteSheet;
 	this->type = Type;
+
+	//updates width, height and scale according to the easteregg type
 	if (type == 0)
 	{
 		this->width = constants::FOOD_WIDTH;
@@ -32,7 +34,7 @@ EasterEgg::EasterEgg(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int T
 	{
 		this->width = constants::ASTRONAUT_WIDTH;
 		this->height = constants::ASTRONAUT_HEIGHT;
-		this->scale = 0.65;
+		this->scale = 0.60;
 	}
 	else if (type == 3)
 	{
@@ -45,6 +47,7 @@ EasterEgg::EasterEgg(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int T
 //Destructor
 EasterEgg::~EasterEgg()
 {	
+	delete objTexture;
 }
 
 
@@ -56,7 +59,7 @@ void EasterEgg::move()
 	//rate at which they disappear
 	if (type ==  2 || type == 3)
 	{
-		scale = scale - 0.0005 / scale;
+		scale = scale - 0.0003 / scale;
 	}
 	else
 	{
@@ -97,15 +100,15 @@ void EasterEgg::HasCollected(Player * player)
 			int weapontype = rand() % 3;
 			if (weapontype == 0)
 			{
-				player->SetWeapon(new Weapon("Gun", 20, 0, 45));
+				player->SetWeapon(new Weapon( 20, 0, 45));
 			}
 			else if (weapontype == 1)
 			{
-				player->SetWeapon(new Weapon("Missile", 20, 1, 45));
+				player->SetWeapon(new Weapon(20, 1, 45));
 			}
 			else if (weapontype == 2)
 			{
-				player->SetWeapon(new Weapon("Laser", 20, 2, 45));
+				player->SetWeapon(new Weapon( 20, 2, 45));
 
 			}
 			//increases players ammo

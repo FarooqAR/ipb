@@ -12,7 +12,7 @@ private:
 	float health;
 	float oxygen;
 	float fuel;;
-	Weapon * weapons; 
+	Weapon * weapon; 
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;

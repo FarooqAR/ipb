@@ -4,6 +4,8 @@
 #include "Game.h"
 #include <cmath>
 
+
+//Constructors
 Weapon::Weapon()
 {
 	bullets = nullptr;
@@ -22,10 +24,13 @@ Weapon::Weapon(int delay, int type, int ammo)
 	Ammo = ammo;
 }
 
+//Destructor
 Weapon::~Weapon()
 {
 	delete bullets;
 }
+
+/*Getters*/
 
 int Weapon::GetDelay()
 {
@@ -40,6 +45,7 @@ const char* Weapon::GetWeaponName()
 		return "Launcher";
 	return "Laser";
 }
+
 int Weapon::GetWeaponType()
 {
 	return WeaponType;
@@ -48,6 +54,8 @@ int Weapon::GetAmmo()
 {
 	return Ammo;
 }
+
+/*Setters*/
 
 void Weapon::SetWeaponType(int weaponType)
 {
@@ -59,6 +67,9 @@ void Weapon::setWeaponName(const char * w_name)
 	name = w_name;
 }
 
+
+
+//creates a bullet object to shoot
 Bullet* Weapon::Fire(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int xcord, int ycord, double angle)
 {
 	if (WeaponType == constants::SIMPLE_BULLET)
