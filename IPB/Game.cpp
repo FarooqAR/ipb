@@ -51,10 +51,12 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 	}
 	else if (screen == constants::BATTLE_SCREEN)
 	{
-		if (isFirstTimer)
+		if (isFirstTimer and savedFilename == nullptr)
 			currentScreen = new ControlsIntroScreen(renderer, imagesSpriteSheet);
+		else if (savedFilename != nullptr)
+			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, savedFilename);
 		else
-			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet);
+			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, true);
 		isFirstTimer = false;
 	}
 	else if (screen == constants::GAME_OVER_SCREEN)

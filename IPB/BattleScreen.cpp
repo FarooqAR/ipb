@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Node.h"
 #include "BattleScreen.h"
 #include "LTexture.h"
 #include "Queue.h"
@@ -20,11 +21,10 @@
 
 using namespace std;
 
-BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet)
+BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu)
 	: renderer(renderer)
 {
 	isPaused = false;
-	level = 1;
 	frames = 0;
 	unitFactory = unitFactory;
 	fadeScreenTexture = imagesSpriteSheet;
@@ -72,12 +72,15 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	//creates player, enemy, planets 
 	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
-	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
+	if (comingFromMenu)
+	{
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
+		planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
+	}
 
 	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
 	ResumeGameBtn = new Button(imagesSpriteSheet, "Resume", x, 200);
@@ -116,6 +119,9 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	//reading from file
 	ifstream file(savedFileName);
 	string line;
+	bool readingPlanets = false;
+	bool readingAsteroids = false;
+	
 	if (!file || !file.is_open())
 		return;
 	int i = 1;
@@ -145,39 +151,72 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			hero->setFuel(stoi(line));
 			break;
 		case 7:
-			//hero->setWeaponName(line.c_str());
+			hero->SetWeaponType(stoi(line));;
 			break;
 		case 8:
-			hero->setWeaponName(line.c_str());
-			break;
-		case 9:
 			hero->SetAmmo(stoi(line));
 			AmmoCount->setText("Ammo: " + to_string(hero->GetAmmo()));
 			break;
-		case 10:
+		case 9:
 			hero->setShipCurrentClipIndex(stoi(line));
 			break;
-		case 11:
+		case 10:
 			pos.x = stoi(line);
 			break;
-		case 12:
+		case 11:
 			pos.y = stoi(line);
 			enemy->setPosition(pos.x, pos.y);
 			break;
-		case 13:
+		case 12:
 			enemy->setAngle(stod(line));
 			break;
-		case 14:
+		case 13:
 			enemy->setHealth(stof(line));
-			break;
-		case 15:
-			level = stoi(line);
 			break;
 		default:
 			break;
 		}
+		if (line == "planets")
+		{
+			readingPlanets = true;
+			continue;
+		}
+		else if (line == "asteroids")
+		{
+			readingPlanets = false;
+			readingAsteroids = true;
+			continue;
+		}
+		if (readingPlanets)
+		{
+			string tokens = "";
+			int x;
+			int y;
+			float scale;
+			int j = 0;
+			int k = 0;
+			int planetType = 0;
+			while (j != line.length())
+			{
+				if (line[j] == ' ' || j == line.length() - 1)
+				{
+					if (k == 0) x = stoi(tokens);
+					else if (k == 1) y = stoi(tokens);
+					else if (k == 2) planetType = stoi(tokens);
+					else scale = stof(tokens + line[j]);
+					k++;
+					tokens = "";
+				}
+				else
+				{
+					tokens += line[j];
+				}
+				j++;
+			}
+			planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, planetType, x, y, scale));
+		}
 		i++;
-		cout << line << '\n';
+
 	}
 	file.close();
 }
@@ -236,7 +275,7 @@ void BattleScreen::render()
 	//does damage if enemy gets hit by bullet
 	if (EnemyBulletQueue.checkCollision(hero, true))
 	{
-		hero->setHealth(hero->getHealth() - 1);
+		hero->setHealth(hero->getHealth() - 5);
 		EnemyBulletQueue.clean();
 	}
 
@@ -423,7 +462,8 @@ bool BattleScreen::isEmpty(string filename)
 void BattleScreen::writeFile(string filename)
 {
 	ofstream myfile;
-		myfile.open(filename);
+	Node* planetsCursor;
+	myfile.open(filename);
 	myfile <<
 		hero->getPosition().x << endl <<
 		hero->getPosition().y << endl <<
@@ -432,16 +472,24 @@ void BattleScreen::writeFile(string filename)
 		hero->getOxygen() << endl <<
 		hero->getFuel() << endl <<
 		hero->GetWeaponType() << endl <<
-		hero->GetWeaponName() << endl <<
 		hero->GetAmmo() << endl <<
 		hero->getCurrentClipIndex() << endl <<
 		enemy->getPosition().x << endl <<
 		enemy->getPosition().y << endl <<
 		enemy->getAngle() << endl <<
-		enemy->getHealth() << endl <<
-		level << endl;// <<
-		//hero->getCurrentClipIndex() << endl;
-
+		enemy->getHealth() << endl
+		<< "planets" << endl;
+	planetsCursor = planets.Top();
+	while (planetsCursor != nullptr)
+	{
+		myfile <<
+			planetsCursor->unit->getPosition().x << " " <<
+			planetsCursor->unit->getPosition().y << " " <<
+			((Attractor*)planetsCursor->unit)->GetPlanetType() << " " <<
+			planetsCursor->unit->getScale() << endl;
+		planetsCursor = planetsCursor->next;
+	}
+	myfile << "asteroids" << endl;
 	myfile.close();
 }
 
@@ -584,7 +632,6 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			saveGameBtn->onHover(x, y);
 			backBtn->onHover(x, y);
 			quitGameBtn->onHover(x, y);
-
 		}
 		break;
 	default:

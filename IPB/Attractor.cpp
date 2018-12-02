@@ -16,6 +16,7 @@ Attractor::Attractor(SDL_Renderer * gRenderer, LTexture * planetsTexture, int pl
 	this->objTexture = planetsTexture;
 	this->renderer = gRenderer;
 	this->scale = scale;
+	this->planetType = planetType;
 	this->width = (int) (constants::PLANET_WIDTH * scale);
 	this->height = (int) (constants::PLANET_HEIGHT * scale);
 	this->destRect = { 
@@ -52,4 +53,9 @@ void Attractor::gravForce(Unit* player)
 	float speedx = player->getxSpeed();
 	float speedy = player->getySpeed();
 	player->setSpeed(speedx + pull.x, speedy + pull.y);
+}
+
+int Attractor::GetPlanetType()
+{
+	return planetType;
 }

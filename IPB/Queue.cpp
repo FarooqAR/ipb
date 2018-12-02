@@ -126,3 +126,8 @@ void Queue::move()
 		temp = temp->next;
 	}
 }
+
+Node * Queue::Top()
+{
+	return head;
+}

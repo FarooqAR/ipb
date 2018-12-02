@@ -7,7 +7,7 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 {
 	this->angle = Angle;
 	this->objTexture = imageSpriteSheet;
-	this->weapons = new Weapon("Gun", 10, constants::SIMPLE_BULLET);
+	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
 	this->setPosition(initialX, initialY);
 	this->renderer = gRenderer;
 	this->width = constants::PLAYER_WIDTH;
@@ -25,14 +25,14 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 			this->height 
 		};
 	}
-	Ammo = weapons->GetAmmo();
-	ShootDelay = weapons->GetDelay();
+	Ammo = weapon->GetAmmo();
+	ShootDelay = weapon->GetDelay();
 	
 }
 
 Player::~Player()
 {
-	delete weapons;
+	delete weapon;
 	delete objTexture;
 }
 
@@ -56,7 +56,7 @@ void Player::render()
 
 Bullet* Player::Shoot(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet)
 {
-	return weapons->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
+	return weapon->Fire(gRenderer, imagesSpriteSheet, this->position.x, this->position.y, this->angle);
 }
 
 void Player::setShipCurrentClipIndex(int i)
@@ -156,18 +156,13 @@ int Player::GetY()
 
 string Player::GetWeaponName()
 {
-	string name(weapons->GetWeaponName());
-	return name;
-}
-
-void Player::setWeaponName(const char* w_name)
-{
-	weapons->setWeaponName(w_name);
+	
+	return weapon->GetWeaponName();
 }
 
 int Player::GetWeaponDelay()
 {
-	return weapons->GetDelay();
+	return weapon->GetDelay();
 }
 
 int Player::GetDelay()
@@ -177,7 +172,7 @@ int Player::GetDelay()
 
 int Player::GetWeaponAmmo()
 {
-	return weapons->GetAmmo();
+	return weapon->GetAmmo();
 }
 
 
@@ -187,5 +182,9 @@ int Player::GetAmmo()
 }
 int Player::GetWeaponType()
 {
-	return weapons->GetWeaponType();
+	return weapon->GetWeaponType();
+}
+void Player::SetWeaponType(int weaponType)
+{
+	weapon->SetWeaponType(weaponType);
 }

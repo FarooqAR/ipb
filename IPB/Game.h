@@ -13,7 +13,7 @@ class Game
 public:
 	~Game();
 	static Game * getInstance();
-	static void setCurrentScreen(int, const char* savedFilename = "");
+	static void setCurrentScreen(int, const char* savedFilename = nullptr);
 	void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 	void PlayMusic(int MUSIC_TYPE);
 	void StopMusic(int channel = -1);

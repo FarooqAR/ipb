@@ -23,5 +23,6 @@ private:
 	Word* turnLeftLabel;
 	Word* shootLabel;
 	SDL_Renderer* renderer;
+
 };
 

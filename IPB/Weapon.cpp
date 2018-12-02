@@ -7,14 +7,13 @@
 Weapon::Weapon()
 {
 	bullets = nullptr;
-	name = "Gun";
 	WeaponType = constants::SIMPLE_BULLET;
 	TimeDelay = 30;
 	Ammo = 30;
 }
 
 
-Weapon::Weapon(const char* name, int delay, int type, int ammo)
+Weapon::Weapon(int delay, int type, int ammo)
 {
 	bullets = nullptr;
 	this->name = name;
@@ -35,7 +34,11 @@ int Weapon::GetDelay()
 
 const char* Weapon::GetWeaponName()
 {
-	return name;
+	if (GetWeaponType() == constants::SIMPLE_BULLET)
+		return "Gun";
+	else if (GetWeaponType() == constants::MISSILE)
+		return "Launcher";
+	return "Laser";
 }
 int Weapon::GetWeaponType()
 {
@@ -44,6 +47,11 @@ int Weapon::GetWeaponType()
 int Weapon::GetAmmo()
 {
 	return Ammo;
+}
+
+void Weapon::SetWeaponType(int weaponType)
+{
+	this->WeaponType = weaponType;
 }
 
 void Weapon::setWeaponName(const char * w_name)

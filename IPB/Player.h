@@ -12,7 +12,7 @@ private:
 	float health;
 	int oxygen;
 	int fuel;;
-	Weapon * weapons; 
+	Weapon * weapon; 
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;
@@ -30,6 +30,7 @@ public:
 	int GetAmmo();
 	string GetWeaponName();
 	int GetWeaponType();
+	void SetWeaponType(int);
 	void render();
 	void setHealth(float);
 	void setOxygen(int);
@@ -44,5 +45,4 @@ public:
 	void setIsThrusting(bool);
 	int GetX();
 	int GetY();
-	void setWeaponName(const char* w_name);
 };
