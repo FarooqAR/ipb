@@ -67,6 +67,8 @@ public:
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
 	void render();
+	bool isEmpty(string);
+	void writeFile(string);
 	void handleEvents(SDL_Event&);
 
 };

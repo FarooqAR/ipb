@@ -14,7 +14,6 @@ private:
 	Button* backBtn;
 	SDL_Renderer* renderer;
 	Word* ScreenTitle;
-	Word* SubTitle;
 public:
 	LoadGameScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~LoadGameScreen();

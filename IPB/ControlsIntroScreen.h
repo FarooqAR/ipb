@@ -15,11 +15,13 @@ private:
 	Button* upBtn;
 	Button* leftBtn;
 	Button* rightBtn;
+	Button* spaceBtn;
 	Button* goBtn;
 	Word* title;
 	Word* thrustLabel;
 	Word* turnRightLabel;
 	Word* turnLeftLabel;
+	Word* shootLabel;
 	SDL_Renderer* renderer;
 };
 
