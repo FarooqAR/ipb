@@ -5,6 +5,7 @@
 #include "MainMenuScreen.h"
 #include "GameOverScreen.h"
 #include "SelectLevelScreen.h"
+#include "SplashScreen.h"
 #include "LoadGameScreen.h"
 #include "LTexture.h"
 #include <fstream>
@@ -15,7 +16,6 @@
 #include <SDL_mixer.h>
 
 using namespace std;
-
 Game* Game::instance = nullptr;
 GameScreen* Game::currentScreen = nullptr;
 SDL_Renderer* Game::renderer = nullptr;
@@ -73,17 +73,16 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 	{
 		currentScreen = new BattleScreen(renderer, , unitFactory);
 	}*/
-	else if (screen == constants::PAUSE_SCREEN)
+	/*else if (screen == constants::PAUSE_SCREEN)
 	{
 		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
-	}
+	}*/
 	else if (screen == constants::LOAD_GAME_SCREEN)
 	{
 		currentScreen = new LoadGameScreen(renderer, imagesSpriteSheet);
 	}
 	else if (screen == constants::SAVE_GAME_SCREEN)
 	{
-
 		currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, savedFilename);
 
 	}
@@ -91,13 +90,16 @@ void Game::setCurrentScreen(int screen, const char* savedFilename)
 	{
 		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
 	}
+	else if (screen == constants::SPLASH_SCREEN)
+	{
+		currentScreen = new SplashScreen(renderer, imagesSpriteSheet);
+	}
 }
 
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
-
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
@@ -136,7 +138,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 	btnClickChunk = Mix_LoadWAV("assets/sounds/button_press.wav");
 	btnHoverChunk = Mix_LoadWAV("assets/sounds/button_hover.wav");
 	bulletChunk = Mix_LoadWAV("assets/sounds/bullet.wav");
-	setCurrentScreen(constants::MAIN_MENU_SCREEN);
+	setCurrentScreen(constants::SPLASH_SCREEN);
 }
 
 void Game::PlayMusic(int MUSIC_TYPE)

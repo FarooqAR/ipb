@@ -148,6 +148,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			break;
 		case 9:
 			hero->SetAmmo(stoi(line));
+			AmmoCount->setText("Ammo: " + to_string(hero->GetAmmo()));
 			break;
 		case 10:
 			hero->setShipCurrentClipIndex(stoi(line));
@@ -388,6 +389,50 @@ void BattleScreen::render()
 	frames++;
 }
 
+bool BattleScreen::isEmpty(string filename)
+{
+	ifstream file;
+	int length;
+	file.open(filename);
+	file.seekg(0, ios::end); // put the "cursor" at the end of the file
+	length = file.tellg(); // find the position of the cursor
+
+	if (length == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void BattleScreen::writeFile(string filename)
+{
+	ofstream myfile;
+		myfile.open(filename);
+	myfile <<
+		hero->getPosition().x << endl <<
+		hero->getPosition().y << endl <<
+		hero->getAngle() << endl <<
+		hero->getHealth() << endl <<
+		hero->getOxygen() << endl <<
+		hero->getFuel() << endl <<
+		hero->GetWeaponType() << endl <<
+		hero->GetWeaponName() << endl <<
+		hero->GetAmmo() << endl <<
+		hero->getCurrentClipIndex() << endl <<
+		enemy->getPosition().x << endl <<
+		enemy->getPosition().y << endl <<
+		enemy->getAngle() << endl <<
+		enemy->getHealth() << endl <<
+		level << endl;// <<
+		//hero->getCurrentClipIndex() << endl;
+
+	myfile.close();
+}
+
+
 
 void BattleScreen::handleEvents(SDL_Event& event)
 {
@@ -478,27 +523,30 @@ void BattleScreen::handleEvents(SDL_Event& event)
 			isPaused = false;
 		else if (issaveGameBtnClicked)
 		{
-			ofstream myfile;
-			myfile.open("SavedGame1.txt");
-			myfile <<
-				hero->getPosition().x << endl <<
-				hero->getPosition().y << endl <<
-				hero->getAngle() << endl <<
-				hero->getHealth() << endl <<
-				hero->getOxygen() << endl <<
-				hero->getFuel() << endl <<
-				hero->GetWeaponType() << endl <<
-				hero->GetWeaponName() << endl <<
-				hero->GetAmmo() << endl <<
-				hero->getCurrentClipIndex() << endl <<
-				enemy->getPosition().x << endl <<
-				enemy->getPosition().y << endl <<
-				enemy->getAngle() << endl <<
-				enemy->getHealth() << endl <<
-				level << endl;// <<
-				//hero->getCurrentClipIndex() << endl;
+			if (isEmpty("SavedGame1.txt") == true)
+			{
+				writeFile("SavedGame1.txt");
+			}
+			else
+			{
+				if (isEmpty("SavedGame2.txt") == true)
+				{
+					writeFile("SavedGame2.txt");
+				}
+				else
+				{
+					if (isEmpty("SavedGame3.txt") == true)
+					{
+						writeFile("SavedGame3.txt");
+					}
+					else
+					{
+						writeFile("SavedGame1.txt");
+					}
+				}
+			}
 
-			myfile.close();
+			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
 		}
 		else if (isBackBtnClicked)
 			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
