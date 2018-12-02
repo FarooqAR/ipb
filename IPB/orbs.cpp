@@ -48,8 +48,8 @@ void orbs::move1()
 
 void orbs::setPosit(Player* player)
 {
-	position.x = player->GetX();
-	position.y = player->GetY();
+	position.x = player->GetX()+10;
+	position.y = player->GetY()+25;
 //	cout << player->getxSpeed() << " " << player->getySpeed() << endl;
 	this->setSpeed(player->getxSpeed()*1.05, player->getySpeed()*1.05);
 

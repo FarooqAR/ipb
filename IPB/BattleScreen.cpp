@@ -336,11 +336,11 @@ void BattleScreen::render()
 	{
 		if (hero->getScale() > 0.1)
 		{
-			hero->render();
 			for (int x = 0; x < 10; x++)
 			{
 				ball[x]->render();
 			}
+			hero->render();
 		}
 		else
 			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
