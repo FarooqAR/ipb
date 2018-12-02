@@ -30,6 +30,7 @@ public:
 	void setSpeed(float x, float y);
 	float getxSpeed();
 	float getySpeed();
+	void Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit);
 
 protected:
 	Point position;

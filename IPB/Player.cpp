@@ -13,8 +13,8 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 	this->width = constants::PLAYER_WIDTH;
 	this->height = constants::PLAYER_HEIGHT;
 	this->health = 100;
-	this->fuel = 80;
-	this->oxygen = 90;
+	this->fuel = 100;
+	this->oxygen = 100;
 	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 11; i++)
 	{
@@ -82,7 +82,7 @@ void Player::setHealth(float health)
 		this->alive = false;
 }
 
-void Player::setOxygen(int oxygen)
+void Player::setOxygen(float oxygen)
 {
 	if (this->oxygen > 0 && this->oxygen <= 100)
 		this->oxygen = oxygen;
@@ -93,7 +93,7 @@ void Player::setOxygen(int oxygen)
 	}
 }
 
-void Player::setFuel(int fuel)
+void Player::setFuel(float fuel)
 {
 	if (this->fuel > 0 && this->fuel <= 100)
 		this->fuel = fuel;
@@ -114,18 +114,24 @@ void Player::SetDelay(int time)
 	ShootDelay = time;
 }
 
+void Player::SetWeapon(Weapon* weapon)
+{
+	weapons = weapon;
+}
+
+
 //--Getters
 
 float Player::getHealth()
 {
 	return health;
 }
-int Player::getOxygen()
+float Player::getOxygen()
 {
 	return oxygen;
 }
 
-int Player::getFuel()
+float Player::getFuel()
 {
 	return fuel;
 }
@@ -154,30 +160,10 @@ int Player::GetY()
 	return position.y;
 }
 
-string Player::GetWeaponName()
-{
-	string name(weapons->GetWeaponName());
-	return name;
-}
-
-void Player::setWeaponName(const char* w_name)
-{
-	weapons->setWeaponName(w_name);
-}
-
-int Player::GetWeaponDelay()
-{
-	return weapons->GetDelay();
-}
 
 int Player::GetDelay()
 {
 	return ShootDelay;
-}
-
-int Player::GetWeaponAmmo()
-{
-	return weapons->GetAmmo();
 }
 
 
@@ -185,7 +171,10 @@ int Player::GetAmmo()
 {
 	return Ammo;
 }
-int Player::GetWeaponType()
+
+
+Weapon* Player::GetWeapon()
 {
-	return weapons->GetWeaponType();
+	return weapons;
 }
+

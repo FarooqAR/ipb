@@ -123,3 +123,31 @@ void Queue::move()
 		temp = temp->next;
 	}
 }
+
+void Queue::checkCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destory)
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		if (queue->checkCollision(temp->unit, Destory))
+		{
+			temp->unit->setAlive(false);
+			temp->unit->Explosion(ExplosionTexture, clip, temp->unit);
+		}
+		temp = temp->next;
+	}
+}
+
+
+void Queue::Collected(Player* player)
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		if (temp->unit->getAlive() == false)
+		{
+			((EasterEgg*)temp->unit)->HasCollected(player);
+		}
+		temp = temp->next;
+	}
+}

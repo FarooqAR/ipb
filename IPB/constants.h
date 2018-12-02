@@ -26,6 +26,18 @@ namespace constants
 	const int ENEMY_HEIGHT = 57;
 	const int FADE_SCREEN_BG_WIDTH = 980;
 	const int FADE_SCREEN_BG_HEIGHT = 560;
+	const int ASTEROID_WIDTH = 100;
+	const int ASTEROID_HEIGHT = 137;
+	const int ASTRONAUT_WIDTH = 100;
+	const int ASTRONAUT_HEIGHT = 151;
+	const int LAUNCHER_WIDTH = 58;
+	const int LAUNCHER_HEIGHT = 62;
+	const int BOX_WIDTH = 100;
+	const int BOX_HEIGHT = 85;
+	const int FOOD_WIDTH = 150;
+	const int FOOD_HEIGHT = 256;
+	const int FUELTANK_WIDTH = 50;
+	const int FUELTANK_HEIGHT = 113;
 
 	const Point HEALTH_SPRITE_START_POSITION = {1024, 0};
 	const Point FADE_SCREEN_BG_START_POSITION = {1024 + STATUS_WIDTH * 3, 0};
@@ -37,6 +49,12 @@ namespace constants
 	const Point BULLETS_SPRITE_START_POSITION = {0, 1399};
 	const Point WORMHOLE_SPRITE_START_POSITION = {0, 1594};
 	const Point ENEMY_SPRITE_START_POSITION = {152, 1596};
+	const Point ASTEROID_SPRITE_START_POSITION = { 2019, 0 };
+	const Point ASTRONAUT_SPRITE_START_POSITION = { 2119, 0 };
+	const Point LAUNCHER_SPRITE_START_POSITION = { 2365, 0 };
+	const Point BOX_SPRITE_START_POSITION = { 2217, 0 };
+	const Point FOOD_SPRITE_START_POSITION = { 2423, 0 };
+	const Point FUELTANK_SPRITE_START_POSITION = { 2317, 0 };
 	enum SCREEN_TYPES
 	{
 		SPLASH_SCREEN,
@@ -64,5 +82,12 @@ namespace constants
 		SIMPLE_BULLET,
 		MISSILE,
 		LASER
+	};
+	enum EASTEREGGS_TYPES
+	{
+		HEALTH,
+		FUEL,
+		OXYGEN,
+		WEAPON
 	};
 }

@@ -1,18 +1,26 @@
 #pragma once
 
 #include "Unit.h"
-// each easter egg (elon musk etc) will have some amount of given attributes which will
-// be transferred to the spaceship once it reaches it
+#include "Player.h"
+#include "LTexture.h"
+#include "constants.h"
+#include "Weapon.h"
+
+
+/*PowerUps that the player can collect to boost one of their attributes, i.e. Health, Fuel, Oxygen, Weapon Type.
+Disappear after a short while. 
+*/
+
 class EasterEgg : public Unit
 {
-private:
-	const char* name;
-	int health;
-	int oxygen;
-	int fuel;
-	int ammo;
-	int weapon;
-public:
-	EasterEgg();
-	~EasterEgg();
+	private:
+		const char* name;
+		bool disappear;
+		int type;
+	public:
+		EasterEgg();
+		EasterEgg(SDL_Renderer* gRenderer, LTexture*, int Type);
+		~EasterEgg();
+		void HasCollected(Player * player);
+		void move();
 };

@@ -25,6 +25,8 @@
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="orbs.cpp" />
     <ClCompile Include="ControlsIntroScreen.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="EasterEgg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attractor.h" />
@@ -56,5 +58,6 @@
     <ClInclude Include="Word.h" />
     <ClInclude Include="orbs.h" />
     <ClInclude Include="ControlsIntroScreen.h" />
+    <ClInclude Include="Asteroid.h" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Attractor.h"
 #include "EasterEgg.h"
+#include "Asteroid.h"
 #include "Level.h"
 #include "Queue.h" 
 #include "Unit.h"
@@ -21,10 +22,13 @@ private:
 	int frames;
 	int heroExplosionSpriteIndex;
 	int enemExplosionSpriteIndex;
+	int astrExplosionSpriteIndex;
 	int level;
 	bool isPaused;
 	bool isMoving;
 	bool intoWormHole;
+
+	LTexture* AsteroidTexture;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
 	LTexture* healthBarTexture;
@@ -32,15 +36,23 @@ private:
 	LTexture* fuelBarTexture;
 	LTexture* destinationTexture;
 	LTexture* wormHoleTexture;
-	Unit* wormHole;
 	LTexture* fadeScreenTexture;
-	Word* WeaponTitle;
-	Word* AmmoCount;
+	LTexture* OxygenEasterEggTexture;
+	LTexture* FuelEasterEggTexture;
+	LTexture* HealthEasterEggTexture;
+	LTexture* WeaponEasterEggTexture;
+	UnitFactory* unitFactory;
+	Unit* wormHole;
 	SDL_Renderer* renderer;
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
 	SDL_Rect fuelSpriteClip;
+	SDL_Rect FuelEasterEggClip;
+	SDL_Rect OxygenEasterEggClip;
+	SDL_Rect HealthEasterEggClip;
+	SDL_Rect WeaponEasterEggClip;
+	SDL_Rect AsteroidClip;
 	SDL_Rect pauseScreenSpriteClip;
 	SDL_Rect enemyHealthBoundary;
 	SDL_Rect heroHealthBoundary;
@@ -53,10 +65,14 @@ private:
 	Queue planets;
 	Queue PlayerBulletQueue;
 	Queue EnemyBulletQueue;
+	Queue AsteroidQueue;
+	Queue EasterEggQueue;
 	Button* ResumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;
 	Button* quitGameBtn;
+	Word* WeaponTitle;
+	Word* AmmoCount;
 	Word* PauseTitle;
 	string s;
 

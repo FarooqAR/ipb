@@ -3,6 +3,8 @@
 #include "constants.h"
 #include "Attractor.h"
 #include "LTexture.h"
+#include "EasterEgg.h"
+
 
 UnitFactory* UnitFactory::instance = nullptr;
 UnitFactory::UnitFactory(SDL_Renderer* gRenderer)
@@ -21,3 +23,16 @@ Attractor * UnitFactory::createPlanet(LTexture* imageSpriteSheet, int planetType
 {
 	return new Attractor(gRenderer, imageSpriteSheet, planetType, x, y, scale);
 }
+
+
+Asteroid * UnitFactory::createAsteroid(LTexture* imageSpriteSheet, int scale)
+{
+	return new Asteroid(gRenderer, imageSpriteSheet, scale);
+}
+
+EasterEgg * UnitFactory::createEasterEgg(LTexture * imageSpriteSheet, int EggType)
+{
+	return new EasterEgg(gRenderer, imageSpriteSheet, EggType);
+}
+
+

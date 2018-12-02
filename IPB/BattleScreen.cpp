@@ -4,6 +4,7 @@
 #include "Queue.h"
 #include "Word.h"
 #include "Attractor.h"
+#include "EasterEgg.h"
 #include "Unit.h"
 #include "Player.h"
 #include "Game.h"
@@ -26,7 +27,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	isPaused = false;
 	level = 1;
 	frames = 0;
-	unitFactory = unitFactory;
+	this->unitFactory = unitFactory;
 	fadeScreenTexture = imagesSpriteSheet;
 	explosionTexture = imagesSpriteSheet;
 	healthBarTexture = imagesSpriteSheet;
@@ -34,7 +35,42 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	fuelBarTexture = imagesSpriteSheet;
 	bulletTexture = imagesSpriteSheet;
 	wormHoleTexture = imagesSpriteSheet;
+	OxygenEasterEggTexture = imagesSpriteSheet;
+	HealthEasterEggTexture = imagesSpriteSheet;
+	FuelEasterEggTexture = imagesSpriteSheet;
+	WeaponEasterEggTexture = imagesSpriteSheet;
+	AsteroidTexture = imagesSpriteSheet;
 
+	AsteroidClip = {
+		constants::ASTEROID_SPRITE_START_POSITION.x,
+		constants::ASTEROID_SPRITE_START_POSITION.y,
+		constants::ASTEROID_WIDTH,
+		constants::ASTEROID_HEIGHT
+	};
+	HealthEasterEggClip = {
+		constants::FOOD_SPRITE_START_POSITION.x,
+		constants::FOOD_SPRITE_START_POSITION.y,
+		constants::FOOD_WIDTH,
+		constants::FOOD_HEIGHT
+	};
+	OxygenEasterEggClip = {
+		constants::ASTRONAUT_SPRITE_START_POSITION.x,
+		constants::ASTRONAUT_SPRITE_START_POSITION.y,
+		constants::ASTRONAUT_WIDTH,
+		constants::ASTRONAUT_HEIGHT
+	};
+	FuelEasterEggClip = {
+		constants::FUELTANK_SPRITE_START_POSITION.x,
+		constants::FUELTANK_SPRITE_START_POSITION.y,
+		constants::FUELTANK_WIDTH,
+		constants::FUELTANK_HEIGHT
+	};
+	WeaponEasterEggClip = {
+		constants::LAUNCHER_SPRITE_START_POSITION.x,
+		constants::LAUNCHER_SPRITE_START_POSITION.y,
+		constants::LAUNCHER_WIDTH,
+		constants::LAUNCHER_HEIGHT
+	};
 	healthSpriteClip = {
 		constants::HEALTH_SPRITE_START_POSITION.x,
 		constants::HEALTH_SPRITE_START_POSITION.y,
@@ -69,6 +105,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	wormHole->setPosition(100, 300);
 	wormHole->setClip(wormHoleClip);
 
+
 	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
 	planets.enqueue(unitFactory->createPlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
@@ -98,7 +135,8 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	{
 		explosionSpriteClips[i] = { constants::EXPLOSION_SPRITE_START_POSITION.x + 96 * i, constants::EXPLOSION_SPRITE_START_POSITION.y, 96, 96 };
 	}
-	string title = "Weapon: " + hero->GetWeaponName();
+
+	string title = "Weapon: " + string(hero->GetWeapon()->GetWeaponName());
 	WeaponTitle = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27f);
 	title = "Ammo: " + to_string(hero->GetAmmo());
 	AmmoCount = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27f);
@@ -144,7 +182,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			//hero->setWeaponName(line.c_str());
 			break;
 		case 8:
-			hero->setWeaponName(line.c_str());
+			hero->GetWeapon()->setWeaponName(line.c_str());
 			break;
 		case 9:
 			hero->SetAmmo(stoi(line));
@@ -232,10 +270,15 @@ void BattleScreen::render()
 	{
 		PlayerBulletQueue.move();
 		EnemyBulletQueue.move();
+		AsteroidQueue.move();
+		EasterEggQueue.move();
+		
 	}
 	PlayerBulletQueue.render();
 	EnemyBulletQueue.render();
-
+	AsteroidQueue.render();
+	EasterEggQueue.render();
+	
 	int i = 0;
 	while (i < hero->getHealth())
 	{
@@ -261,9 +304,102 @@ void BattleScreen::render()
 		i += 1;
 	}
 
+	if (int(hero->getFuel()) < 100 && hero->getIsThrusting() == 0)
+	{
+		hero->setFuel(int(hero->getFuel()) + 1);
+	}
+
+	if (frames % 100 == 0)
+	{
+		hero->setOxygen(hero->getOxygen() - 1);
+	}
+
 	planets.render();
 
+	if (frames % 500 == 0 && !isPaused)
+	{
+		int type = rand() % 4;
+		LTexture* texture = HealthEasterEggTexture;
+		SDL_Rect clip;
+
+		switch (type)
+		{
+			case 0:
+			{
+				texture = HealthEasterEggTexture;
+				clip = HealthEasterEggClip;
+				break;
+			}
+			case 1:
+			{	
+				texture = FuelEasterEggTexture;
+				clip = FuelEasterEggClip;
+				break;
+			}
+			case 2:
+			{
+				texture = OxygenEasterEggTexture;
+				clip = OxygenEasterEggClip;
+				break;
+			}
+			case 3:
+			{
+				texture = WeaponEasterEggTexture;
+				clip = WeaponEasterEggClip;
+				break;
+			}
+		}
+		
+		EasterEgg* bonus = unitFactory->createEasterEgg(texture, type);
+
+		do
+		{
+			bonus->setClip(clip);
+			bonus->setPosition((rand() % 501 + 100), (rand() % 826 + 100));
+		}
+		while (planets.checkCollision(bonus) && EasterEggQueue.checkCollision(bonus));
+		EasterEggQueue.enqueue(bonus);
+	}
+	
+
+	if (frames % 150 == 0)
+	{
+		Asteroid* spawnAsteroid = new Asteroid(renderer, AsteroidTexture, 0.3);//unitFactory->createAsteroid(AsteroidTexture, 0.3);
+		spawnAsteroid->setClip(AsteroidClip);
+		AsteroidQueue.enqueue(spawnAsteroid);
+	}
+
+	bool Collected = EasterEggQueue.checkCollision(hero, true);
 	bool isColliding = planets.checkCollision(hero) && !isPaused;
+	bool AsteroidCollision = AsteroidQueue.checkCollision(hero, true);
+	bool AsteroidCollisionEnemy = AsteroidQueue.checkCollision(enemy, true);
+	AsteroidQueue.checkCollision(&PlayerBulletQueue, explosionTexture, explosionSpriteClips, true);
+	AsteroidQueue.checkCollision(&EnemyBulletQueue, explosionTexture, explosionSpriteClips, true);
+	AsteroidQueue.checkCollision(&planets, explosionTexture, explosionSpriteClips);
+	
+	if (Collected && !isPaused)
+	{
+		EasterEggQueue.Collected(hero);
+		string title = "Weapon: " + string(hero->GetWeapon()->GetWeaponName());
+		WeaponTitle->setText(title);
+		title = "Ammo: " + to_string(hero->GetAmmo());
+		AmmoCount->setText(title);
+	}
+
+	if (AsteroidCollision)
+	{
+		hero->setHealth(hero->getHealth() - 10);
+		hero->Explosion(explosionTexture, explosionSpriteClips, hero);
+
+	}
+
+	if (AsteroidCollisionEnemy)
+	{
+		enemy->setHealth(enemy->getHealth() - 10);
+		enemy->Explosion(explosionTexture, explosionSpriteClips, enemy);
+
+	}
+
 	// toggle ship color when it collides
 	if (isColliding)
 	{
@@ -301,6 +437,9 @@ void BattleScreen::render()
 	}
 
 	planets.clean();
+	AsteroidQueue.clean();
+	EasterEggQueue.clean();
+
 	if (enemy->getAlive() && hero->getAlive())
 	{
 		if (frames % 50 == 0)
@@ -407,6 +546,7 @@ void BattleScreen::handleEvents(SDL_Event& event)
 		{
 			hero->move(UP);
 			hero->setIsThrusting(true);
+			hero->setFuel(hero->getFuel() - 0.4);
 		}
 		else if (hero->getAlive())
 		{
@@ -427,7 +567,7 @@ void BattleScreen::handleEvents(SDL_Event& event)
 	}
 	if (currentKeyStates[SDL_SCANCODE_SPACE] && isPaused == false)
 	{
-		if (hero->GetDelay() > hero->GetWeaponDelay() && hero->GetAmmo() > 0 && !intoWormHole)
+		if (hero->GetDelay() > hero->GetWeapon()->GetDelay() && hero->GetAmmo() > 0 && !intoWormHole)
 		{
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
 			PlayerBulletQueue.enqueue(bullet);
@@ -475,8 +615,8 @@ void BattleScreen::handleEvents(SDL_Event& event)
 				hero->getHealth() << endl <<
 				hero->getOxygen() << endl <<
 				hero->getFuel() << endl <<
-				hero->GetWeaponType() << endl <<
-				hero->GetWeaponName() << endl <<
+				hero->GetWeapon()->GetWeaponType() << endl <<
+				hero->GetWeapon()->GetWeaponName() << endl <<
 				hero->GetAmmo() << endl <<
 				hero->getCurrentClipIndex() << endl <<
 				enemy->getPosition().x << endl <<
