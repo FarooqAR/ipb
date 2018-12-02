@@ -13,8 +13,8 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 	this->width = constants::PLAYER_WIDTH;
 	this->height = constants::PLAYER_HEIGHT;
 	this->health = 100;
-	this->fuel = 80;
-	this->oxygen = 90;
+	this->fuel = 100;
+	this->oxygen = 100;
 	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 11; i++)
 	{
@@ -111,6 +111,12 @@ void Player::SetDelay(int time)
 	shootDelay = time;
 }
 
+void Player::SetWeapon(Weapon* weapon)
+{
+	weapons = weapon;
+}
+
+
 //--Getters
 
 float Player::GetHealth()
@@ -171,7 +177,9 @@ int Player::GetAmmo()
 {
 	return weapon->GetAmmo();
 }
-int Player::GetWeaponType()
+
+
+Weapon* Player::GetWeapon()
 {
 	return weapon->GetWeaponType();
 }

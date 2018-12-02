@@ -13,6 +13,7 @@ Unit::Unit()
 	alive = 1;
 	angle = 0.0;	
 }
+
 Unit::Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle)
 	:scale(scale), alive(alive), angle(angle), objTexture(unitTexture), renderer(renderer)
 {
@@ -224,3 +225,17 @@ float Unit::GetYSpeed()
 	return speedY;
 }
 
+void Unit::Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit)
+{
+	int Index = 0;
+	int Delay = 0;
+	while (Index < 10)
+	{
+		ExplosionTexture->renderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
+		if (Delay % 8 == 0)
+		{
+			Index++;
+		}
+		Delay++;
+	}
+}

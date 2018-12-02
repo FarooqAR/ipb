@@ -13,6 +13,7 @@ public:
 	bool GetAlive();
 	bool CheckCollision(Unit* unit);
 	bool CheckCollision(Unit* unit, bool isCentered);
+	void Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit);
 	void SetPosition(int x, int y);
 	Point GetPosition();
 	int GetWidth();
