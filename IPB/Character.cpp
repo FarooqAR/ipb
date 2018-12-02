@@ -23,23 +23,23 @@ Character::Character(char c, LTexture* alphabetsSpriteSheet)
 	h = (int) (77 * scale);
 	this->charRect.w = w;
 	this->charRect.h = h;
-	this->setPosition(0, 0);
+	this->SetPosition(0, 0);
 }
-void Character::setTexture(LTexture* alphabetsSpriteSheet)
+void Character::SetTexture(LTexture* alphabetsSpriteSheet)
 {
 	this->alphabetsSpriteSheet = alphabetsSpriteSheet;
 }
-void Character::setPosition(int x, int y)
+void Character::SetPosition(int x, int y)
 {
 	this->position.x = x;
 	this->position.y = y;
 }
 
-void Character::render(SDL_Renderer * gRenderer)
+void Character::Render(SDL_Renderer * gRenderer)
 {
-	alphabetsSpriteSheet -> renderTexture(this->position.x, this->position.y, gRenderer, &charRect, SDL_FLIP_NONE, 0.0, 0, scale);
+	alphabetsSpriteSheet -> RenderTexture(this->position.x, this->position.y, gRenderer, &charRect, SDL_FLIP_NONE, 0.0, 0, scale);
 }
-void Character::setChar(char c)
+void Character::SetChar(char c)
 {
 	int ascii = c;
 	if (ascii >= 32 && ascii <= 122)
@@ -55,26 +55,26 @@ void Character::setChar(char c)
 	}
 }
 
-void Character::setScale(float scale)
+void Character::SetScale(float scale)
 {
 	this->scale = scale;
 }
 
-int Character::getWidth()
+int Character::GetWidth()
 {
 	return w;
 }
 
-int Character::getHeight()
+int Character::GetHeight()
 {
 	return h;
 }
 
-int Character::getX() 
+int Character::GetX() 
 {
 	return this->position.x;
 }
-int Character::getY()
+int Character::GetY()
 {
 	return this->position.y;
 }

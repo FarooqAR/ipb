@@ -17,32 +17,32 @@ LoadGameScreen::LoadGameScreen(SDL_Renderer* renderer, LTexture* imagesSpriteShe
 	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 3);
 
 	string title = "Load Saved Game";
-	ScreenTitle = new Word(title, imagesSpriteSheet, 10, 300); 
-	ScreenTitle->setXCentered();
+	screenTitle = new Word(title, imagesSpriteSheet, 10, 300); 
+	screenTitle->SetXCentered();
 }
 
 LoadGameScreen::~LoadGameScreen()
 {
 }
-void LoadGameScreen::render()
+void LoadGameScreen::Render()
 {
-	ScreenTitle->render(renderer);
-	double y = ScreenTitle->getY();
-	if (ScreenTitle->getY() > 100) // handle animation; move the title to y=100
-		y = ScreenTitle->getY() * 0.9;
+	screenTitle->Render(renderer);
+	double y = screenTitle->GetY();
+	if (screenTitle->GetY() > 100) // handle animation; move the title to y=100
+		y = screenTitle->GetY() * 0.9;
 	else
 	{
-		selectSaved1Btn->render(renderer);
-		selectSaved2Btn->render(renderer);
-		selectSaved3Btn->render(renderer);
-		backBtn->render(renderer);
+		selectSaved1Btn->Render(renderer);
+		selectSaved2Btn->Render(renderer);
+		selectSaved3Btn->Render(renderer);
+		backBtn->Render(renderer);
 	}
 
-	ScreenTitle->setPosition(ScreenTitle->getX(), (int)y);
+	screenTitle->SetPosition(screenTitle->GetX(), (int)y);
 }
 
 
-void LoadGameScreen::handleEvents(SDL_Event& event)
+void LoadGameScreen::HandleEvents(SDL_Event& event)
 {
 	int x = 0; int y = 0;
 	bool is1Clicked;
@@ -54,35 +54,35 @@ void LoadGameScreen::handleEvents(SDL_Event& event)
 	{
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		selectSaved1Btn->onClickDown(x, y);
-		selectSaved2Btn->onClickDown(x, y);
-		selectSaved3Btn->onClickDown(x, y);
-		backBtn->onClickDown(x, y);
+		selectSaved1Btn->OnClickDown(x, y);
+		selectSaved2Btn->OnClickDown(x, y);
+		selectSaved3Btn->OnClickDown(x, y);
+		backBtn->OnClickDown(x, y);
 
 		break;
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		is1Clicked = selectSaved1Btn->onClickUp(x, y);
-		is2Clicked = selectSaved2Btn->onClickUp(x, y);
-		is3Clicked = selectSaved3Btn->onClickUp(x, y);
-		isBackClicked = backBtn->onClickUp(x, y);
+		is1Clicked = selectSaved1Btn->OnClickUp(x, y);
+		is2Clicked = selectSaved2Btn->OnClickUp(x, y);
+		is3Clicked = selectSaved3Btn->OnClickUp(x, y);
+		isBackClicked = backBtn->OnClickUp(x, y);
 		
 		if (isBackClicked)
-			Game::setCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (is1Clicked)
-			Game::setCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame1.txt");
+			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame1.txt");
 		else if (is2Clicked)
-			Game::setCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame2.txt");
+			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame2.txt");
 		else if (is3Clicked)
-			Game::setCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame3.txt");
+			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame3.txt");
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		selectSaved1Btn->onHover(x, y);
-		selectSaved2Btn->onHover(x, y);
-		selectSaved3Btn->onHover(x, y);
-		backBtn->onHover(x, y);
+		selectSaved1Btn->OnHover(x, y);
+		selectSaved2Btn->OnHover(x, y);
+		selectSaved3Btn->OnHover(x, y);
+		backBtn->OnHover(x, y);
 		break;
 	default:
 		break;

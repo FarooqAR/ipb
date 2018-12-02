@@ -15,6 +15,6 @@ public:
 	Attractor();
 	Attractor(SDL_Renderer* gRenderer, LTexture* planetsTexture, int planetType, int x, int y, float scale);
 	~Attractor();
-	void gravForce(Unit*);
+	void GravForce(Unit*);
 	int GetPlanetType();
 };

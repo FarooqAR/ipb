@@ -13,12 +13,10 @@ private:
 	Button* selectSaved3Btn;
 	Button* backBtn;
 	SDL_Renderer* renderer;
-	Word* ScreenTitle;
+	Word* screenTitle;
 public:
 	LoadGameScreen(SDL_Renderer*, LTexture* imagesSpriteSheet);
 	~LoadGameScreen();
-	void handleEvents(SDL_Event&);
-	void startSavedGameFromFile(const char *);
-	void render();
-	Word* setWordPosition(int x, int y);
+	void HandleEvents(SDL_Event&);
+	void Render();
 };

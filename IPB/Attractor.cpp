@@ -12,7 +12,7 @@ Attractor::Attractor()
 }
 Attractor::Attractor(SDL_Renderer * gRenderer, LTexture * planetsTexture, int planetType, int x, int y, float scale)
 {
-	this->setPosition(x, y);
+	this->SetPosition(x, y);
 	this->objTexture = planetsTexture;
 	this->renderer = gRenderer;
 	this->scale = scale;
@@ -31,10 +31,10 @@ Attractor::~Attractor()
 {
 }
 
-void Attractor::gravForce(Unit* player)
+void Attractor::GravForce(Unit* player)
 {
-	int playerX = player->getPosition().x;
-	int playerY = player->getPosition().y;
+	int playerX = player->GetPosition().x;
+	int playerY = player->GetPosition().y;
 
 	pull.x = 0;
 	pull.y = 0;
@@ -50,9 +50,9 @@ void Attractor::gravForce(Unit* player)
 	pull.y *= gravConstant;
 
 	// adds the gravity to the speed
-	float speedx = player->getxSpeed();
-	float speedy = player->getySpeed();
-	player->setSpeed(speedx + pull.x, speedy + pull.y);
+	float speedx = player->GetXSpeed();
+	float speedy = player->GetYSpeed();
+	player->SetSpeed(speedx + pull.x, speedy + pull.y);
 }
 
 int Attractor::GetPlanetType()

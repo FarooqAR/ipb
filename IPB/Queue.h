@@ -12,11 +12,11 @@ private:
 public:
 	Queue();
 	~Queue();
-	void enqueue(Unit*);
-	void pull(Unit*);
-	bool checkCollision(Unit*, bool selfDestruct = false);
-	void clean();
-	void render();
-	void move();
+	void Enqueue(Unit*);
+	void Pull(Unit*);
+	bool CheckCollision(Unit*, bool selfDestruct = false);
+	void Clean();
+	void Render();
+	void Move();
 	Node* Top();
 };

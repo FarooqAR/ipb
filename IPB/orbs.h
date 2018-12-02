@@ -4,11 +4,11 @@
 #include "Player.h"
 
 
-class orbs: public Unit
+class Orbs: public Unit
 {
 public:
-	orbs(SDL_Renderer* renderer, int initialX, int initialY, float scale);
-	~orbs();
-	void setPosit(Player* player);
+	Orbs(SDL_Renderer* renderer, int initialX, int initialY, float scale);
+	~Orbs();
+	void SetPosition(Player* player);
 
 };

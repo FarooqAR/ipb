@@ -12,13 +12,13 @@ Bullet::Bullet()
 	alive = true;
 }
 
-void Bullet::move()
+void Bullet::Move()
 {
 	position.x += (int) (cos((angle - 90) * constants::PI / 180) * 10);
 	position.y += (int) (sin((angle - 90) * constants::PI / 180) * 10);
 	if (position.y < -100 || position.y > constants::WINDOW_HEIGHT || position.x <  -100 || position.x > constants::WINDOW_WIDTH)
 	{
-		setAlive(false);
+		SetAlive(false);
 	}
 }
 
@@ -29,7 +29,7 @@ Bullet::~Bullet()
 
 Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletType, int x, int y, float scale, double angle, int damage, int bulletWidth, int bulletHeight) : Unit()
 {
-	setPosition(x, y);
+	SetPosition(x, y);
 	objTexture = imageSpriteSheet;
 	renderer = gRenderer;
 	this->scale = scale;

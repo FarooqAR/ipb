@@ -18,33 +18,33 @@ MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer, LTexture* imagesSpriteShe
 
 	string title = "Interplanetory Battlefield";
 	gameTitle = new Word(title, imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
-	gameTitle->setXCentered();
-	Game::getInstance()->PlayMusic(constants::MUSIC_THEME);
+	gameTitle->SetXCentered();
+	Game::GetInstance()->PlayMusic(constants::MUSIC_THEME);
 }
 MainMenuScreen::~MainMenuScreen()
 {
 
 }
-void MainMenuScreen::render()
+void MainMenuScreen::Render()
 {
-	gameTitle->render(renderer);
-	double y = gameTitle->getY();
-	if (gameTitle->getY() > 100) // handle animation; move the title to y=100
-		y = gameTitle->getY() * 0.9;
+	gameTitle->Render(renderer);
+	double y = gameTitle->GetY();
+	if (gameTitle->GetY() > 100) // handle animation; move the title to y=100
+		y = gameTitle->GetY() * 0.9;
 	else
 	{
-		startGameBtn->render(renderer);
-		loadGameBtn->render(renderer);
-		selectLevelBtn->render(renderer);
-		quitGameBtn->render(renderer);
+		startGameBtn->Render(renderer);
+		loadGameBtn->Render(renderer);
+		selectLevelBtn->Render(renderer);
+		quitGameBtn->Render(renderer);
 	}
 
-	gameTitle->setPosition(gameTitle->getX(), (int)y);
+	gameTitle->SetPosition(gameTitle->GetX(), (int)y);
 }
 
 
 
-void MainMenuScreen::handleEvents(SDL_Event& event)
+void MainMenuScreen::HandleEvents(SDL_Event& event)
 {
 	int x = 0; int y = 0;
 	bool isStartGameBtnClicked;
@@ -56,39 +56,39 @@ void MainMenuScreen::handleEvents(SDL_Event& event)
 	{
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&x, &y);
-		startGameBtn->onClickDown(x, y);
-		loadGameBtn->onClickDown(x, y);
-		selectLevelBtn->onClickDown(x, y);
-		quitGameBtn->onClickDown(x, y);
+		startGameBtn->OnClickDown(x, y);
+		loadGameBtn->OnClickDown(x, y);
+		selectLevelBtn->OnClickDown(x, y);
+		quitGameBtn->OnClickDown(x, y);
 		break;
 
 	case SDL_MOUSEBUTTONUP:
 
 		SDL_GetMouseState(&x, &y);
-		isStartGameBtnClicked = startGameBtn->onClickUp(x, y);
-		isSelectLevelBtnClicked = selectLevelBtn->onClickUp(x, y);
-		isLoadGameBtnClicked = loadGameBtn->onClickUp(x, y);
-		isQuitGameBtnClicked = quitGameBtn->onClickUp(x, y);
+		isStartGameBtnClicked = startGameBtn->OnClickUp(x, y);
+		isSelectLevelBtnClicked = selectLevelBtn->OnClickUp(x, y);
+		isLoadGameBtnClicked = loadGameBtn->OnClickUp(x, y);
+		isQuitGameBtnClicked = quitGameBtn->OnClickUp(x, y);
 		if (isStartGameBtnClicked)
-			Game::setCurrentScreen(constants::BATTLE_SCREEN);
+			Game::SetCurrentScreen(constants::BATTLE_SCREEN);
 		else if (isLoadGameBtnClicked)
-			Game::setCurrentScreen(constants::LOAD_GAME_SCREEN);
+			Game::SetCurrentScreen(constants::LOAD_GAME_SCREEN);
 		else if (isQuitGameBtnClicked)
 		{
-			delete Game::getInstance();
+			delete Game::GetInstance();
 			exit(0);
 		}
 		
 		else if (isSelectLevelBtnClicked)
-			Game::setCurrentScreen(constants::SELECT_LEVEL_SCREEN);
+			Game::SetCurrentScreen(constants::SELECT_LEVEL_SCREEN);
 		break;
 
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);
-		startGameBtn->onHover(x, y);
-		loadGameBtn->onHover(x, y);
-		selectLevelBtn->onHover(x, y);
-		quitGameBtn->onHover(x, y);
+		startGameBtn->OnHover(x, y);
+		loadGameBtn->OnHover(x, y);
+		selectLevelBtn->OnHover(x, y);
+		quitGameBtn->OnHover(x, y);
 		break;
 	default:
 		break;

@@ -16,9 +16,9 @@ private:
 	SDL_Renderer* gRenderer;
 public:
 	static UnitFactory * getInstance(SDL_Renderer*);
-	Attractor * createPlanet(LTexture*, int, int, int, float);
-	Weapon * createWeapon(int x, int y, int weaponType);
-	Unit * createAsteroid(int x, int y, int asteroidType, int speed);
-	EasterEgg * createEasterEgg(int x, int y, int easterEggType);
-	Bullet * createBullet(int x, int y, int bulletType, int speed);
+	Attractor * CreatePlanet(LTexture*, int, int, int, float);
+	Weapon * CreateWeapon(int x, int y, int weaponType);
+	Unit * CreateAsteroid(int x, int y, int asteroidType, int speed);
+	EasterEgg * CreateEasterEgg(int x, int y, int easterEggType);
+	Bullet * CreateBullet(int x, int y, int bulletType, int speed);
 };

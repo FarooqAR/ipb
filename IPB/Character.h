@@ -9,15 +9,15 @@ public:
 	Character();
 	Character(char c, LTexture* alphabetsSpriteSheet);
 	~Character();
-	void render(SDL_Renderer* gRenderer);
-	void setPosition(int x, int y);
-	void setChar(char c);
-	void setScale(float scale);
-	void setTexture(LTexture* alphabetsSpriteSheet);
-	int getWidth();
-	int getHeight();
-	int getX();
-	int getY();
+	void Render(SDL_Renderer* gRenderer);
+	void SetPosition(int x, int y);
+	void SetChar(char c);
+	void SetScale(float scale);
+	void SetTexture(LTexture* alphabetsSpriteSheet);
+	int GetWidth();
+	int GetHeight();
+	int GetX();
+	int GetY();
 
 private:
 	Point position;
