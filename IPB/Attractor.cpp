@@ -7,6 +7,8 @@
 
 using namespace std;
 
+
+//constructors
 Attractor::Attractor()
 {
 }
@@ -27,6 +29,7 @@ Attractor::Attractor(SDL_Renderer * gRenderer, LTexture * planetsTexture, int pl
 	};
 }
 
+//destructors
 Attractor::~Attractor()
 {
 }

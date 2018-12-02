@@ -6,7 +6,7 @@
 #include <cmath>
 
 
-
+//constructors
 Bullet::Bullet()
 {
 	alive = true;
@@ -33,14 +33,20 @@ Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletTy
 	objTexture = imageSpriteSheet;
 	renderer = gRenderer;
 	this->scale = scale;
-	this->destRect = { 
+	this->destRect = {
 		constants::BULLETS_SPRITE_START_POSITION.x + bulletWidth * bulletType,
-		constants::BULLETS_SPRITE_START_POSITION.y, 
-		bulletWidth, 
-		bulletHeight 
+		constants::BULLETS_SPRITE_START_POSITION.y,
+		bulletWidth,
+		bulletHeight
 	};
-	this->width = (int) (bulletWidth * scale);
-	this->height = (int) (bulletHeight * scale);
+	this->width = (int)(bulletWidth * scale);
+	this->height = (int)(bulletHeight * scale);
 	this->angle = angle;
 	this->damage = damage;
+}
+
+//destructor
+Bullet::~Bullet()
+{
+	delete objTexture;
 }

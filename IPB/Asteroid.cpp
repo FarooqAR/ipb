@@ -71,6 +71,7 @@ Asteroid::~Asteroid()
 
 }
 
+//Moves the asteroid 
 void Asteroid::move()
 {
 	if (direction == 'l' || direction == 'u')

@@ -131,6 +131,7 @@ Node * Queue::Top()
 {
 	return head;
 }
+//compares objects of one queue with objects of another for collision detection
 void Queue::checkCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destory)
 {
 	Node* temp = head;

@@ -28,6 +28,7 @@
     <ClCompile Include="PauseScreen.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="EasterEgg.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attractor.h" />
@@ -60,5 +61,6 @@
     <ClInclude Include="ControlsIntroScreen.h" />
     <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="SplashScreen.h" />
   </ItemGroup>
 </Project>

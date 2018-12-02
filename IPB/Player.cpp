@@ -113,7 +113,7 @@ void Player::SetDelay(int time)
 
 void Player::SetWeapon(Weapon* weapon)
 {
-	weapons = weapon;
+	this->weapon = weapon;
 }
 
 
@@ -181,9 +181,13 @@ int Player::GetAmmo()
 
 Weapon* Player::GetWeapon()
 {
+<<<<<<< HEAD
 	return weapon->GetWeaponType();
 }
 void Player::SetWeaponType(int weaponType)
 {
 	weapon->SetWeaponType(weaponType);
+=======
+	return weapon;
+>>>>>>> comments added
 }

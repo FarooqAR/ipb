@@ -10,8 +10,8 @@ class Player : public Unit
 {
 private:
 	float health;
-	int oxygen;
-	int fuel;;
+	float oxygen;
+	float fuel;;
 	Weapon * weapon; 
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];

@@ -26,6 +26,7 @@ private:
 	bool isMoving;
 	bool intoWormHole;
 
+	//Textures
 	LTexture* AsteroidTexture;
 	LTexture* explosionTexture;
 	LTexture* bulletTexture;
@@ -39,9 +40,7 @@ private:
 	LTexture* FuelEasterEggTexture;
 	LTexture* HealthEasterEggTexture;
 	LTexture* WeaponEasterEggTexture;
-	UnitFactory* unitFactory;
-	Unit* wormHole;
-	SDL_Renderer* renderer;
+	//Clips
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
@@ -64,6 +63,7 @@ private:
 	Queue EnemyBulletQueue;
 	Queue AsteroidQueue;
 	Queue EasterEggQueue;
+	//Buttons
 	Button* ResumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;

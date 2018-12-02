@@ -101,6 +101,8 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 		constants::WORMHOLE_WIDTH,
 		constants::WORMHOLE_HEIGHT
 	};
+
+	//The end destination the player has to reach
 	wormHole = new Unit(renderer, wormHoleTexture, 0, 0, 0);
 	wormHole->SetPosition(100, 300);
 	wormHole->SetClip(wormHoleClip);
@@ -187,7 +189,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			hero->SetFuel(stoi(line));
 			break;
 		case 7:
-			hero->SetWeaponType(stoi(line));;
+			hero->GetWeapon()->SetWeaponType(stoi(line));;
 			break;
 		case 8:
 			hero->SetAmmo(stoi(line));
@@ -270,6 +272,7 @@ void BattleScreen::Render()
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
 	if (enemy->GetAlive())
 		SDL_RenderDrawRect(renderer, &enemyHealthBoundary);
+	//creates boundaries for the health, oxygen and fuel bars
 	SDL_RenderDrawRect(renderer, &heroHealthBoundary);
 	SDL_SetRenderDrawColor(renderer, 88, 180, 180, 1);
 	SDL_RenderDrawRect(renderer, &heroOxygenBoundary);
@@ -353,6 +356,7 @@ void BattleScreen::Render()
 		i += 1;
 	}
 
+	//decrements the fuel bar when thrusting, and the oxygen bar with time
 	if (int(hero->getFuel()) < 100 && hero->getIsThrusting() == 0)
 	{
 		hero->setFuel(int(hero->getFuel()) + 1);
@@ -365,7 +369,8 @@ void BattleScreen::Render()
 
 	planets.render();
 
-	if (frames % 500 == 0 && !isPaused)
+	//renders an easter egg at random
+	if (frames % 600 == 0 && !isPaused)
 	{
 		int type = rand() % 4;
 		LTexture* texture = HealthEasterEggTexture;
@@ -410,30 +415,36 @@ void BattleScreen::Render()
 		EasterEggQueue.enqueue(bonus);
 	}
 	
-
+	//renders an asteroid 
 	if (frames % 150 == 0)
 	{
-		Asteroid* spawnAsteroid = new Asteroid(renderer, AsteroidTexture, 0.3);//unitFactory->createAsteroid(AsteroidTexture, 0.3);
+		Asteroid* spawnAsteroid = new Asteroid(renderer, AsteroidTexture, 0.3);
 		spawnAsteroid->setClip(AsteroidClip);
 		AsteroidQueue.enqueue(spawnAsteroid);
 	}
 
+	//checks if the player has has collected the easteregg
 	bool Collected = EasterEggQueue.checkCollision(hero, true);
-	bool isColliding = planets.checkCollision(hero) && !isPaused;
-	bool AsteroidCollision = AsteroidQueue.checkCollision(hero, true);
-	bool AsteroidCollisionEnemy = AsteroidQueue.checkCollision(enemy, true);
-	AsteroidQueue.checkCollision(&PlayerBulletQueue, explosionTexture, explosionSpriteClips, true);
-	AsteroidQueue.checkCollision(&EnemyBulletQueue, explosionTexture, explosionSpriteClips, true);
-	AsteroidQueue.checkCollision(&planets, explosionTexture, explosionSpriteClips);
 	
 	if (Collected && !isPaused)
 	{
+		//updates the status of the player and screen if easteregg collected
 		EasterEggQueue.Collected(hero);
 		string title = "Weapon: " + string(hero->GetWeapon()->GetWeaponName());
 		WeaponTitle->setText(title);
 		title = "Ammo: " + to_string(hero->GetAmmo());
 		AmmoCount->setText(title);
 	}
+
+	//checks if hero is in contact with planets
+	bool isColliding = planets.checkCollision(hero) && !isPaused;
+	//checks if asteroid made contact with either the hero or enemy
+	bool AsteroidCollision = AsteroidQueue.checkCollision(hero, true);
+	bool AsteroidCollisionEnemy = AsteroidQueue.checkCollision(enemy, true);
+	//checks each object of one queue (asteroid) with each time of another (bullets and planets) to see if collision occured 
+	AsteroidQueue.checkCollision(&PlayerBulletQueue, explosionTexture, explosionSpriteClips, true);
+	AsteroidQueue.checkCollision(&EnemyBulletQueue, explosionTexture, explosionSpriteClips, true);
+	AsteroidQueue.checkCollision(&planets, explosionTexture, explosionSpriteClips);
 
 	if (AsteroidCollision)
 	{
@@ -489,6 +500,7 @@ void BattleScreen::Render()
 	AsteroidQueue.clean();
 	EasterEggQueue.clean();
 
+	//while both enemy and hero are alive, the enemy shoots bullets
 	if (enemy->getAlive() && hero->getAlive())
 	{
 		if (frames % 50 == 0)
@@ -520,7 +532,9 @@ void BattleScreen::Render()
 			&explosionSpriteClips[enemExplosionSpriteIndex]
 		);
 		if (frames % 4 == 0)
+		{
 			enemExplosionSpriteIndex++;
+		}
 	}
 	if (hero->GetAlive())
 	{
@@ -537,6 +551,7 @@ void BattleScreen::Render()
 
 
 	}
+	//if hero != alive, there is an explosion
 	else if (heroExplosionSpriteIndex < 20)
 	{
 		if (heroExplosionSpriteIndex == 0)
@@ -687,6 +702,7 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 	{
 		if (hero->GetDelay() > hero->GetWeapon()->GetDelay() && hero->GetAmmo() > 0 && !intoWormHole)
 		{
+			//updates screen once the player shoots a bullet
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
 			playerBulletQueue.Enqueue(bullet);
 			hero->SetDelay(0);
@@ -759,7 +775,9 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 		else if (isBackBtnClicked)
 			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitGameBtnClicked)
+		{
 			exit(0);
+		}
 		break;
 
 	case SDL_MOUSEMOTION:
