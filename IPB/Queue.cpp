@@ -132,14 +132,14 @@ Node * Queue::Top()
 	return head;
 }
 //compares objects of one queue with objects of another for collision detection
-void Queue::checkCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destory)
+void Queue::CheckCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destory)
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		if (queue->checkCollision(temp->unit, Destory))
+		if (queue->CheckCollision(temp->unit, Destory))
 		{
-			temp->unit->setAlive(false);
+			temp->unit->SetAlive(false);
 			temp->unit->Explosion(ExplosionTexture, clip, temp->unit);
 		}
 		temp = temp->next;
@@ -152,7 +152,7 @@ void Queue::Collected(Player* player)
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		if (temp->unit->getAlive() == false)
+		if (temp->unit->GetAlive() == false)
 		{
 			((EasterEgg*)temp->unit)->HasCollected(player);
 		}

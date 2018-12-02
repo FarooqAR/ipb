@@ -68,6 +68,9 @@ private:
 	Button* saveGameBtn;
 	Button* backBtn;
 	Button* quitGameBtn;
+	UnitFactory* unitFactory;
+	Unit* wormHole;
+	SDL_Renderer* renderer;
 	Word* weaponTitle;
 	Word* ammoCount;
 	Word* pauseTitle;

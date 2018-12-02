@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+/*Guide used to indicate the direction of the gravitational force pulling the player*/
+
 Orbs::Orbs(SDL_Renderer * gRenderer, int initialX, int initialY, float scale)
 {
 	this->objTexture = new LTexture;

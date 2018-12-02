@@ -15,6 +15,7 @@ Attractor::Attractor()
 Attractor::Attractor(SDL_Renderer * gRenderer, LTexture * planetsTexture, int planetType, int x, int y, float scale)
 {
 	this->SetPosition(x, y);
+	gravConstant = 2;
 	this->objTexture = planetsTexture;
 	this->renderer = gRenderer;
 	this->scale = scale;

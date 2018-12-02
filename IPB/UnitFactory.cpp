@@ -25,12 +25,12 @@ Attractor * UnitFactory::CreatePlanet(LTexture* imageSpriteSheet, int planetType
 }
 
 
-Asteroid * UnitFactory::createAsteroid(LTexture* imageSpriteSheet, int scale)
+Asteroid * UnitFactory::CreateAsteroid(LTexture* imageSpriteSheet, float scale)
 {
 	return new Asteroid(gRenderer, imageSpriteSheet, scale);
 }
 
-EasterEgg * UnitFactory::createEasterEgg(LTexture * imageSpriteSheet, int EggType)
+EasterEgg * UnitFactory::CreateEasterEgg(LTexture * imageSpriteSheet, int EggType)
 {
 	return new EasterEgg(gRenderer, imageSpriteSheet, EggType);
 }

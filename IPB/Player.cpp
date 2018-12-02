@@ -79,7 +79,7 @@ void Player::SetHealth(float health)
 		this->alive = false;
 }
 
-void Player::SetOxygen(int oxygen)
+void Player::SetOxygen(float oxygen)
 {
 	if (this->oxygen > 0 && this->oxygen <= 100)
 		this->oxygen = oxygen;
@@ -90,7 +90,7 @@ void Player::SetOxygen(int oxygen)
 	}
 }
 
-void Player::SetFuel(int fuel)
+void Player::SetFuel(float fuel)
 {
 	if (this->fuel > 0 && this->fuel <= 100)
 		this->fuel = fuel;
@@ -108,7 +108,7 @@ void Player::SetAmmo(int bullets)
 
 void Player::SetDelay(int time)
 {
-	shootDelay = time;
+	ShootDelay = time;
 }
 
 void Player::SetWeapon(Weapon* weapon)
@@ -123,12 +123,12 @@ float Player::GetHealth()
 {
 	return health;
 }
-int Player::GetOxygen()
+float Player::GetOxygen()
 {
 	return oxygen;
 }
 
-int Player::GetFuel()
+float Player::GetFuel()
 {
 	return fuel;
 }

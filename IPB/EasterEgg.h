@@ -22,5 +22,5 @@ class EasterEgg : public Unit
 		EasterEgg(SDL_Renderer* gRenderer, LTexture*, int Type);
 		~EasterEgg();
 		void HasCollected(Player * player);
-		void move();
+		void Move();
 };

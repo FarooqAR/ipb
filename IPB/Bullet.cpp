@@ -48,5 +48,5 @@ Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletTy
 //destructor
 Bullet::~Bullet()
 {
-	delete objTexture;
+	//delete objTexture;
 }

@@ -14,6 +14,6 @@ class Asteroid : public Unit
 	private:
 		int damage;
 		char direction;
-		void SetPosition();
+		void setPosition();
 };
 
