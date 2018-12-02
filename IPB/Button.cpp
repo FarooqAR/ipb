@@ -58,8 +58,8 @@ void Button::Render(SDL_Renderer * gRenderer)
 		SDL_FLIP_NONE,
 		0.0,
 		nullptr,
-		(float)width / (float)constants::BUTTON_WIDTH,
-		(float)height / (float)constants::BUTTON_HEIGHT
+		(float) width/ (float) constants::BUTTON_WIDTH,
+		(float) height/ (float) constants::BUTTON_HEIGHT
 	);
 	this->label->Render(gRenderer);
 }
