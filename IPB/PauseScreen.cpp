@@ -67,9 +67,9 @@ void PauseScreen::HandleEvents(SDL_Event& event)
 		isBackBtnClicked = backBtn->OnClickUp(x, y);
 		isQuitGameBtnClicked = quitGameBtn->OnClickUp(x, y);
 		if (isResumeGameBtnClicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN);
 		else if (isBackBtnClicked)
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitGameBtnClicked)
 			exit(0);
 		break;

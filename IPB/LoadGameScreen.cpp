@@ -69,13 +69,13 @@ void LoadGameScreen::HandleEvents(SDL_Event& event)
 		isBackClicked = backBtn->OnClickUp(x, y);
 		
 		if (isBackClicked)
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (is1Clicked)
-			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame1.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame1.txt");
 		else if (is2Clicked)
-			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame2.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame2.txt");
 		else if (is3Clicked)
-			Game::SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame3.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::SAVE_GAME_SCREEN, "SavedGame3.txt");
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&x, &y);

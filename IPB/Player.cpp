@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "constants.h"
 #include "Player.h"
+#include "Game.h"
 #include <cmath>
 
 Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX, int initialY, float Angle)
 {
+	this->SetPosition(initialX, initialY);
 	this->angle = Angle;
 	this->objTexture = imageSpriteSheet;
-	this->weapon = new Weapon(10, constants::SIMPLE_BULLET);
-	this->SetPosition(initialX, initialY);
+	this->weapon = Game::GetInstance()->GetUnitFactory()->CreateWeapon(40, constants::SIMPLE_BULLET, 30);
+ 	this->SetDelay(-1);
 	this->renderer = gRenderer;
 	this->width = constants::PLAYER_WIDTH;
 	this->height = constants::PLAYER_HEIGHT;
@@ -18,11 +20,11 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 	this->shipCurrentClipIndex = 0;
 	for (int i = 0; i < 11; i++)
 	{
-		shipSpriteClips[i] = { 
+		shipSpriteClips[i] = {
 			constants::PLAYER_SPRITE_START_POSITION.x + this->width * i,
-			constants::PLAYER_SPRITE_START_POSITION.y, 
-			this->width, 
-			this->height 
+			constants::PLAYER_SPRITE_START_POSITION.y,
+			this->width,
+			this->height
 		};
 	}
 }
@@ -30,7 +32,6 @@ Player::Player(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int initialX
 Player::~Player()
 {
 	delete weapon;
-	delete objTexture;
 }
 
 void Player::Render()
@@ -41,13 +42,11 @@ void Player::Render()
 		renderer,
 		&shipSpriteClips[this->shipCurrentClipIndex],
 		SDL_FLIP_NONE,
-		//PlayerAngle,
-		
 		this->angle,
 		nullptr,
 		scale,
 		scale,
-		false // if true, shows red rectangle around the unit for debugging purposes
+		false
 	);
 }
 
@@ -73,7 +72,7 @@ void Player::SetHealth(float health)
 		this->health = health;
 	else
 	{
-		this->health = 0;		
+		this->health = 0;
 	}
 	if (this->health == 0)
 		this->alive = false;
@@ -108,7 +107,10 @@ void Player::SetAmmo(int bullets)
 
 void Player::SetDelay(int time)
 {
-	ShootDelay = time;
+	if (time >= 0)
+		shootDelay = time;
+	else
+		shootDelay = 0;
 }
 
 void Player::SetWeapon(Weapon* weapon)
@@ -159,13 +161,8 @@ int Player::GetY()
 
 string Player::GetWeaponName()
 {
-	
-	return weapon->GetWeaponName();
-}
 
-int Player::GetWeaponDelay()
-{
-	return weapon->GetDelay();
+	return weapon->GetWeaponName();
 }
 
 int Player::GetDelay()
@@ -181,13 +178,9 @@ int Player::GetAmmo()
 
 Weapon* Player::GetWeapon()
 {
-<<<<<<< HEAD
-	return weapon->GetWeaponType();
+	return weapon;
 }
 void Player::SetWeaponType(int weaponType)
 {
 	weapon->SetWeaponType(weaponType);
-=======
-	return weapon;
->>>>>>> comments added
 }

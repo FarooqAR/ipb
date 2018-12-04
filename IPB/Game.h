@@ -13,7 +13,8 @@ class Game
 public:
 	~Game();
 	static Game * GetInstance();
-	static void SetCurrentScreen(int, const char* savedFilename = nullptr);
+	UnitFactory * GetUnitFactory();
+	void SetCurrentScreen(int, const char* savedFilename = nullptr);
 	void Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 	void PlayMusic(int MUSIC_TYPE);
 	void StopMusic(int channel = -1);
@@ -23,11 +24,11 @@ public:
 	void Clean();
 	bool Running();
 private:
-	static GameScreen* currentScreen;
-	static SDL_Renderer * renderer;
-	static UnitFactory* unitFactory;
-	static LTexture* imagesSpriteSheet;
-	static bool isFirstTimer;
+	GameScreen* currentScreen;
+	SDL_Renderer * renderer;
+	UnitFactory* unitFactory;
+	LTexture* imagesSpriteSheet;
+	bool isFirstTimer;
 
 	bool isRunning;
 	SDL_Window * window;

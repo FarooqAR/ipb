@@ -47,7 +47,7 @@ void GameOverScreen::HandleEvents(SDL_Event& event)
 		isQuitBtnClicked = quitBtn->OnClickUp(x, y);
 		isMainMenuBtnClicked = mainMenuBtn->OnClickUp(x, y);
 		if (isMainMenuBtnClicked)
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitBtnClicked)
 			exit(0); // needs change; should signal Game.cpp which will exit properly
 

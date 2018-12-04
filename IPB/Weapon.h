@@ -9,10 +9,10 @@ class Weapon : public Unit
 {
 private:
 	const char* name;
-	Bullet * bullets;
 	int timeDelay;
 	int weaponType;
 	int ammo;
+	int damage;
 
 public:
 	Weapon();
@@ -22,6 +22,7 @@ public:
 	Bullet *  Fire(SDL_Renderer* gRenderer, LTexture*, int, int, double);
 	const char* GetWeaponName();
 	int GetWeaponType();
+	int GetDamage();
 	int GetAmmo();
 	void SetAmmo(int);
 	void SetWeaponType(int);

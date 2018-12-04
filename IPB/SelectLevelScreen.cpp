@@ -70,13 +70,13 @@ void SelectLevelScreen::HandleEvents(SDL_Event& event)
 		isLvl2Clicked = lvl2->OnClickUp(x, y);
 		isLvl3Clicked = lvl3->OnClickUp(x, y);
 		if (isBackBtnClicked)
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		if (isLvl1Clicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN, "Level1.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN, "Level1.txt");
 		else if (isLvl2Clicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN, "Level2.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN, "Level2.txt");
 		else if (isLvl3Clicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN, "Level3.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN, "Level3.txt");
 		break;
 
 	case SDL_MOUSEMOTION:

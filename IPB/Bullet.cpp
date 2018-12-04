@@ -2,9 +2,7 @@
 #include "Bullet.h"
 #include "LTexture.h"
 #include "constants.h"
-
 #include <cmath>
-
 
 //constructors
 Bullet::Bullet()
@@ -22,11 +20,6 @@ void Bullet::Move()
 	}
 }
 
-Bullet::~Bullet()
-{
-	delete objTexture;
-}
-
 Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletType, int x, int y, float scale, double angle, int damage, int bulletWidth, int bulletHeight) : Unit()
 {
 	SetPosition(x, y);
@@ -42,11 +35,8 @@ Bullet::Bullet(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, int bulletTy
 	this->width = (int)(bulletWidth * scale);
 	this->height = (int)(bulletHeight * scale);
 	this->angle = angle;
-	this->damage = damage;
 }
 
-//destructor
 Bullet::~Bullet()
 {
-	//delete objTexture;
 }

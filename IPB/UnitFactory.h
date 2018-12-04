@@ -18,8 +18,8 @@ private:
 public:
 	static UnitFactory * getInstance(SDL_Renderer*);
 	Attractor * CreatePlanet(LTexture*, int, int, int, float);
-	Weapon * CreateWeapon(int x, int y, int weaponType);
-	Bullet * CreateBullet(int x, int y, int bulletType, int speed);
-	Asteroid * createAsteroid(LTexture*,  int scale);
-	EasterEgg * createEasterEgg(LTexture*, int EggType);
+	Weapon * CreateWeapon(int delay, int weaponType, int ammo);
+	Bullet * CreateBullet(LTexture* imagesSpriteSheet, int weaponType, int x, int y, double angle);
+	Asteroid * CreateAsteroid(LTexture*,  float scale);
+	EasterEgg * CreateEasterEgg(LTexture*, int eggType);
 };

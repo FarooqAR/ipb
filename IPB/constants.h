@@ -36,10 +36,11 @@ namespace constants
 	const int LAUNCHER_HEIGHT = 62;
 	const int BOX_WIDTH = 100;
 	const int BOX_HEIGHT = 85;
-	const int FOOD_WIDTH = 150;
-	const int FOOD_HEIGHT = 256;
+	const int FOOD_WIDTH = 120;
+	const int FOOD_HEIGHT = 90;
 	const int FUELTANK_WIDTH = 50;
 	const int FUELTANK_HEIGHT = 113;
+	const int SPLASH_DELAY = 120;
 
 	const Point HEALTH_SPRITE_START_POSITION = {1024, 0};
 	const Point FADE_SCREEN_BG_START_POSITION = {1024 + STATUS_WIDTH * 3, 0};
@@ -92,6 +93,7 @@ namespace constants
 		MUSIC_BTN_CLICK,
 		MUSIC_EXPLOSION,
 		MUSIC_BULLET
+	};
 	enum EASTEREGGS_TYPES
 	{
 		HEALTH,

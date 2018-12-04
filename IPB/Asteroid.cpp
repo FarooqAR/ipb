@@ -4,7 +4,7 @@
 
 
 //randomly sets the initial position of the asteroid
-void Asteroid::setPosition()
+void Asteroid::SetPosition()
 {
 	int x = 0;
 	int y = 0;
@@ -38,7 +38,7 @@ void Asteroid::setPosition()
 			direction = 'd';
 		}
 	}
-	this->SetPosition(x, y);
+	((Unit*) (this))->SetPosition(x, y);
 
 }
 
@@ -51,17 +51,17 @@ Asteroid::Asteroid()
 
 Asteroid::Asteroid(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet,float scale, int damage, int speedX, int speedY) : Unit()
 {
-	setPosition();
+	SetPosition();
 	this->angle = (position.x <= 512 || position.y <= 350) ? rand() % 91 + 90 : rand() % 91 + 180;
 	this->objTexture = imageSpriteSheet;
 	this->renderer = gRenderer;
 	this->scale = scale;
 	this->alive = true;
-	this->width = constants::ASTEROID_WIDTH;
-	this->height = constants::ASTEROID_HEIGHT;
+	this->width = (int) (constants::ASTEROID_WIDTH * scale);
+	this->height = (int) (constants::ASTEROID_HEIGHT * scale);
 	this->damage = damage;
-	this->speedX = speedX;
-	this->speedY = speedY;
+	this->speedX = (float) speedX;
+	this->speedY = (float) speedY;
 
 }
 
@@ -76,13 +76,13 @@ void Asteroid::move()
 {
 	if (direction == 'l' || direction == 'u')
 	{
-		position.x += (sin((angle - 90) * M_PI / 180)) * speedX;
-		position.y += (cos((angle - 90) * M_PI / 180)) * speedY;
+		position.x += (int) ((sin((angle - 90) * M_PI / 180)) * speedX);
+		position.y += (int) ((cos((angle - 90) * M_PI / 180)) * speedY);
 	}
 	else if (direction == 'd' || direction == 'r')
 	{
-		position.x -= (sin((angle - 90) * M_PI / 180)) * speedX;
-		position.y += (cos((angle - 90) * M_PI / 180)) * speedY;
+		position.x -= (int)((sin((angle - 90) * M_PI / 180)) * speedX);
+		position.y += (int)((cos((angle - 90) * M_PI / 180)) * speedY);
 	}
 
 	//deletes the asteroid object once it is out of the game screen frame

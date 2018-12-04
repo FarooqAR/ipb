@@ -18,29 +18,29 @@ EasterEgg::EasterEgg(SDL_Renderer* gRenderer, LTexture* imagesSpriteSheet, int T
 	this->type = Type;
 
 	//updates width, height and scale according to the easteregg type
-	if (type == 0)
+	if (type == constants::HEALTH)
 	{
 		this->width = constants::FOOD_WIDTH;
 		this->height = constants::FOOD_HEIGHT;
-		this->scale = 0.12;
+		this->scale = 0.5f;
 	}
-	else if (type == 1)
+	else if (type == constants::FUEL)
 	{
 		this->width = constants::FUELTANK_WIDTH;
 		this->height = constants::FUELTANK_WIDTH;
-		this->scale = 0.34;
+		this->scale = 0.34f;
 	}
-	else if (type == 2)
+	else if (type == constants::OXYGEN)
 	{
 		this->width = constants::ASTRONAUT_WIDTH;
 		this->height = constants::ASTRONAUT_HEIGHT;
-		this->scale = 0.60;
+		this->scale = 0.60f;
 	}
-	else if (type == 3)
+	else if (type == constants::WEAPON)
 	{
 		this->width = constants::LAUNCHER_WIDTH;
 		this->height = constants::LAUNCHER_HEIGHT;
-		this->scale = 0.65;
+		this->scale = 0.65f;
 	}
 }
 
@@ -59,11 +59,11 @@ void EasterEgg::Move()
 	//rate at which they disappear
 	if (type ==  2 || type == 3)
 	{
-		scale = scale - 0.0003 / scale;
+		scale = scale - 0.0003f / scale;
 	}
 	else
 	{
-		scale = scale - 0.00001 / scale;
+		scale = scale - 0.00001f / scale;
 	}
 
 	//scale = 0 implies that the egg has disappeared and the player has lost the ability to collect it

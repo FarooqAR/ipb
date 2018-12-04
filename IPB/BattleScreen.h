@@ -36,20 +36,20 @@ private:
 	LTexture* destinationTexture;
 	LTexture* wormHoleTexture;
 	LTexture* fadeScreenTexture;
-	LTexture* OxygenEasterEggTexture;
-	LTexture* FuelEasterEggTexture;
-	LTexture* HealthEasterEggTexture;
-	LTexture* WeaponEasterEggTexture;
+	LTexture* oxygenEasterEggTexture;
+	LTexture* fuelEasterEggTexture;
+	LTexture* healthEasterEggTexture;
+	LTexture* weaponEasterEggTexture;
 	//Clips
 	SDL_Rect explosionSpriteClips[20];
 	SDL_Rect healthSpriteClip;
 	SDL_Rect oxygenSpriteClip;
 	SDL_Rect fuelSpriteClip;
-	SDL_Rect FuelEasterEggClip;
-	SDL_Rect OxygenEasterEggClip;
-	SDL_Rect HealthEasterEggClip;
-	SDL_Rect WeaponEasterEggClip;
-	SDL_Rect AsteroidClip;
+	SDL_Rect fuelEasterEggClip;
+	SDL_Rect oxygenEasterEggClip;
+	SDL_Rect healthEasterEggClip;
+	SDL_Rect weaponEasterEggClip;
+	SDL_Rect asteroidClip;
 	SDL_Rect pauseScreenSpriteClip;
 	SDL_Rect enemyHealthBoundary;
 	SDL_Rect heroHealthBoundary;
@@ -59,12 +59,12 @@ private:
 	Enemy* enemy;
 	Orbs** ball;
 	Queue planets;
-	Queue PlayerBulletQueue;
-	Queue EnemyBulletQueue;
-	Queue AsteroidQueue;
-	Queue EasterEggQueue;
+	Queue playerBulletQueue;
+	Queue enemyBulletQueue;
+	Queue asteroidQueue;
+	Queue easterEggQueue;
 	//Buttons
-	Button* ResumeGameBtn;
+	Button* resumeGameBtn;
 	Button* saveGameBtn;
 	Button* backBtn;
 	Button* quitGameBtn;
@@ -77,10 +77,17 @@ private:
 	string s;
 
 public:
-	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu = false);
+	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet);
 	BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, const char* savedFileName);
 	~BattleScreen();
 	void Render();
+	void RenderWormHole();
+	void RenderStatusBars();
+	void RenderRandomEasterEggs();
+	void RenderPlayer();
+	void RenderEnemy();
+	void RenderFadeScreen();
+	void ShootEnemyBullet();
 	bool IsEmpty(string);
 	void WriteFile(string);
 	void HandleEvents(SDL_Event&);

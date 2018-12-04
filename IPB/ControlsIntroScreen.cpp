@@ -67,7 +67,7 @@ void ControlsIntroScreen::HandleEvents(SDL_Event & event)
 	case SDL_MOUSEBUTTONUP:
 		isGoBtnClicked = goBtn->OnClickUp(x, y);
 		if (isGoBtnClicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN, "Level1.txt");
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN, "Level1.txt");
 
 		break;
 	case SDL_MOUSEMOTION:

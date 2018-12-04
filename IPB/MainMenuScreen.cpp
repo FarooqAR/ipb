@@ -70,17 +70,17 @@ void MainMenuScreen::HandleEvents(SDL_Event& event)
 		isLoadGameBtnClicked = loadGameBtn->OnClickUp(x, y);
 		isQuitGameBtnClicked = quitGameBtn->OnClickUp(x, y);
 		if (isStartGameBtnClicked)
-			Game::SetCurrentScreen(constants::BATTLE_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::BATTLE_SCREEN);
 		else if (isLoadGameBtnClicked)
-			Game::SetCurrentScreen(constants::LOAD_GAME_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::LOAD_GAME_SCREEN);
 		else if (isQuitGameBtnClicked)
 		{
 			delete Game::GetInstance();
 			exit(0);
 		}
-		
+
 		else if (isSelectLevelBtnClicked)
-			Game::SetCurrentScreen(constants::SELECT_LEVEL_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::SELECT_LEVEL_SCREEN);
 		break;
 
 	case SDL_MOUSEMOTION:

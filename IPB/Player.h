@@ -16,7 +16,7 @@ private:
 	bool isThrusting;
 	SDL_Rect shipSpriteClips[11];
 	int shipCurrentClipIndex;
-	int ShootDelay;
+	int shootDelay;
 	int ammo;
 public:
 	~Player(); 
@@ -24,11 +24,10 @@ public:
 	Player(SDL_Renderer*, LTexture*, int, int, float Angle = 0);
 	void SetAmmo(int);
 	void SetDelay(int);
+	void SetWeapon(Weapon* weapon);
 	int GetDelay();
-	int GetWeaponDelay();
 	int GetAmmo();
 	string GetWeaponName();
-	int GetWeaponType();
 	void SetWeaponType(int);
 	void Render();
 	void SetHealth(float);
@@ -44,4 +43,5 @@ public:
 	void SetIsThrusting(bool);
 	int GetX();
 	int GetY();
+	Weapon* GetWeapon();
 };

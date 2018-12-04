@@ -24,8 +24,8 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::Render()
 {
-	if (frames == 120)
-		Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+	if (frames == constants::SPLASH_DELAY)
+		Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 	
 	gameTitle->Render(renderer);
 	subTitle->Render(renderer);

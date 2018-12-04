@@ -17,15 +17,15 @@
 
 using namespace std;
 Game* Game::instance = nullptr;
-GameScreen* Game::currentScreen = nullptr;
-SDL_Renderer* Game::renderer = nullptr;
-UnitFactory* Game::unitFactory = nullptr;
-LTexture* Game::imagesSpriteSheet = nullptr;
-bool Game::isFirstTimer = true;
 
 
 Game::Game()
 {
+	renderer = nullptr;
+	currentScreen = nullptr;
+	unitFactory = nullptr;
+	imagesSpriteSheet = nullptr;
+	isFirstTimer = true;
 }
 
 Game::~Game()
@@ -42,6 +42,11 @@ Game * Game::GetInstance()
 	return instance;
 }
 
+UnitFactory * Game::GetUnitFactory()
+{
+	return unitFactory;
+}
+
 void Game::SetCurrentScreen(int screen, const char* savedFilename)
 {
 	Game::GetInstance()->StopMusic();
@@ -56,7 +61,7 @@ void Game::SetCurrentScreen(int screen, const char* savedFilename)
 		else if (savedFilename != nullptr)
 			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, savedFilename);
 		else
-			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, true);
+			currentScreen = new BattleScreen(renderer, unitFactory, imagesSpriteSheet, "Level1.txt");
 		isFirstTimer = false;
 	}
 	else if (screen == constants::GAME_OVER_SCREEN)
@@ -71,14 +76,6 @@ void Game::SetCurrentScreen(int screen, const char* savedFilename)
 	{
 		currentScreen = new LoadGameScreen(renderer, imagesSpriteSheet);
 	}
-	/*else if (screen == constants::SAVE_GAME_SCREEN)
-	{
-		currentScreen = new BattleScreen(renderer, , unitFactory);
-	}*/
-	/*else if (screen == constants::PAUSE_SCREEN)
-	{
-		currentScreen = new PauseScreen(renderer, imagesSpriteSheet);
-	}*/
 	else if (screen == constants::LOAD_GAME_SCREEN)
 	{
 		currentScreen = new LoadGameScreen(renderer, imagesSpriteSheet);
@@ -160,7 +157,7 @@ void Game::PlayMusic(int MUSIC_TYPE)
 		Mix_PlayChannel(-1, explosionChunk, 0);
 		break;
 	case constants::MUSIC_THEME:
-		Mix_PlayChannel(-1, themeChunk, 0);
+		Mix_PlayChannel(-1, themeChunk, -1);
 		break;
 	default:
 		break;

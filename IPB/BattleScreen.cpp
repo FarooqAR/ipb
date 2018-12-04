@@ -22,7 +22,7 @@
 
 using namespace std;
 
-BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet, bool comingFromMenu)
+BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTexture* imagesSpriteSheet)
 	: renderer(renderer)
 {
 	isPaused = false;
@@ -35,37 +35,37 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	fuelBarTexture = imagesSpriteSheet;
 	bulletTexture = imagesSpriteSheet;
 	wormHoleTexture = imagesSpriteSheet;
-	OxygenEasterEggTexture = imagesSpriteSheet;
-	HealthEasterEggTexture = imagesSpriteSheet;
-	FuelEasterEggTexture = imagesSpriteSheet;
-	WeaponEasterEggTexture = imagesSpriteSheet;
+	oxygenEasterEggTexture = imagesSpriteSheet;
+	healthEasterEggTexture = imagesSpriteSheet;
+	fuelEasterEggTexture = imagesSpriteSheet;
+	weaponEasterEggTexture = imagesSpriteSheet;
 	AsteroidTexture = imagesSpriteSheet;
 
-	AsteroidClip = {
+	asteroidClip = {
 		constants::ASTEROID_SPRITE_START_POSITION.x,
 		constants::ASTEROID_SPRITE_START_POSITION.y,
 		constants::ASTEROID_WIDTH,
 		constants::ASTEROID_HEIGHT
 	};
-	HealthEasterEggClip = {
+	healthEasterEggClip = {
 		constants::FOOD_SPRITE_START_POSITION.x,
 		constants::FOOD_SPRITE_START_POSITION.y,
 		constants::FOOD_WIDTH,
 		constants::FOOD_HEIGHT
 	};
-	OxygenEasterEggClip = {
+	oxygenEasterEggClip = {
 		constants::ASTRONAUT_SPRITE_START_POSITION.x,
 		constants::ASTRONAUT_SPRITE_START_POSITION.y,
 		constants::ASTRONAUT_WIDTH,
 		constants::ASTRONAUT_HEIGHT
 	};
-	FuelEasterEggClip = {
+	fuelEasterEggClip = {
 		constants::FUELTANK_SPRITE_START_POSITION.x,
 		constants::FUELTANK_SPRITE_START_POSITION.y,
 		constants::FUELTANK_WIDTH,
 		constants::FUELTANK_HEIGHT
 	};
-	WeaponEasterEggClip = {
+	weaponEasterEggClip = {
 		constants::LAUNCHER_SPRITE_START_POSITION.x,
 		constants::LAUNCHER_SPRITE_START_POSITION.y,
 		constants::LAUNCHER_WIDTH,
@@ -110,25 +110,14 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	//creates player, enemy, planets 
 	hero = new Player(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH / 2, constants::WINDOW_HEIGHT - 100);
 	enemy = new Enemy(renderer, imagesSpriteSheet, constants::WINDOW_WIDTH - 200, 30);
-	if (comingFromMenu)
-	{
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::MERCURY, 100, 550, 0.4f));
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::VENUS, 500, 140, 0.45f));
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::MARS, 750, 310, 0.35f));
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::EARTH, 195, 140, 0.5f));
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::JUPITER, 400, 400, 0.57f));
-		planets.Enqueue(unitFactory->CreatePlanet(imagesSpriteSheet, constants::NEPTUNE, 700, 530, 0.49f));
-	}
-
 	int x = (constants::WINDOW_WIDTH - constants::BUTTON_WIDTH) / 2;
 	resumeGameBtn = new Button(imagesSpriteSheet, "Resume", x, 200);
 	saveGameBtn = new Button(imagesSpriteSheet, "Save Game", x, 200 + 65);
 	backBtn = new Button(imagesSpriteSheet, "Back to Menu", x, 200 + 65 * 2);
 	quitGameBtn = new Button(imagesSpriteSheet, "Quit", x, 200 + 65 * 3);
 
-	PauseTitle = new Word("Game Paused", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
-	PauseTitle->SetXCentered();
-
+	pauseTitle = new Word("Game Paused", imagesSpriteSheet, 0, 300, 1); // 300 here is the starting y coord
+	pauseTitle->SetXCentered();
 
 	//generates movement orbs
 	ball = new Orbs*[10];
@@ -144,7 +133,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	string title = "Weapon: " + hero->GetWeaponName();
 	weaponTitle = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 50, 0.27f);
 	title = "Ammo: " + to_string(hero->GetAmmo());
-	AmmoCount = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27f);
+	ammoCount = new Word(title, imagesSpriteSheet, 20, constants::WINDOW_HEIGHT - 25, 0.27f);
 	enemyHealthBoundary = { 0, 0, 95, 10 };
 	heroHealthBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 50, 105, 10 };
 	heroOxygenBoundary = { constants::WINDOW_WIDTH - 130, constants::WINDOW_HEIGHT - 35, 105, 10 };
@@ -159,7 +148,7 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 	string line;
 	bool readingPlanets = false;
 	bool readingAsteroids = false;
-	
+
 	if (!file || !file.is_open())
 		return;
 	int i = 1;
@@ -189,11 +178,12 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 			hero->SetFuel(float(stoi(line)));
 			break;
 		case 7:
-			hero->GetWeapon()->SetWeaponType(stoi(line));;
+			hero->GetWeapon()->SetWeaponType(stoi(line));
+			weaponTitle->SetText("Weapon: " + hero->GetWeaponName());
 			break;
 		case 8:
 			hero->SetAmmo(stoi(line));
-			AmmoCount->SetText("Ammo: " + to_string(hero->GetAmmo()));
+			ammoCount->SetText("Ammo: " + to_string(hero->GetAmmo()));
 			break;
 		case 9:
 			hero->SetShipCurrentClipIndex(stoi(line));
@@ -262,43 +252,40 @@ BattleScreen::BattleScreen(SDL_Renderer* renderer, UnitFactory* unitFactory, LTe
 
 BattleScreen::~BattleScreen()
 {
-	
+
 }
 
 void BattleScreen::Render()
 {
-	WeaponTitle->Render(renderer);
-	AmmoCount->Render(renderer);
+	planets.Render();
+	weaponTitle->Render(renderer);
+	ammoCount->Render(renderer);
 	enemyHealthBoundary.x = enemy->GetPosition().x;
 	enemyHealthBoundary.y = enemy->GetPosition().y - 10;
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
 	if (enemy->GetAlive())
 		SDL_RenderDrawRect(renderer, &enemyHealthBoundary);
-	//creates boundaries for the health, oxygen and fuel bars
+	//renders boundaries for status bars
 	SDL_RenderDrawRect(renderer, &heroHealthBoundary);
 	SDL_SetRenderDrawColor(renderer, 88, 180, 180, 1);
 	SDL_RenderDrawRect(renderer, &heroOxygenBoundary);
 	SDL_SetRenderDrawColor(renderer, 228, 123, 36, 1);
 	SDL_RenderDrawRect(renderer, &heroFuelBoundary);
 
-	//creates wormhole
+	//renders  status bars
+	RenderStatusBars();
+	//renders an easter egg at random
+	RenderRandomEasterEggs();
+
+	// renders wormhole
 	if (!enemy->GetAlive() && hero->GetAlive())
-	{
-		wormHole->SetAngle(wormHole->GetAngle() - 0.2);
-		if (!intoWormHole)
-		{
-			wormHole->SetScale(wormHole->GetScale() + 0.1f);
-		}
-		else
-		{
-			hero->SetScale(hero->GetScale() - 0.1f);
-		}
-		if (wormHole->CheckCollision(hero, true))
-		{
-			intoWormHole = true;
-		}
-		wormHole->Render();
-	}
+		RenderWormHole();
+
+	// renders hero
+	RenderPlayer();
+
+	// renders enemy
+	RenderEnemy();
 
 	//kills both enemy and hero if they collide
 	if (enemy->GetAlive() && hero->CheckCollision(enemy))
@@ -308,33 +295,129 @@ void BattleScreen::Render()
 	}
 
 	//does damage if hero gets hit by bullet
-	if (enemy->GetAlive() && PlayerBulletQueue.CheckCollision(enemy, true))
+	if (enemy->GetAlive() && playerBulletQueue.CheckCollision(enemy, true))
 	{
-		enemy->SetHealth(enemy->GetHealth() - 5);
-		PlayerBulletQueue.Clean();
+		enemy->SetHealth(enemy->GetHealth() - hero->GetWeapon()->GetDamage());
+		playerBulletQueue.Clean();
 	}
 	//does damage if enemy gets hit by bullet
-	if (EnemyBulletQueue.CheckCollision(hero, true))
+	if (enemyBulletQueue.CheckCollision(hero, true))
 	{
 		hero->SetHealth(hero->GetHealth() - 5);
-		EnemyBulletQueue.Clean();
+		enemyBulletQueue.Clean();
 	}
 
 	if (!isPaused)
 	{
-		PlayerBulletQueue.Move();
-		EnemyBulletQueue.Move();
-		AsteroidQueue.Move();
-		EasterEggQueue.Move();
-		
+		playerBulletQueue.Move();
+		enemyBulletQueue.Move();
+		asteroidQueue.Move();
+		easterEggQueue.Move();
+
 	}
-	PlayerBulletQueue.Render();
-	EnemyBulletQueue.Render();
-	AsteroidQueue.Render();
-	EasterEggQueue.Render();
+	playerBulletQueue.Render();
+	enemyBulletQueue.Render();
+	asteroidQueue.Render();
+	easterEggQueue.Render();
 	
+	//decrements the fuel bar when thrusting, and the oxygen bar with time
+	if (int(hero->GetFuel()) < 100 && hero->GetIsThrusting() == 0)
+	{
+		hero->SetFuel(float(int(hero->GetFuel()) + 1));
+	}
+
+	if (frames % 100 == 0)
+	{
+		hero->SetOxygen(hero->GetOxygen() - 1);
+	}
+	
+	//renders an asteroid 
+	if (frames % 150 == 0)
+	{
+		Asteroid* spawnAsteroid = new Asteroid(renderer, AsteroidTexture, float(0.3));
+		spawnAsteroid->SetClip(asteroidClip);
+		asteroidQueue.Enqueue(spawnAsteroid);
+	}
+
+	//checks if the player has has collected the easteregg
+	bool collected = easterEggQueue.CheckCollision(hero, true);
+
+	if (collected && !isPaused)
+	{
+		//updates the status of the player and screen if easteregg collected
+		easterEggQueue.Collected(hero);
+		string title = "Weapon: " + string(hero->GetWeapon()->GetWeaponName());
+		weaponTitle->SetText(title);
+		title = "Ammo: " + to_string(hero->GetAmmo());
+		ammoCount->SetText(title);
+	}
+
+
+	//checks if asteroid made contact with either the hero or enemy
+	bool asteroidCollision = asteroidQueue.CheckCollision(hero, true);
+	bool asteroidCollisionEnemy = asteroidQueue.CheckCollision(enemy, true);
+	//checks each object of one queue (asteroid) with each time of another (bullets and planets) to see if collision occured 
+	asteroidQueue.CheckCollision(&playerBulletQueue, explosionTexture, explosionSpriteClips, true);
+	asteroidQueue.CheckCollision(&enemyBulletQueue, explosionTexture, explosionSpriteClips, true);
+	asteroidQueue.CheckCollision(&planets, explosionTexture, explosionSpriteClips);
+
+	if (asteroidCollision)
+	{
+		hero->SetHealth(hero->GetHealth() - 10);
+		hero->Explosion(explosionTexture, explosionSpriteClips, hero);
+
+	}
+
+	if (asteroidCollisionEnemy)
+	{
+		enemy->Explosion(explosionTexture, explosionSpriteClips, enemy);
+	}
+	
+	planets.Clean();
+	asteroidQueue.Clean();
+	easterEggQueue.Clean();
+
+	//while both enemy and hero are alive, the enemy shoots bullets
+	if (enemy->GetAlive() && hero->GetAlive() && !isPaused)
+	{
+		if (frames % 50 == 0)
+		{
+			ShootEnemyBullet();
+		}
+
+	}
+	   
+	//checks for paused game
+	if (isPaused)
+	{
+		RenderFadeScreen();
+	}
+	hero->SetDelay(hero->GetDelay() - 1);
+	frames++;
+}
+
+void BattleScreen::RenderWormHole()
+{
+	wormHole->SetAngle(wormHole->GetAngle() - 0.2);
+	if (!intoWormHole)
+	{
+		wormHole->SetScale(wormHole->GetScale() + 0.1f);
+	}
+	else
+	{
+		hero->SetScale(hero->GetScale() - 0.1f);
+	}
+	if (wormHole->CheckCollision(hero, true))
+	{
+		intoWormHole = true;
+	}
+	wormHole->Render();
+}
+
+void BattleScreen::RenderStatusBars()
+{
 	int i = 0;
-	//fils the bars
+	//fill the bars
 	while (i < hero->GetHealth())
 	{
 		healthBarTexture->RenderTexture(constants::WINDOW_WIDTH - 130 + i, constants::WINDOW_HEIGHT - 50, renderer, &healthSpriteClip);
@@ -358,111 +441,59 @@ void BattleScreen::Render()
 		healthBarTexture->RenderTexture((int)(enemy->GetPosition().x + i * 0.9), enemy->GetPosition().y - 10, renderer, &healthSpriteClip);
 		i += 1;
 	}
+}
 
-	//decrements the fuel bar when thrusting, and the oxygen bar with time
-	if (int(hero->GetFuel()) < 100 && hero->GetIsThrusting() == 0)
-	{
-		hero->SetFuel(float(int(hero->GetFuel()) + 1));
-	}
-
-	if (frames % 100 == 0)
-	{
-		hero->SetOxygen(hero->GetOxygen() - 1);
-	}
-
-	planets.Render();
-
-	//renders an easter egg at random
+void BattleScreen::RenderRandomEasterEggs()
+{
 	if (frames % 400 == 0 && !isPaused)
 	{
 		int type = rand() % 4;
-		LTexture* texture = HealthEasterEggTexture;
+		LTexture* texture = healthEasterEggTexture;
 		SDL_Rect clip;
 
 		switch (type)
 		{
-			case 0:
-			{
-				texture = HealthEasterEggTexture;
-				clip = HealthEasterEggClip;
-				break;
-			}
-			case 1:
-			{	
-				texture = FuelEasterEggTexture;
-				clip = FuelEasterEggClip;
-				break;
-			}
-			case 2:
-			{
-				texture = OxygenEasterEggTexture;
-				clip = OxygenEasterEggClip;
-				break;
-			}
-			case 3:
-			{
-				texture = WeaponEasterEggTexture;
-				clip = WeaponEasterEggClip;
-				break;
-			}
+		case 0:
+		{
+			texture = healthEasterEggTexture;
+			clip = healthEasterEggClip;
+			break;
 		}
-		
+		case 1:
+		{
+			texture = fuelEasterEggTexture;
+			clip = fuelEasterEggClip;
+			break;
+		}
+		case 2:
+		{
+			texture = oxygenEasterEggTexture;
+			clip = oxygenEasterEggClip;
+			break;
+		}
+		case 3:
+		{
+			texture = weaponEasterEggTexture;
+			clip = weaponEasterEggClip;
+			break;
+		}
+		}
+
 		EasterEgg* bonus = unitFactory->CreateEasterEgg(texture, type);
 
 		do
 		{
 			bonus->SetClip(clip);
 			bonus->SetPosition((rand() % 501 + 100), (rand() % 826 + 100));
-		}
-		while (planets.CheckCollision(bonus) && EasterEggQueue.CheckCollision(bonus));
-		EasterEggQueue.Enqueue(bonus);
+		} while (planets.CheckCollision(bonus) && easterEggQueue.CheckCollision(bonus));
+		easterEggQueue.Enqueue(bonus);
 	}
-	
-	//renders an asteroid 
-	if (frames % 150 == 0)
-	{
-		Asteroid* spawnAsteroid = new Asteroid(renderer, AsteroidTexture, float(0.3));
-		spawnAsteroid->SetClip(AsteroidClip);
-		AsteroidQueue.Enqueue(spawnAsteroid);
-	}
+}
 
-	//checks if the player has has collected the easteregg
-	bool Collected = EasterEggQueue.CheckCollision(hero, true);
-	
-	if (Collected && !isPaused)
-	{
-		//updates the status of the player and screen if easteregg collected
-		EasterEggQueue.Collected(hero);
-		string title = "Weapon: " + string(hero->GetWeapon()->GetWeaponName());
-		WeaponTitle->SetText(title);
-		title = "Ammo: " + to_string(hero->GetAmmo());
-		AmmoCount->SetText(title);
-	}
-
+void BattleScreen::RenderPlayer()
+{
 	//checks if hero is in contact with planets
 	bool isColliding = planets.CheckCollision(hero) && !isPaused;
-	//checks if asteroid made contact with either the hero or enemy
-	bool AsteroidCollision = AsteroidQueue.CheckCollision(hero, true);
-	bool AsteroidCollisionEnemy = AsteroidQueue.CheckCollision(enemy, true);
-	//checks each object of one queue (asteroid) with each time of another (bullets and planets) to see if collision occured 
-	AsteroidQueue.CheckCollision(&PlayerBulletQueue, explosionTexture, explosionSpriteClips, true);
-	AsteroidQueue.CheckCollision(&EnemyBulletQueue, explosionTexture, explosionSpriteClips, true);
-	AsteroidQueue.CheckCollision(&planets, explosionTexture, explosionSpriteClips);
-
-	if (AsteroidCollision)
-	{
-		hero->SetHealth(hero->GetHealth() - 10);
-		hero->Explosion(explosionTexture, explosionSpriteClips, hero);
-
-	}
-
-	if (AsteroidCollisionEnemy)
-	{
-		enemy->SetHealth(enemy->GetHealth() - 10);
-		enemy->Explosion(explosionTexture, explosionSpriteClips, enemy);
-
-	}
-
 	// toggle ship color when it collides
 	if (isColliding)
 	{
@@ -498,51 +529,6 @@ void BattleScreen::Render()
 			hero->SetShipCurrentClipIndex(0);
 		}
 	}
-
-	planets.Clean();
-	AsteroidQueue.Clean();
-	EasterEggQueue.Clean();
-
-	//while both enemy and hero are alive, the enemy shoots bullets
-	if (enemy->GetAlive() && hero->GetAlive())
-	{
-		if (frames % 50 == 0)
-		{
-			Bullet *bullet = enemy->GetWeapon()->Fire(
-				renderer,
-				bulletTexture,
-				enemy->GetPosition().x + enemy->GetWidth() / 2,
-				enemy->GetPosition().y + enemy->GetHeight() / 2,
-				atan2(
-					hero->GetPosition().x + hero->GetWidth() / 2 - enemy->GetPosition().x - enemy->GetWidth() / 2,
-					enemy->GetPosition().y + enemy->GetHeight() / 2 - hero->GetPosition().y - hero->GetHeight() / 2
-				) * 180 / constants::PI
-			);
-			EnemyBulletQueue.Enqueue(bullet);
-		}
-
-	}
-
-	if (enemy->GetAlive())
-	{
-		enemy->Render();
-	}
-	//explosion if enemy is dead
-	else if (enemExplosionSpriteIndex < 20)
-	{
-		if (enemExplosionSpriteIndex == 0)
-			Game::GetInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
-		explosionTexture->RenderTexture(
-			enemy->GetPosition().x + enemy->GetWidth() / 2 - 100 / 2,
-			enemy->GetPosition().y + enemy->GetHeight() / 2 - 63 / 2,
-			renderer,
-			&explosionSpriteClips[enemExplosionSpriteIndex]
-		);
-		if (frames % 4 == 0)
-		{
-			enemExplosionSpriteIndex++;
-		}
-	}
 	if (hero->GetAlive())
 	{
 		if (hero->GetScale() > 0.1)
@@ -554,7 +540,7 @@ void BattleScreen::Render()
 			hero->Render();
 		}
 		else
-			Game::SetCurrentScreen(constants::SELECT_LEVEL_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::SELECT_LEVEL_SCREEN);
 
 
 	}
@@ -573,30 +559,68 @@ void BattleScreen::Render()
 		if (frames % 4 == 0)
 			heroExplosionSpriteIndex++;
 		if (heroExplosionSpriteIndex == 19)
-			Game::SetCurrentScreen(constants::GAME_OVER_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::GAME_OVER_SCREEN);
 	}
+}
 
-	//checks for paused game
-	if (isPaused)
+void BattleScreen::RenderEnemy()
+{
+	if (enemy->GetAlive())
 	{
-		fadeScreenTexture->RenderTexture(25, 50, renderer, &pauseScreenSpriteClip);
+		enemy->Render();
+	}
+	//explosion if enemy is dead
+	else if (enemExplosionSpriteIndex < 20)
+	{
+		if (enemExplosionSpriteIndex == 0)
+			Game::GetInstance()->PlayMusic(constants::MUSIC_EXPLOSION);
 
-		PauseTitle->Render(renderer);
-		double y = PauseTitle->GetY();
-		if (PauseTitle->GetY() > 100) // handle animation; move the title to y=100
-			y = PauseTitle->GetY() * 0.9;
-		else
+		explosionTexture->RenderTexture(
+			enemy->GetPosition().x + enemy->GetWidth() / 2 - 100 / 2,
+			enemy->GetPosition().y + enemy->GetHeight() / 2 - 63 / 2,
+			renderer,
+			&explosionSpriteClips[enemExplosionSpriteIndex]
+		);
+		if (frames % 4 == 0)
 		{
-			ResumeGameBtn->Render(renderer);
-			saveGameBtn->Render(renderer);
-			backBtn->Render(renderer);
-			quitGameBtn->Render(renderer);
+			enemExplosionSpriteIndex++;
 		}
-
-		PauseTitle->SetPosition(PauseTitle->GetX(), (int)y);
 	}
 
-	frames++;
+}
+
+void BattleScreen::RenderFadeScreen()
+{
+	fadeScreenTexture->RenderTexture(25, 50, renderer, &pauseScreenSpriteClip);
+
+	pauseTitle->Render(renderer);
+	double y = pauseTitle->GetY();
+	if (pauseTitle->GetY() > 100) // handle animation; move the title to y=100
+		y = pauseTitle->GetY() * 0.9;
+	else
+	{
+		resumeGameBtn->Render(renderer);
+		saveGameBtn->Render(renderer);
+		backBtn->Render(renderer);
+		quitGameBtn->Render(renderer);
+	}
+
+	pauseTitle->SetPosition(pauseTitle->GetX(), (int)y);
+}
+
+void BattleScreen::ShootEnemyBullet()
+{
+	Bullet *bullet = enemy->GetWeapon()->Fire(
+		renderer,
+		bulletTexture,
+		enemy->GetPosition().x + enemy->GetWidth() / 2,
+		enemy->GetPosition().y + enemy->GetHeight() / 2,
+		atan2(
+			hero->GetPosition().x + hero->GetWidth() / 2 - enemy->GetPosition().x - enemy->GetWidth() / 2,
+			enemy->GetPosition().y + enemy->GetHeight() / 2 - hero->GetPosition().y - hero->GetHeight() / 2
+		) * 180 / constants::PI
+	);
+	enemyBulletQueue.Enqueue(bullet);
 }
 
 
@@ -606,7 +630,7 @@ bool BattleScreen::IsEmpty(string filename)
 	int length;
 	file.open(filename);
 	file.seekg(0, ios::end); // put the "cursor" at the end of the file
-	length = (int) file.tellg(); // find the position of the cursor
+	length = (int)file.tellg(); // find the position of the cursor
 
 	if (length == 0)
 	{
@@ -648,7 +672,6 @@ void BattleScreen::WriteFile(string filename)
 			planetsCursor->unit->GetScale() << endl;
 		planetsCursor = planetsCursor->next;
 	}
-	myfile << "asteroids" << endl;
 	myfile.close();
 }
 
@@ -659,7 +682,7 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 	int x = 0; int y = 0;
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-	hero->SetDelay(hero->GetDelay() + 1);
+
 
 	//handles running game
 	if (!isPaused)
@@ -707,15 +730,15 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 	//space for shooting
 	if (currentKeyStates[SDL_SCANCODE_SPACE] && isPaused == false)
 	{
-		if (hero->GetDelay() > hero->GetWeapon()->GetDelay() && hero->GetAmmo() > 0 && !intoWormHole)
+		if (hero->GetDelay() == 0 && hero->GetAmmo() > 0 && !intoWormHole)
 		{
 			//updates screen once the player shoots a bullet
 			Bullet *bullet = hero->Shoot(renderer, bulletTexture);
-			PlayerBulletQueue.Enqueue(bullet);
-			hero->SetDelay(0);
+			playerBulletQueue.Enqueue(bullet);
+			hero->SetDelay(hero->GetWeapon()->GetDelay());
 			hero->SetAmmo(hero->GetAmmo() - 1);
 			string title = "Ammo: " + to_string(hero->GetAmmo());
-			AmmoCount->SetText(title);
+			ammoCount->SetText(title);
 		}
 	}
 	bool isResumeGameBtnClicked = false;
@@ -732,7 +755,7 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 		SDL_GetMouseState(&x, &y);
 		if (isPaused)
 		{
-			ResumeGameBtn->OnClickDown(x, y);
+			resumeGameBtn->OnClickDown(x, y);
 			saveGameBtn->OnClickDown(x, y);
 			backBtn->OnClickDown(x, y);
 			quitGameBtn->OnClickDown(x, y);
@@ -745,7 +768,7 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 		SDL_GetMouseState(&x, &y);
 		if (isPaused)
 		{
-			isResumeGameBtnClicked = ResumeGameBtn->OnClickUp(x, y);
+			isResumeGameBtnClicked = resumeGameBtn->OnClickUp(x, y);
 			issaveGameBtnClicked = saveGameBtn->OnClickUp(x, y);
 			isBackBtnClicked = backBtn->OnClickUp(x, y);
 			isQuitGameBtnClicked = quitGameBtn->OnClickUp(x, y);
@@ -777,10 +800,10 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 				}
 			}
 
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		}
 		else if (isBackBtnClicked)
-			Game::SetCurrentScreen(constants::MAIN_MENU_SCREEN);
+			Game::GetInstance()->SetCurrentScreen(constants::MAIN_MENU_SCREEN);
 		else if (isQuitGameBtnClicked)
 		{
 			exit(0);
@@ -791,7 +814,7 @@ void BattleScreen::HandleEvents(SDL_Event& event)
 		SDL_GetMouseState(&x, &y);
 		if (isPaused)
 		{
-			ResumeGameBtn->OnHover(x, y);
+			resumeGameBtn->OnHover(x, y);
 			saveGameBtn->OnHover(x, y);
 			backBtn->OnHover(x, y);
 			quitGameBtn->OnHover(x, y);

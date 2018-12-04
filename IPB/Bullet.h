@@ -6,7 +6,6 @@ class Bullet : public Unit
 {
 	private:
 		const char * name;
-		int damage;
 
 	public:
 		Bullet();

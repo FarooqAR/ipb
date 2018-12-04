@@ -225,14 +225,14 @@ float Unit::GetYSpeed()
 	return speedY;
 }
 
-void Unit::Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit)
+void Unit::Explosion(LTexture* explosionTexture, SDL_Rect(&clip)[20], Unit* unit)
 {
 	int Index = 0;
 	int Delay = 0;
-	while (Index < 10)
+	while (Index < 20)
 	{
-		ExplosionTexture->RenderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
-		if (Delay % 8 == 0)
+		explosionTexture->RenderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
+		if (Delay % 4 == 0)
 		{
 			Index++;
 		}
