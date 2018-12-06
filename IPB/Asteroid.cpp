@@ -56,12 +56,22 @@ Asteroid::Asteroid(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet,float sca
 	this->objTexture = imageSpriteSheet;
 	this->renderer = gRenderer;
 	this->scale = scale;
+	this->explosionSpriteIndex = 0;
 	this->alive = true;
 	this->width = (int) (constants::ASTEROID_WIDTH * scale);
 	this->height = (int) (constants::ASTEROID_HEIGHT * scale);
 	this->damage = damage;
 	this->speedX = (float) speedX;
 	this->speedY = (float) speedY;
+	this->explode = false;
+	for (int i = 0; i < 20; i++)
+	{
+		explosionSpriteClips[i] = {
+			constants::EXPLOSION_SPRITE_START_POSITION.x + 96 * i,
+			constants::EXPLOSION_SPRITE_START_POSITION.y,
+			96, 96
+		};
+	}
 
 }
 
@@ -72,7 +82,7 @@ Asteroid::~Asteroid()
 }
 
 //Moves the asteroid 
-void Asteroid::move()
+void Asteroid::Move()
 {
 	if (direction == 'l' || direction == 'u')
 	{
@@ -88,6 +98,6 @@ void Asteroid::move()
 	//deletes the asteroid object once it is out of the game screen frame
 	if (position.y < -100 || position.y > constants::WINDOW_HEIGHT + 20 || position.x <  -100 || position.x > constants::WINDOW_WIDTH + 20)
 	{
-		SetAlive(false);
+		Unit::SetAlive(false);
 	}
 }

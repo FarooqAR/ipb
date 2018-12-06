@@ -77,17 +77,19 @@ void Queue::Clean()
 			temp = temp->next;
 	}
 }
-bool Queue::CheckCollision(Unit* unit, bool selfDestruct)
+bool Queue::CheckCollision(Unit* unit, bool selfDestruct, bool explode)
 {
 	Node* temp = head;
 	bool isColliding = false;
 	while (temp != NULL)
 	{
-		if (temp->unit->CheckCollision(unit))
+		if (temp->unit->CheckCollision(unit) && !temp->unit->GetExplode())
 		{
 			isColliding = true;
 			if (selfDestruct)
 				temp->unit->SetAlive(false);
+			else if (explode)
+				temp->unit->Explode();
 		}
 		temp = temp->next;
 	}
@@ -132,15 +134,14 @@ Node * Queue::Top()
 	return head;
 }
 //compares objects of one queue with objects of another for collision detection
-void Queue::CheckCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destory)
+void Queue::CheckCollision(Queue* queue)
 {
 	Node* temp = head;
 	while (temp != NULL)
 	{
-		if (queue->CheckCollision(temp->unit, Destory))
+		if (queue->CheckCollision(temp->unit) && !temp->unit->GetExplode())
 		{
-			temp->unit->SetAlive(false);
-			temp->unit->Explosion(ExplosionTexture, clip, temp->unit);
+			temp->unit->Explode();
 		}
 		temp = temp->next;
 	}

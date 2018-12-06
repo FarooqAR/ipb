@@ -10,10 +10,11 @@ public:
 	Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle);
 	~Unit();
 	void SetAlive(bool);
+	void Explode();
+	bool GetExplode();
 	bool GetAlive();
 	bool CheckCollision(Unit* unit);
 	bool CheckCollision(Unit* unit, bool isCentered);
-	void Explosion(LTexture* ExplosionTexture, SDL_Rect(&clip)[20], Unit* unit);
 	void SetPosition(int x, int y);
 	Point GetPosition();
 	int GetWidth();
@@ -33,6 +34,9 @@ public:
 protected:
 	Point position;
 	LTexture * objTexture;
+	bool explode;
+	SDL_Rect explosionSpriteClips[20];
+	int explosionSpriteIndex;
 	bool alive;
 	int width;
 	int height;

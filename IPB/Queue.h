@@ -15,8 +15,8 @@ public:
 	~Queue();
 	void Enqueue(Unit*);
 	void Pull(Unit*);
-	bool CheckCollision(Unit*, bool selfDestruct = false);
-	void CheckCollision(Queue* queue, LTexture* ExplosionTexture, SDL_Rect(&clip)[20], bool Destroy = false);
+	bool CheckCollision(Unit*, bool selfDestruct = false, bool explode = false);
+	void CheckCollision(Queue* queue);
 	void Collected(Player * player);
 	void Clean();
 	void Render();

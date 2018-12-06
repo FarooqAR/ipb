@@ -9,7 +9,7 @@ class Asteroid : public Unit
 	public:
 		Asteroid();
 		Asteroid(SDL_Renderer* gRenderer, LTexture* imageSpriteSheet, float scale, int damage = 20, int speedX = 4, int speedY = 4);
-		void move();
+		void Move();
 		~Asteroid();
 	private:
 		int damage;

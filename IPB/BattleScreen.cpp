@@ -354,23 +354,19 @@ void BattleScreen::Render()
 
 
 	//checks if asteroid made contact with either the hero or enemy
-	bool asteroidCollision = asteroidQueue.CheckCollision(hero, true);
-	bool asteroidCollisionEnemy = asteroidQueue.CheckCollision(enemy, true);
+	bool asteroidCollision = asteroidQueue.CheckCollision(hero, false, true);
+	bool asteroidCollisionEnemy = asteroidQueue.CheckCollision(enemy, false, true);
 	//checks each object of one queue (asteroid) with each time of another (bullets and planets) to see if collision occured 
-	asteroidQueue.CheckCollision(&playerBulletQueue, explosionTexture, explosionSpriteClips, true);
-	asteroidQueue.CheckCollision(&enemyBulletQueue, explosionTexture, explosionSpriteClips, true);
-	asteroidQueue.CheckCollision(&planets, explosionTexture, explosionSpriteClips);
+	asteroidQueue.CheckCollision(&planets);
 
 	if (asteroidCollision)
 	{
-		hero->SetHealth(hero->GetHealth() - 10);
-		hero->Explosion(explosionTexture, explosionSpriteClips, hero);
-
+		hero->SetHealth(hero->GetHealth() - 5);
 	}
 
 	if (asteroidCollisionEnemy)
 	{
-		enemy->Explosion(explosionTexture, explosionSpriteClips, enemy);
+		enemy->SetHealth(enemy->GetHealth() - 5);
 	}
 	
 	planets.Clean();

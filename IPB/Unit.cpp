@@ -11,7 +11,9 @@ Unit::Unit()
 {
 	scale = 1;
 	alive = 1;
-	angle = 0.0;	
+	angle = 0.0;
+	explode = false;
+
 }
 
 Unit::Unit(SDL_Renderer* renderer, LTexture* unitTexture, float scale, bool alive, double angle)
@@ -51,7 +53,14 @@ void Unit::SetAlive(bool alive)
 {
 	this->alive = alive;
 }
-
+void Unit::Explode()
+{
+	this->explode = true;
+}
+bool Unit::GetExplode()
+{
+	return explode;
+}
 bool Unit::GetAlive()
 {
 	return alive;
@@ -178,18 +187,39 @@ double Unit::GetAngle()
 
 void Unit::Render()
 {
-	this->objTexture->RenderTexture(
-		position.x,
-		position.y,
-		renderer,
-		&destRect,
-		SDL_FLIP_NONE,
-		this->angle,
-		nullptr,
-		scale,
-		scale,
-		false
-	);
+	if (explode)
+	{
+		if (explosionSpriteIndex < 20)
+		{
+			objTexture->RenderTexture(
+				position.x,
+				position.y,
+				renderer, 
+				&explosionSpriteClips[explosionSpriteIndex]
+			);
+			explosionSpriteIndex++;
+		}
+		else
+		{
+			SetAlive(false);
+		}
+	}
+	else
+	{
+		this->objTexture->RenderTexture(
+			position.x,
+			position.y,
+			renderer,
+			&destRect,
+			SDL_FLIP_NONE,
+			this->angle,
+			nullptr,
+			scale,
+			scale,
+			false
+		);
+	}
+	
 }
 
 void Unit::SetScale(float scale)
@@ -223,19 +253,4 @@ float Unit::GetXSpeed()
 float Unit::GetYSpeed()
 {
 	return speedY;
-}
-
-void Unit::Explosion(LTexture* explosionTexture, SDL_Rect(&clip)[20], Unit* unit)
-{
-	int Index = 0;
-	int Delay = 0;
-	while (Index < 20)
-	{
-		explosionTexture->RenderTexture((unit->position.x), (unit->position.y), renderer, &clip[Index]);
-		if (Delay % 4 == 0)
-		{
-			Index++;
-		}
-		Delay++;
-	}
 }
